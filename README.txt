@@ -2,6 +2,12 @@ Excel Syntax for Sublime Text
 v1.0.1 4/17/2023
 by Stephen Buerkert
 
+-- Description --
+
+Simple Excel formula syntax highlighting for Sublime Text.
+
+-- Install Instrucitons --
+
 1. Install via Package Control
 2. Select the "Excel" syntax option from the syntax selection menu from the bottom right of Sublime
 3. Enjoy!
