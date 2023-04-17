@@ -3,7 +3,7 @@
 name: Excel
 # Made by Alco#0424
 # Please send any bug reports to me via a direct message on Discord
-# v1.0.1 4/17/2023
+# v1.0.1
 file_extensions:
   - txt
 scope: source.cs
