@@ -1,0 +1,54 @@
+%YAML 1.2
+---
+name: Excel
+# Made by Alco#0424
+# Please send any bug reports to me via a direct message on Discord
+# v1.0.1 4/17/2023
+file_extensions:
+  - txt
+scope: source.cs
+
+contexts:
+  main:
+    - include: keywords
+    - include: numbers
+    - include: strings
+
+  keywords:
+    # Matches mathemetical operators
+    - match: '(=|\+|\-|\*|\/|\^|%)'
+      scope: storage.modifier.cs
+
+    # Matches functions
+    - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )[A-Za-z\.]+(?=\()'
+      scope: variable.function.cs
+
+    # Matches table names
+    - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )[A-Za-z\.]+(?=\[)'
+      scope: storage.type.cs
+
+    # Matches A1 format cell references and 'sheet!cell' references
+    - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )(([A-Za-z]+|''.+'')+!)?\$?[a-zA-Z]+\$?[0-9]+\$?(:\$?([a-zA-Z]+\$?[0-9]+\$?)?)?(?=$|=|\+|\-|\*|\/|\^|%|,|;|\)| |\n)'
+      scope: storage.type.cs
+
+    # Matches the contents of square brackets
+    - match: '((?<=\[)(#|@)?[^\[\]]+(?=\])|(?<=\[)@(?=\[)|(?<=\]):(?=\[)|(?<=\]),(?=\[))'
+      scope: storage.modifier.cs
+
+  numbers:
+    - match: '\b(-)?[0-9.]+\b'
+      scope: constant.numeric.cs
+
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.cs
+      push: inside_string
+
+  inside_string:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.cs
+    - match: '\.'
+      scope: constant.character.escape.cs
+    - match: '"'
+      scope: punctuation.definition.string.end.cs
+      pop: true
