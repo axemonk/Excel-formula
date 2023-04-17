@@ -4,7 +4,7 @@ by Stephen Buerkert
 
 -- Description --
 
-Simple Excel formula syntax highlighting for Sublime Text.
+Excel formula syntax highlighting for Sublime Text.
 
 -- Install Instrucitons --
 
