@@ -18,7 +18,7 @@ contexts:
 
 
   keywords:
-    # # Included as a "support." funciton in line with convention in that
+    # # Included as a "support." function in line with convention in that
     # # the vast majority of functions in excel are provided by what I would consider the 'Excel framework'.
     # # TODO: The exception being user-defined lambda functions
     # # (soln?: check to see if a word before a '(' is not in the list of all Excel functions) (prblm: will easily depricate)
