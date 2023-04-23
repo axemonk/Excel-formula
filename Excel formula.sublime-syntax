@@ -19,7 +19,7 @@ contexts:
 
   keywords:
     # Matches functions
-    # # Included as a ".support" funciton since the vast majority of functions in excel are provided
+    # # In line with the Scope Naming Sublime docs, included as a "support." funciton since the vast majority of functions in excel are provided
     # # by what I would consider the 'Excel framework'
     - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )[A-Za-z\.]+(?=\()'
       scope: support.function.excel
@@ -34,6 +34,8 @@ contexts:
       scope: keyword.operator.excel
 
   references:
+    # These four were tricky when reworking the scopes to be in line with the docs. I tried to balance actually having them colored differently, as is helpful
+    # in a tightly-packed excel formula, while at the same time having the scope names align with what these various references represent from a code perspective.
     # Matches table names
     - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )[A-Za-z\.]+(?=\[)'
       scope: entity.name.struct.excel
