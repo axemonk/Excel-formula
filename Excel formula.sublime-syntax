@@ -21,7 +21,7 @@ contexts:
     # # Included as a "support." function in line with convention in that
     # # the vast majority of functions in excel are provided by what I would consider the 'Excel framework'.
     # # TODO: The exception being user-defined lambda functions
-    # # (soln?: check to see if a word before a '(' is not in the list of all Excel functions) (prblm: will easily depricate)
+    # # (soln?: check to see if a word before a '(' is not in the list of all Excel functions) (prblm: will easily deprecate)
 
     # Matches functions
     - match: '[A-Za-z\.]+(?=\()'
@@ -36,7 +36,7 @@ contexts:
     - match: '='
       scope: keyword.operator.logical.excel
 
-    # Matches mathemetical operators
+    # Matches mathematical operators
     - match: '(\+|\-|\*|\/|\^|%)'
       scope: keyword.operator.arithmetic.excel
 
