@@ -57,15 +57,15 @@ contexts:
     # # #          under one name in a block of memory"
 
     # Matches table name references
-    - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )[A-Za-z\.]+(?=\[)'
+    - match: '[A-Za-z\.]+(?=\[)'
       scope: entity.name.struct.excel
 
     # Matches sheet name references
-    - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )([A-Za-z]+|''.+'')+(?=!)'
+    - match: '([A-Za-z]+|''.+'')+(?=!)'
       scope: entity.name.struct.excel
 
     # Matches A1 format '[sheet!]cell[:cell]' references
-    - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| |!)\$?[a-zA-Z]+\$?[0-9]+\$?(:\$?([a-zA-Z]+\$?[0-9]+\$?)?)?(?=$|=|\+|\-|\*|\/|\^|%|,|;|\)| |\n)'
+    - match: '\$?[a-zA-Z]+\$?[0-9]+\$?(:\$?([a-zA-Z]+\$?[0-9]+\$?)?)?'
       scope: storage.type.excel
 
     # Matches the names of columns in column references
