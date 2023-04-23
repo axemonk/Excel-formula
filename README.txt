@@ -1,6 +1,5 @@
 Excel Syntax for Sublime Text
 v1.0.1 4/17/2023
-by Stephen Buerkert
 
 -- Description --
 
