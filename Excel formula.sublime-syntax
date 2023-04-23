@@ -18,29 +18,49 @@ contexts:
 
 
   keywords:
+    # # Included as a "support." funciton in line with convention in that
+    # # the vast majority of functions in excel are provided by what I would consider the 'Excel framework'.
+    # # TODO: The exception being user-defined lambda functions
+
     # Matches functions
-    # # In line with the Scope Naming Sublime docs, included as a "support." funciton since the vast majority of functions in excel are provided
-    # # by what I would consider the 'Excel framework'
     - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )[A-Za-z\.]+(?=\()'
       scope: support.function.excel
 
   operators:
-    # Matches mathemetical operators
-    - match: '(=|\+|\-|\*|\/|\^|%)'
-      scope: keyword.operator.excel
+    # Matches assignment operator '='
+    - match: '^='
+      scope: keyword.operator.assignment.excel
 
-    # Matches reference 'operators'
-    - match: '(?<=\]):|(?<=\]),(?=\[)|(?<=\[)#|(?<=\[)@|!'
+    # Matches logical operator '='
+    - match: '='
+      scope: keyword.operator.logical.excel
+
+    # Matches mathemetical operators
+    - match: '(\+|\-|\*|\/|\^|%)'
+      scope: keyword.operator.arithmetic.excel
+
+    # Matches reference 'operators' and the concat '&' operator, which don't fit well into any of the other operator sub-categories.
+    - match: '(?<=\]):|(?<=\]),(?=\[)|(?<=\[)#|(?<=\[)@|!|&'
       scope: keyword.operator.excel
 
   references:
-    # These four were tricky when reworking the scopes to be in line with the docs. I tried to balance actually having them colored differently, as is helpful
-    # in a tightly-packed excel formula, while at the same time having the scope names align with what these various references represent from a code perspective.
-    # Matches table names
+    # # These four were tricky when reworking the scopes to be in line with convention.
+    # #
+    # # I tried to balance actually having them colored differently in the default sublime color scheme,
+    # # as is helpful in a tightly-packed Excel formula, while at the same time
+    # # having the scope names align with what these various references represent from a code perspective.
+    # #
+    # # This proved to be *very* difficult for cell and column references (see cop-out: storage.type.excel),
+    # # but for sheet and table name references, .struct. seems to fit well under the definition:
+    # #
+    # # # struct: "a composite data type (or record) declaration that defines a physically grouped list of variables
+    # # #          under one name in a block of memory"
+
+    # Matches table name references
     - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )[A-Za-z\.]+(?=\[)'
       scope: entity.name.struct.excel
 
-    # Matches sheet names
+    # Matches sheet name references
     - match: '(?<=^|=|\+|\-|\*|\/|\^|,|;|\(| )([A-Za-z]+|''.+'')+(?=!)'
       scope: entity.name.struct.excel
 
@@ -57,6 +77,8 @@ contexts:
     - match: '\b(-)?[0-9.]+\b'
       scope: constant.numeric.excel
 
+  # (potential) TODO: utilize the functionality used below to more elegantly grab the contents of square brackets, rather than
+  # taking advantage of the strict formula syntax inherent to Excel.
   strings:
     - match: '"'
       scope: punctuation.definition.string.begin.excel
