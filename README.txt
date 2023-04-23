@@ -16,4 +16,4 @@ Excel formula syntax highlighting for Sublime Text.
 
 Please send any bug reports to me via direct message on Discord.
 Discord: Alco#0424
-Repository: https://github.com/axemonk/Excel-Syntax-Sublime
+Repository: https://github.com/axemonk/Excel-formula
