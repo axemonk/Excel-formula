@@ -1,10 +1,10 @@
 %YAML 1.2
 ---
-name: Excel formula
+name: Excel formula (Test)
 # Made by Alco#0424
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports to me via a direct message on Discord
-# v1.1.0 4/23/2023
+# v1.1.1 4/28/2023
 file_extensions:
   - txt
 scope: source.excel
@@ -43,7 +43,7 @@ contexts:
       scope: keyword.operator.arithmetic.excel
 
     # Matches reference 'operators' and the concat '&' operator, which don't fit well into any of the other operator sub-categories.
-    - match: '(?<=\]):|(?<=\]),(?=\[)|(?<=\[)#|(?<=\[)@|!|&'
+    - match: ':|(?<=\]),(?=\[)|(?<=\[)#|(?<=\[)@|!|&'
       scope: keyword.operator.excel
 
   references:
@@ -60,15 +60,19 @@ contexts:
     # # #          under one name in a block of memory"
 
     # Matches table name references
-    - match: '[A-Za-z\.]+(?=\[)'
+    - match: '[A-Za-z\.\_\?\\]+(?=\[)'
       scope: entity.name.struct.excel
 
     # Matches sheet name references
-    - match: '([A-Za-z]+|''.+'')+(?=!)'
+    - match: '([A-Za-z\_]+|''.+'')+(?=!)'
       scope: entity.name.struct.excel
 
+    # # Matches A1 format '[sheet!]cell[:cell]' references
+    # - match: '\$?[a-zA-Z]+\$?[0-9]+\$?(:\$?([a-zA-Z]+\$?[0-9]+\$?)?)?'
+    #   scope: storage.type.excel
+
     # Matches A1 format '[sheet!]cell[:cell]' references
-    - match: '\$?[a-zA-Z]+\$?[0-9]+\$?(:\$?([a-zA-Z]+\$?[0-9]+\$?)?)?'
+    - match: '\$?[a-zA-Z]+\$?[0-9]+\$?'
       scope: storage.type.excel
 
     # Matches the names of columns in column references
