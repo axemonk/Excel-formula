@@ -60,11 +60,11 @@ contexts:
     # # #          under one name in a block of memory"
 
     # Matches table name references
-    - match: '[A-Za-z\.\_\?\\]+(?=\[)'
+    - match: '[A-Za-z0-9\.\_\?\\]+(?=\[)'
       scope: entity.name.struct.excel
 
     # Matches sheet name references
-    - match: '([A-Za-z\_]+|''.+'')+(?=!)'
+    - match: '([A-Za-z0-9\_]+|''.+'')+(?=!)'
       scope: entity.name.struct.excel
 
     # Matches A1 format '[sheet!]cell[:cell]' references
