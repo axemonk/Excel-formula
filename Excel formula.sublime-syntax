@@ -67,10 +67,6 @@ contexts:
     - match: '([A-Za-z\_]+|''.+'')+(?=!)'
       scope: entity.name.struct.excel
 
-    # # Matches A1 format '[sheet!]cell[:cell]' references
-    # - match: '\$?[a-zA-Z]+\$?[0-9]+\$?(:\$?([a-zA-Z]+\$?[0-9]+\$?)?)?'
-    #   scope: storage.type.excel
-
     # Matches A1 format '[sheet!]cell[:cell]' references
     - match: '\$?[a-zA-Z]+\$?[0-9]+\$?'
       scope: storage.type.excel
