@@ -1,5 +1,4 @@
 Excel formula for Sublime Text
-v1.1.0 4/23/2023
 
 -- Description --
 
