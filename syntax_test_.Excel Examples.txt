@@ -1,4 +1,4 @@
-# SYNTAX TEST "Excel formula (LYONS).sublime-syntax"
+# SYNTAX TEST "Excel formula.sublime-syntax"
 
 ={-1,1,-1;-1/-2,4,-6.5}
 
