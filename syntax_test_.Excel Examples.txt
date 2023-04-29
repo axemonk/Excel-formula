@@ -1,0 +1,92 @@
+# SYNTAX TEST "Excel formula (LYONS).sublime-syntax"
+
+={-1,1,-1;-1/-2,4,-6.5}
+
+=-1
+
+=-1=-1
+
+=LET(
+cost,StageEffDmg!$C$78,
+efSoValr,IF(StageEffDmg!$C$77={"green";"blue";"red"},SoulWeps!$G$31:$G$33,""),
+effSouls,FILTER(efSoValr,LEN(efSoValr)),
+sOneSouls,StageEffDmg!$C$66*StageEffDmg!$C$64,
+sOne,StageEffDmg!C85*0.01/StageEffDmg!$C$66*StageEffDmg!$C$64*StageEffDmg!$C$79,
+sTwoSouls,StageEffDmg!$C$72*StageEffDmg!$C$70,
+sTwo,StageEffDmg!C86*0.01/StageEffDmg!$C$72*StageEffDmg!$C$70*StageEffDmg!$C$79,
+wknd,(sTwo*(2/24)+sOne*(22/24))*(2/7),
+wkndSouls,(sTwoSouls*(2/24)+sOneSouls*(22/24))*(2/7),
+wkdy,sOne*(5/7),
+wkdySouls,sOneSouls*(5/7),
+(wknd+wkdy)*24*((cost-effSouls)/((wkndSouls+wkdySouls)*24))
+)+I12
+
+='s''s'!N36
+=_hello_2world!N36
+=_Table1?\[Row1]
+
+
+=LET(
+lab,SPARC[[#Headers],[GISO_1]],
+rcidd,RCIndex[[ddCol]:[ddCol]],
+rcirc,RCIndex[[rcCol]:[rcCol]],
+
+val,
+INDEX(
+XLOOKUP(
+XLOOKUP(lab,rcidd,rcirc),
+REDCap[[#Headers],[giso_1]:[apgar_complete]],
+REDCap[[giso_1]:[apgar_complete]]
+),
+MATCH(
+CONCAT(
+SPARC[@[RedCap_ID]:[RedCap_ID]],
+XLOOKUP(lab,rcidd,RCIndex[[ArmEvent]:[ArmEvent]])
+),
+REDCap[[IDArm]:[IDArm]],0)
+),
+
+IF(LEN(val),val,""))
+
+=((R21-R19)/($Q$39+100)+(R22-R20)/$O$39)/R18
+
+=FILTER(StageData[Mob/Wave],StageData[Stage Num]=$C13)*10+1
+
+=ISNUMBER(FIND({"Office 365 button","Excel 2013","Excel 2010"},A630))
+
+="hello"&"world"
+
+=N("hello"="hello")
+
+=BYROW(array, LAMBDA(row, MAX(row))
+
+C78%
+
+A5:A6
+
+A$5:A6
+
+$A5:$A6
+
+=LET(
+this,RCCalc[[#Headers],[giso_timestamp]],
+return,XLOOKUP(this,RCIndex[[rcCol]:[rcCol]],RCIndex[[Recalc Formula]:[Recalc Formula]],,0,1),
+cell,FILTER(FILTER(REDCap,REDCap[#Headers]=this),RCCalc[@[IDArm]:[IDArm]]=REDCap[[IDArm]:[IDArm]]),
+IF(LEN(return),return,
+IF(LEN(cell),cell,""))
+)
+
+=LET(txt,[@Action],out,
+IF(
+ISNUMBER(FIND("(Auto calculation)",txt)),MID(txt,FIND("n) ",txt)+3,3),
+IF(
+ISNUMBER(FIND("(import)",txt)),MID(txt,FIND("t) ",txt)+3,3),
+IF(
+ISNUMBER(FIND("(Data Quality)",txt)),MID(txt,FIND("y) ",txt)+3,3),
+IF(
+ISNUMBER(FIND("Record",txt)),MID(txt,FIND("Record ",txt)+7,3),
+IF(
+ISNUMBER(FIND("Response",txt)),MID(txt,FIND("Response ",txt)+9,3),
+""))))),
+IF(LEN(out),VALUE(SUBSTITUTE(out," (","")),"")
+)
