@@ -60,7 +60,7 @@ contexts:
     # # Included as a "support." function in line with convention in that
     # # the vast majority of functions in Excel are provided by what I would consider the 'Excel framework'.
     # # TODO?: The exception being user-defined lambda functions
-    # # (soln?: check to see if a word before a '(' is not in the list of all Excel functions) (prblm: will easily deprecate)
+    # # (soln?: check to see if a word before a '(' is not in the list of all Excel functions) (prblm: will easily deprecate and is likely very slow)
 
     # # Can't decide whether to do things like this or not.
     # - match: \b((?i:(?:COUNT|SUM)?IF))(\()
@@ -199,7 +199,7 @@ contexts:
         1: entity.name.struct.excel
         2: punctuation.section.brackets.begin.excel
       push: table-name-body
-      
+
   table-name-body:
     - meta_scope: meta.reference.excel
 
@@ -254,7 +254,7 @@ contexts:
     - include: strings
 
   numbers:
-    - match: -?[0-9]+(?:\.\d+)?
+    - match: '-?[0-9]+(?:\.\d+)?'
       scope: constant.numeric.excel
 
   strings:
@@ -270,6 +270,22 @@ contexts:
     - match: '"'
       scope: punctuation.definition.string.end.excel
       pop: 1
+    # CHANGE: Tilde escapes wildcards and itself, but can also be used by itself and function as a literal
+    - match: '(~)([*?~])'
+      captures:
+        1: keyword.operator.wildcard.escape.excel
+        2: string.quoted.double.excel
     # Not technically applicable to all strings, but probably fine, yes?
+    # Correct. Possible future functionality?
     - match: '[*?]'
       scope: keyword.operator.wildcard.excel
+
+  # TODO: Not all functions allow wildcards. Here is a list of the most common functions that do:
+
+  # AVERAGEIF, AVERAGEIFS
+  # COUNTIF, COUNTIFS
+  # MAXIFS, MINIFS
+  # SUMIF, SUMIFS
+  # VLOOKUP, HLOOKUP
+  # MATCH
+  # SEARCH
