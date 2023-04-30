@@ -38,7 +38,9 @@ contexts:
     - include: expressions
 
     # Sanity checks
-    - match: \)
+    # TODO: replicate this feature for stray end square and curly brackets
+    #       (neither work inside parentheticals)
+    - match: '[)}\]]'
       scope: invalid.illegal.stray-bracket-end.excel
 
 
@@ -205,6 +207,7 @@ contexts:
 
     # CHANGE: Along with change to 'Anything that shouldn't match',
     # the second group ensures commas and colons can still be used in column names
+    # without mismatching them elsewhere
     - match: (\])([,:])?
       captures:
         1: punctuation.section.brackets.end.excel
@@ -276,7 +279,7 @@ contexts:
         1: keyword.operator.wildcard.escape.excel
         2: string.quoted.double.excel
     # Not technically applicable to all strings, but probably fine, yes?
-    # Correct. Possible future functionality?
+    # I'd say so. Possible future functionality?
     - match: '[*?]'
       scope: keyword.operator.wildcard.excel
 
