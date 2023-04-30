@@ -199,19 +199,21 @@ contexts:
         1: entity.name.struct.excel
         2: punctuation.section.brackets.begin.excel
       push: table-name-body
-
+      
   table-name-body:
     - meta_scope: meta.reference.excel
 
-    # CHANGE: Ensures commas and colons can still be used in col names
+    # CHANGE: Along with change to 'Anything that shouldn't match',
+    # the second group ensures commas and colons can still be used in column names
     - match: (\])([,:])?
       captures:
         1: punctuation.section.brackets.end.excel
         2: punctuation.separator.sequence.excel
       pop: 1
 
-    # CHANGE: Matches escaped brackets and operators
-    - match: ([:,]*\'[\]\[@#][:,]*)
+    # CHANGE: Matches escaped brackets and operators and prevents conflict between
+    # brackets and ,:
+    - match: ([,:]*\'[\]\[@#][,:]*)
       scope: storage.type.excel
 
     - match: '[#@]'
@@ -221,7 +223,7 @@ contexts:
       scope: punctuation.section.brackets.begin.excel
       push: table-name-body
 
-    # Anything that doesn't match
+    # Anything that should't match but could otherwise be within the body
     # Technically, we could do `.`, but that slows down tokenization
     # CHANGE: Removed ,:
     - match: '[^#@\[\]]+'
