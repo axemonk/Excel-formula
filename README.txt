@@ -12,6 +12,10 @@ Excel formula syntax highlighting for Sublime Text.
 3b. Alternatively, open the Command Palette and type "Excel formula". Select the top option ("Set Syntax: Excel formula")
 4. Enjoy!
 
-Please send any bug reports to me via direct message on Discord.
-Discord: Alco#0424
-Repository: https://github.com/axemonk/Excel-formula
+
+Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
+You can find me on the official Sublime Text Discord server.
+Made by Alco#0424 and [Q4]Fry#2960
+https://github.com/axemonk/Excel-formula
+
+A HUGE thank-you to [Q4]Fry#2960 for his collaboration.
