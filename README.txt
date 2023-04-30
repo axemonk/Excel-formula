@@ -18,4 +18,4 @@ You can find me on the official Sublime Text Discord server.
 Made by Alco#0424 and [Q4]Fry#2960
 https://github.com/axemonk/Excel-formula
 
-A HUGE thank-you to [Q4]Fry#2960 for his collaboration.
+A HUGE thank you to [Q4]Fry#2960 for his collaboration.
