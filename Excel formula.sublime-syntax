@@ -14,7 +14,12 @@ contexts:
   immediately-pop:
     - match: ''
       pop: 1
-      
+
+  # # Didn't turn out to need one of these
+  # else-pop:
+  #   - match: (?=\S)
+  #     pop: 1
+
   main:
     # Matches assignment operator '='
     - match: ^=
@@ -206,7 +211,7 @@ contexts:
       pop: 1
 
     # CHANGE: Matches escaped brackets and operators
-    - match: \'[\]\[@#]
+    - match: ([:,]*\'[\]\[@#][:,]*)
       scope: storage.type.excel
 
     - match: '[#@]'
