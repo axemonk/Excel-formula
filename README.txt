@@ -13,7 +13,7 @@ Excel formula syntax highlighting for Sublime Text.
 4. Enjoy!
 
 
-Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
+Please send any bug reports or suggestions to Alco#0424 via a direct message on Discord.
 You can find me on the official Sublime Text Discord server.
 Made by Alco#0424 and [Q4]Fry#2960
 https://github.com/axemonk/Excel-formula
