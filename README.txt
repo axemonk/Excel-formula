@@ -4,13 +4,17 @@ Excel formula for Sublime Text
 
 Excel formula syntax highlighting for Sublime Text.
 
--- Installation and Usage Instructions --
+-- Installation --
 
 1. Install via Package Control
-2. In Sublime, open, navigate to, or create a '.txt' file containing the Excel formulas you wish to be highlighted
-3a. Select the "Excel formula" syntax option from the syntax selection menu from the bottom right of Sublime
-3b. Alternatively, open the Command Palette and type "Excel formula". Select the top option ("Set Syntax: Excel formula")
-4. Enjoy!
+   a. https://packagecontrol.io/installation
+
+-- Usage --
+
+1. In Sublime, open, navigate to, or create a '.txt' file containing the Excel formulas you wish to be highlighted
+2a. Select the "Excel formula" syntax option from the syntax selection menu from the bottom right of Sublime
+2b. Alternatively, open the Command Palette and type "Excel formula". Select the top option ("Set Syntax: Excel formula")
+3. Enjoy!
 
 
 Please send any bug reports or suggestions to Alco#0424 via a direct message on Discord.
