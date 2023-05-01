@@ -1,4 +1,4 @@
-' SYNTAX TEST "Excel formula.sublime-syntax"
+' SYNTAX TEST "Excel formula LYONS TWO.sublime-syntax"
 
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
@@ -106,6 +106,15 @@
 '          ^ - meta.reference
 '^^^^^^ entity.name.struct
 '      ^ punctuation.separator.sequence - entity
+
+
+=Table36[[#All],[ほあうぃふぉあうぃ]]
+
+=Table36[[#Headers],[한국어]]
+
+=한국어!L11
+
+=う[[#Headers],[>]]
 
 =_hello_2world!N36
 ' <- keyword.operator.assignment
