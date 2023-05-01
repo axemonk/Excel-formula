@@ -5,7 +5,7 @@ name: Excel formula
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.0.0 4/30/2023
+# v2.1.0 5/1/2023
 file_extensions: []
 scope: source.excel
 version: 2
@@ -51,9 +51,11 @@ contexts:
     - include: constants
     - include: arrays
     - include: groups
-    # Very speculative
-    - match: \w+
-      scope: variable.other.readwrite.excel
+    # CHANGE: I'm not sure what this is supposed to capture,
+    # but it may interfere with non-english unicode sheet name refs.
+    # # Very speculative
+    # - match: \w+
+    #   scope: variable.other.readwrite.excel
     - match: \t
       scope: invalid.illegal.excel
 
@@ -150,7 +152,8 @@ contexts:
 
 
   sheet-reference:
-    - match: (?=(?:[A-Za-z0-9_]+|'.+')+!)
+    #CHANGE: Allow for non-english unicode.
+    - match: (?=(?:[0-9\w]+|'.+')+!)
       push: [cell-or-range-reference-body, sheet-reference-body]
 
   sheet-reference-body:
@@ -164,7 +167,8 @@ contexts:
         - match: (')
           scope: punctuation.definition.annotation.end.excel
           pop: 1
-    - match: '[A-Za-z0-9_]+'
+    #CHANGE: Allow for non-english unicode.
+    - match: '[0-9\w]+'
       scope: entity.name.struct.excel
     - include: immediately-pop
 
