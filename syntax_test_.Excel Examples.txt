@@ -1,4 +1,4 @@
-' SYNTAX TEST "Excel formula LYONS TWO.sublime-syntax"
+' SYNTAX TEST "Excel formula.sublime-syntax"
 
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
