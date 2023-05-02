@@ -1,8 +1,52 @@
-' SYNTAX TEST "Excel formula.sublime-syntax"
+' SYNTAX TEST "Excel formula LYONS THREE.sublime-syntax"
+
+=LET(
+return,INDIRECT(ARRAYTOTEXT("Data["&INDEX(TEXTSPLIT(UniquePts2[[#Headers],[ORDER_INST.Earliest]],"."),,1)&"]")),
+minOrMax,INDEX(TEXTSPLIT(UniquePts2[[#Headers],[ORDER_INST.Earliest]],"."),,2),
+cd,Data[[CONTACT_DATE]:[CONTACT_DATE]],
+cdlen,N(LEN(cd)>0),
+mrneq,N(Data[[PAT_MRN_ID]:[PAT_MRN_ID]]=UniquePts2[@[MRN]:[MRN]]),
+valr,FILTER(cd,mrneq*cdlen,""),
+IF(
+minOrMax = "Earliest",
+LET(
+ismin,cd=MIN(valr),
+valmin,TEXT(MIN(UNIQUE(FILTER(return,ismin*cdlen*mrneq,""))),"MM/DD/YYYY"),
+TEXTJOIN(";",FALSE,valmin)
+),
+IF(
+minOrMax = "Latest",
+LET(
+ismax,cd=MAX(valr),
+valmax,TEXT(MAX(UNIQUE(FILTER(return,ismax*cdlen*mrneq,""))),"MM/DD/YYYY"),
+TEXTJOIN(";",FALSE,valmax)
+)
+)
+)
+)
 
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
 =Table1[Col]-2.5   
+
+=1>0
+' <- keyword.operator.assignment
+' ^ keyword.operator.logical
+'^ constant.numeric.value
+'  ^ constant.numeric.value
+
+=#A1
+
+=A1<=B1
+
+=A1<>B1
+
+=@$A1:A10
+
+=SUM(B7:D7 C6:C8)
+'         ^ keyword.operator.reference
+
+=#VALUE!
 
 =-1
 
@@ -17,8 +61,6 @@
 =INT((AH37-INT(AH37))*60)&"분"
 
 =IF(C23="1차","",IF(C23="2차","(x 1.5)",IF(C23="3차","(x 2)")))
-
-
 
 ="~*"
 ' <- keyword.operator.assignment
