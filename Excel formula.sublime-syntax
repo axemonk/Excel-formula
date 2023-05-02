@@ -1,11 +1,11 @@
 %YAML 1.2
 ---
-name: Excel formula LYONS THREE
+name: Excel formula
 # Made by Alco#0424 and [Q4]Fry#2960
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.2.1 5/1/2023
+# v2.2.1 5/2/2023
 file_extensions: []
 scope: source.excel
 version: 2
