@@ -1,14 +1,53 @@
 %YAML 1.2
 ---
-name: Excel formula
+name: Excel formula LYONS THREE
 # Made by Alco#0424 and [Q4]Fry#2960
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.1.1 5/1/2023
+# v2.2.1 5/1/2023
 file_extensions: []
 scope: source.excel
 version: 2
+
+variables:
+  cell: (?:\$?[A-Za-z]+\$?\d+)
+  sheet_name_component_delimited: (?:'.+')
+  sheet_name_component_normal: \w+
+  sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
+  string_wildcard: '[*?]'
+  function_name: (?:[A-Za-z\d.]+)
+
+  # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
+  function_builtins: |-
+    \b(?xi:
+      ABS | ACCRINT | ACCRINTM | ACOS | ACOSH | ACOT | ACOTH | AGGREGATE | ADDRESS | AMORDEGRC | AMORLINC | AND | ARABIC | AREAS | ARRAYTOTEXT | ASC | ASIN | ASINH | ATAN | ATAN2 | ATANH | AVEDEV | AVERAGE | AVERAGEA | AVERAGEIF | AVERAGEIFS
+    | BAHTTEXT | BASE | BESSELI | BESSELJ | BESSELK | BESSELY | BETADIST | BETA\.DIST | BETAINV | BETA\.INV | BIN2DEC | BIN2HEX | BIN2OCT | BINOMDIST | BINOM\.DIST | BINOM\.DIST\.RANGE | BINOM\.INV | BITAND | BITLSHIFT | BITOR | BITRSHIFT | BITXOR | BYCOL | BYROW
+    | CALL | CEILING | CEILING\.MATH | CEILING\.PRECISE | CELL | CHAR | CHIDIST | CHIINV | CHITEST | CHISQ\.DIST | CHISQ\.DIST\.RT | CHISQ\.INV | CHISQ\.INV\.RT | CHISQ\.TEST | CHOOSE | CHOOSECOLS | CHOOSEROWS | CLEAN | CODE | COLUMN | COLUMNS | COMBIN | COMBINA | COMPLEX | CONCAT | CONCATENATE | CONFIDENCE | CONFIDENCE\.NORM | CONFIDENCE\.T | CONVERT | CORREL | COS | COSH | COT | COTH | COUNT | COUNTA | COUNTBLANK | COUNTIF | COUNTIFS | COUPDAYBS | COUPDAYS | COUPDAYSNC | COUPNCD | COUPNUM | COUPPCD | COVAR | COVARIANCE\.P | COVARIANCE\.S | CRITBINOM | CSC | CSCH | CUBEKPIMEMBER | CUBEMEMBER | CUBEMEMBERPROPERTY | CUBERANKEDMEMBER | CUBESET | CUBESETCOUNT | CUBEVALUE | CUMIPMT | CUMPRINC
+    | DATE | DATEDIF | DATEVALUE | DAVERAGE | DAY | DAYS | DAYS360 | DB | DBCS | DCOUNT | DCOUNTA | DDB | DEC2BIN | DEC2HEX | DEC2OCT | DECIMAL | DEGREES | DELTA | DEVSQ | DGET | DISC | DMAX | DMIN | DOLLAR | DOLLARDE | DOLLARFR | DPRODUCT | DROP | DSTDEV | DSTDEVP | DSUM | DURATION | DVAR | DVARP
+    | EDATE | EFFECT | ENCODEURL | EOMONTH | ERF | ERF\.PRECISE | ERFC | ERFC\.PRECISE | ERF | ERROR\.TYPE | EUROCONVERT | EVEN | EXACT | EXP | EXPAND | EXPON\.DIST | EXPONDIST
+    | FACT | FACTDOUBLE | FALSE | F\.DIST | FDIST | F\.DIST\.RT | FILTER | FILTERXML | FIND | FINDB | F\.INV | F\.INV\.RT | FINV | FISHER | FISHERINV | FIXED | FLOOR | FLOOR\.MATH | FLOOR\.PRECISE | FORECAST | FORECAST\.ETS | FORECAST\.ETS\.CONFINT | FORECAST\.ETS\.SEASONALITY | FORECAST\.ETS\.STAT | FORECAST\.LINEAR | FORMULATEXT | FREQUENCY | F\.TEST | FTEST | FV | FVSCHEDULE
+    | GAMMA | GAMMA\.DIST | GAMMADIST | GAMMA\.INV | GAMMAINV | GAMMALN | GAMMALN\.PRECISE | GAUSS | GCD | GEOMEAN | GESTEP | GETPIVOTDATA | GROWTH
+    | HARMEAN | HEX2BIN | HEX2DEC | HEX2OCT | HLOOKUP | HOUR | HSTACK | HYPERLINK | HYPGEOM\.DIST | HYPGEOMDIST
+    | IF | IFERROR | IFNA | IFS | IMABS | IMAGINARY | IMARGUMENT | IMCONJUGATE | IMCOS | IMCOSH | IMCOT | IMCSC | IMCSCH | IMDIV | IMEXP | IMLN | IMLOG10 | IMLOG2 | IMPOWER | IMPRODUCT | IMREAL | IMSEC | IMSECH | IMSIN | IMSINH | IMSQRT | IMSUB | IMSUM | IMTAN | INDEX | INDIRECT | INFO | INT | INTERCEPT | INTRATE | IPMT | IRR | ISBLANK | ISERR | ISERROR | ISEVEN | ISFORMULA | ISLOGICAL | ISNA | ISNONTEXT | ISNUMBER | ISODD | ISOMITTED | ISREF | ISTEXT | ISO\.CEILING | ISOWEEKNUM | ISPMT
+    | JIS
+    | KURT
+    | LAMBDA | LARGE | LCM | LEFT | LEFTB | LEN | LENB | LET | LINEST | LN | LOG | LOG10 | LOGEST | LOGINV | LOGNORM\.DIST | LOGNORMDIST | LOGNORM\.INV | LOOKUP | LOWER
+    | MAKEARRAY | MAP | MATCH | MAX | MAXA | MAXIFS | MDETERM | MDURATION | MEDIAN | MID | MIDB | MIN | MINIFS | MINA | MINUTE | MINVERSE | MIRR | MMULT | MOD | MODE | MODE\.MULT | MODE\.SNGL | MONTH | MROUND | MULTINOMIAL | MUNIT
+    | N | NA | NEGBINOM\.DIST | NEGBINOMDIST | NETWORKDAYS | NETWORKDAYS\.INTL | NOMINAL | NORM\.DIST | NORMDIST | NORMINV | NORM\.INV | NORM\.S\.DIST | NORMSDIST | NORM\.S\.INV | NORMSINV | NOT | NOW | NPER | NPV | NUMBERVALUE
+    | OCT2BIN | OCT2DEC | OCT2HEX | ODD | ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD | OFFSET | OR
+    | PDURATION | PEARSON | PERCENTILE\.EXC | PERCENTILE\.INC | PERCENTILE | PERCENTRANK\.EXC | PERCENTRANK\.INC | PERCENTRANK | PERMUT | PERMUTATIONA | PHI | PHONETIC | PI | PMT | POISSON\.DIST | POISSON | POWER | PPMT | PRICE | PRICEDISC | PRICEMAT | PROB | PRODUCT | PROPER | PV
+    | QUARTILE | QUARTILE\.EXC | QUARTILE\.INC | QUOTIENT
+    | RADIANS | RAND | RANDARRAY | RANDBETWEEN | RANK\.AVG | RANK\.EQ | RANK | RATE | RECEIVED | REDUCE | REGISTER\.ID | REPLACE | REPLACEB | REPT | RIGHT | RIGHTB | ROMAN | ROUND | ROUNDDOWN | ROUNDUP | ROW | ROWS | RRI | RSQ | RTD
+    | SCAN | SEARCH | SEARCHB | SEC | SECH | SECOND | SEQUENCE | SERIESSUM | SHEET | SHEETS | SIGN | SIN | SINH | SKEW | SKEW\.P | SLN | SLOPE | SMALL | SORT | SORTBY | SQRT | SQRTPI | STANDARDIZE | STOCKHISTORY | STDEV | STDEV\.P | STDEV\.S | STDEVA | STDEVP | STDEVPA | STEYX | SUBSTITUTE | SUBTOTAL | SUM | SUMIF | SUMIFS | SUMPRODUCT | SUMSQ | SUMX2MY2 | SUMX2PY2 | SUMXMY2 | SWITCH | SYD
+    | T | TAN | TANH | TAKE | TBILLEQ | TBILLPRICE | TBILLYIELD | T\.DIST | T\.DIST\.2T | T\.DIST\.RT | TDIST | TEXT | TEXTAFTER | TEXTBEFORE | TEXTJOIN | TEXTSPLIT | TIME | TIMEVALUE | T\.INV | T\.INV\.2T | TINV | TOCOL | TOROW | TODAY | TRANSPOSE | TREND | TRIM | TRIMMEAN | TRUE | TRUNC | T\.TEST | TTEST | TYPE
+    | UNICHAR | UNICODE | UNIQUE | UPPER
+    | VALUE | VALUETOTEXT | VAR | VAR\.P | VAR\.S | VARA | VARP | VARPA | VDB | VLOOKUP | VSTACK
+    | WEBSERVICE | WEEKDAY | WEEKNUM | WEIBULL | WEIBULL\.DIST | WORKDAY | WORKDAY\.INTL | WRAPCOLS | WRAPROWS
+    | XIRR | XLOOKUP | XMATCH | XNPV | XOR
+    | YEAR | YEARFRAC | YIELD | YIELDDISC | YIELDMAT
+    | Z\.TEST | ZTEST
+    )\b
 
 contexts:
   immediately-pop:
@@ -25,7 +64,7 @@ contexts:
     - match: ^=
       scope: keyword.operator.assignment.excel
 
-    # The weird text-qualifier Excel has? Pretend that's a comment
+    # The weird text-qualifier Excel has? Pretend that's a comment.
     - match: ^\'
       scope: punctuation.definition.comment.begin.excel
       # scope: punctuation.definition.string.begin.excel
@@ -35,13 +74,8 @@ contexts:
         - match: $
           pop: 1
 
+    # Formulae, etc.
     - include: expressions
-
-    # Sanity checks
-    # TODO: replicate this feature for stray end square and curly brackets
-    #       (neither work inside parentheticals)
-    - match: '[)}\]]'
-      scope: invalid.illegal.stray-bracket-end.excel
 
 
   expressions:
@@ -51,20 +85,20 @@ contexts:
     - include: constants
     - include: arrays
     - include: groups
-    # CHANGE: I'm not sure what this is supposed to capture,
-    # but it may interfere with non-English Unicode sheet name refs.
+
+    # Sanity checks
+    - match: '[)}\]]'
+      scope: invalid.illegal.stray-bracket-end.excel
+
     # # Very speculative
-    # - match: \w+
-    #   scope: variable.other.readwrite.excel
+    - match: \w+
+      scope: variable.other.readwrite.excel
+
     - match: \t
       scope: invalid.illegal.excel
 
 
   function-calls:
-    # # Included as a "support." function in line with convention in that
-    # # the vast majority of functions in Excel are provided by what I would consider the 'Excel framework'.
-    # # TODO?: The exception being user-defined lambda functions
-    # # (soln?: check to see if a word before a '(' is not in the list of all Excel functions) (prblm: will easily deprecate and is likely very slow)
 
     # # Can't decide whether to do things like this or not.
     # - match: \b((?i:(?:COUNT|SUM)?IF))(\()
@@ -73,18 +107,30 @@ contexts:
     #     2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
     #   push: function-call-body
 
-    # # TODO: How do you know when the assignment part of LET is over?
+    # # TODO: LAMBDA's *last* argument is a calc. Previous args are parameters.
+    # #   I don't imagine there's a good way to identify that without branching.
+    # # https://support.microsoft.com/en-us/office/lambda-function-bd212d27-1cd1-4321-a34a-ccbf254b8b67
+
+    # # TODO: LET's *last* argument is a calc. Previous args are pairs of variable/assignment.
+    # #   I don't imagine there's a good way to identify that without branching.
+    # # https://support.microsoft.com/en-us/office/let-function-34842dd8-b92b-4d3f-b325-b8b8f9908999
     # - match: \b((?:LET))(\()
     #   captures:
     #     1: meta.function-call.excel keyword.declaration.excel
     #     2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
     #   push: [let-declarations-body, function-call-body]
 
-    # TODO: LAMBDA, maybe?
-
-    - match: \b([A-Za-z\.]+)(\()
+    # Builtins
+    - match: \b({{function_builtins}})(\()
       captures:
         1: meta.function-call.excel support.function.excel
+        2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+      push: function-call-body
+
+    # Other functions ??
+    - match: \b([A-Za-z\.]+)(\()
+      captures:
+        1: meta.function-call.excel variable.function.excel
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
@@ -97,15 +143,14 @@ contexts:
       scope: punctuation.separator.sequence.excel
     - include: expressions
 
-  let-declarations-body:
-    # BUG: I disabled LET special behavior, because I can't tell how to know
-    #   where it stops assigning variables and starts calculating.
-    # If you see a function call, pop to normal function call from declaration
-    - match: (?=[A-Za-z\.]+\()
-      pop: 1
-    - include: references
-    - match: \w+
-      scope: variable.other.readwrite.excel
+  # let-declarations-body:
+  #   # If you see a function call, pop to normal function call from declaration
+  #   # BUG: That's not how LET works.
+  #   - match: (?={{function_name}}\()
+  #     pop: 1
+  #   - include: references
+  #   - match: \w+
+  #     scope: variable.other.readwrite.excel
 
 
   arrays:
@@ -140,7 +185,7 @@ contexts:
 
   operators:
     # Matches logical operator (e.g., 'A1 = B2')
-    - match: =
+    - match: '[=<>]'
       scope: keyword.operator.logical.excel
 
     # Matches mathematical operators
@@ -152,8 +197,7 @@ contexts:
 
 
   sheet-reference:
-    #CHANGE: Allow for non-English Unicode.
-    - match: (?=(?:[0-9\w]+|'.+')+!)
+    - match: (?={{sheet}}!)
       push: [cell-or-range-reference-body, sheet-reference-body]
 
   sheet-reference-body:
@@ -167,31 +211,45 @@ contexts:
         - match: (')
           scope: punctuation.definition.annotation.end.excel
           pop: 1
-    #CHANGE: Allow for non-English Unicode.
-    - match: '[0-9\w]+'
+    - match: '{{sheet_name_component_normal}}'
       scope: entity.name.struct.excel
     - include: immediately-pop
 
 
   cell-or-range-reference:
-    - match: (?=\$?[a-zA-Z]+\$?[0-9]+)
+    - match: (?=[#@]?{{cell}})
       push: cell-or-range-reference-body
 
   cell-or-range-reference-body:
     - meta_scope: meta.reference.excel
 
+    # Can't seem to get Space to match as an operator
+    # # (fails to) Match 'A1:B2 A1:A2' format 'cell:cell cell:cell' references
+    # - match: ({{left_cell}})(:)({{right_cell}})( )({{left_cell}})(:)({{right_cell}})
+    #   captures:
+    #     1: storage.type.excel
+    #     2: punctuation.separator.sequence.excel
+    #     3: storage.type.excel
+    #     4: keyword.operator.reference.excel
+    #     5: storage.type.excel
+    #     6: punctuation.separator.sequence.excel
+    #     7: storage.type.excel
+    #   pop: 1
+
     # Matches A1:B2 format 'cell:cell' references
-    - match: (\$?[a-zA-Z]+\$?[0-9]+)(:)(\$?([a-zA-Z]+\$?[0-9]+\$?)?)
-      # scope: meta.reference.excel
+    - match: ([#@]?)({{cell}})(:)({{cell}})
       captures:
-        1: storage.type.excel
-        2: punctuation.separator.sequence.excel
-        3: storage.type.excel
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
       pop: 1
 
     # Matches A1 format 'cell' references
-    - match: \$?[a-zA-Z]+\$?[0-9]+
-      scope: storage.type.excel
+    - match: ([#@]?)({{cell}})
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
       pop: 1
 
     # Bail if nothing matches
@@ -199,9 +257,8 @@ contexts:
 
 
   table-name:
-    # CHANGE: allow for non-English Unicode
     # Matches table name references
-    - match: ([0-9.?\\\w]+)?(\[)
+    - match: ([\w.?\\]+)?(\[)
       captures:
         1: entity.name.struct.excel
         2: punctuation.section.brackets.begin.excel
@@ -210,8 +267,7 @@ contexts:
   table-name-body:
     - meta_scope: meta.reference.excel
 
-    # CHANGE: Along with change to 'Anything that shouldn't match',
-    # the second group ensures commas and colons can still be used in column names
+    # The second group ensures commas and colons can still be used in column names
     # without mismatching them elsewhere
     - match: (\])([,:])?
       captures:
@@ -221,7 +277,7 @@ contexts:
 
     # CHANGE: Matches escaped brackets and operators and prevents conflict between
     # brackets and ,:
-    - match: ([,:]*\'[\]\[@#][,:]*)
+    - match: ([,:]*'[\[\]@#][,:]*)
       scope: storage.type.excel
 
     - match: '[#@]'
@@ -233,7 +289,6 @@ contexts:
 
     # Anything that should't match but could otherwise be within the body
     # Technically, we could do `.`, but that slows down tokenization
-    # CHANGE: Removed ,:
     - match: '[^#@\[\]]+'
       scope: storage.type.excel
 
@@ -259,11 +314,27 @@ contexts:
     - match: \b(?i:TRUE|FALSE)\b
       scope: constant.language.boolean.excel
     - include: numbers
-    - include: strings
+    # TODO: only include wildcards where appropriate
+    - include: strings-with-wildcards
+
+    # Here is a list of the most common functions that allow wildcards:
+    # AVERAGEIF, AVERAGEIFS
+    # COUNTIF, COUNTIFS
+    # MAXIFS, MINIFS
+    # SUMIF, SUMIFS
+    # VLOOKUP, HLOOKUP
+    # MATCH
+    # SEARCH
+
 
   numbers:
-    - match: '-?[0-9]+(?:\.\d+)?'
-      scope: constant.numeric.excel
+    - match: -?\d+(\.)\d*|-?(\.)\d+
+      scope: meta.number.float.decimal.excel constant.numeric.value.excel
+      captures:
+        1: punctuation.separator.decimal.excel
+        2: punctuation.separator.decimal.excel
+    - match: -?\d+
+      scope: meta.number.integer.decimal.excel constant.numeric.value.excel
 
   strings:
     - match: '"'
@@ -273,27 +344,25 @@ contexts:
   string-body:
     - meta_include_prototype: false
     - meta_scope: string.quoted.double.excel
+
     - match: '""'
       scope: constant.character.escape.excel
     - match: '"'
       scope: punctuation.definition.string.end.excel
       pop: 1
-    # CHANGE: Tilde escapes wildcards and itself, but can also be used by itself and function as a literal
-    - match: '(~)([*?~])'
-      captures:
-        1: keyword.operator.wildcard.escape.excel
-        2: string.quoted.double.excel
-    # Not technically applicable to all strings, but probably fine, yes?
-    # I'd say so. Possible future functionality?
-    - match: '[*?]'
+
+  strings-with-wildcards:
+    - match: '"'
+      scope: punctuation.definition.string.begin.excel
+      push: string-body-with-wildcards
+
+  string-body-with-wildcards:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.excel
+
+    # Tilde escapes wildcards and itself, but can also be used by itself and function as a literal
+    - match: ~(?:~|{{string_wildcard}})
+      scope: constant.character.escape.excel
+    - match: '{{string_wildcard}}'
       scope: keyword.operator.wildcard.excel
-
-  # TODO: Not all functions allow wildcards. Here is a list of the most common functions that do:
-
-  # AVERAGEIF, AVERAGEIFS
-  # COUNTIF, COUNTIFS
-  # MAXIFS, MINIFS
-  # SUMIF, SUMIFS
-  # VLOOKUP, HLOOKUP
-  # MATCH
-  # SEARCH
+    - include: string-body
