@@ -1,4 +1,4 @@
-' SYNTAX TEST "Excel formula.sublime-syntax"
+' SYNTAX TEST "Excel formula LYONS THREE.sublime-syntax"
 
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
@@ -10,39 +10,82 @@
 
 ="hello world"
 
+=IF(골드_강화_효율!D12=골드_강화_효율!F25,"MAX",(Z17-100%)/골드_강화_효율!E12)
+
+=TEXT(골드_강화_효율!E15/(10^3),"#,##0.#0")&"천"
+
+=INT((AH37-INT(AH37))*60)&"분"
+
+=IF(C23="1차","",IF(C23="2차","(x 1.5)",IF(C23="3차","(x 2)")))
+
+
+
 ="~*"
 ' <- keyword.operator.assignment
-' ^ keyword.operator.wildcard.escape
-'  ^ - keyword.operator.wildcard
 '^^^^ string.quoted.double
+' ^ constant.character.escape
+'  ^ - keyword.operator.wildcard
 '^ punctuation.definition.string.begin
 '   ^ punctuation.definition.string.end
 
 ="*"
 ' <- keyword.operator.assignment
-' ^ keyword.operator.wildcard
 '^^^ string.quoted.double
+' ^ keyword.operator.wildcard
 '^ punctuation.definition.string.begin
 '  ^ punctuation.definition.string.end
 
 ="~"
 ' <- keyword.operator.assignment
-' ^ - keyword.operator.wildcard keyword.operator.wildcard.escape
 '^^^ string.quoted.double
+' ^ - keyword.operator.wildcard - constant.character.escape
 '^ punctuation.definition.string.begin
 '  ^ punctuation.definition.string.end
 
+does: - x - y fail only if BOTH/EITHER scope x AND/OR y is applied?
+does: - x y fail only if BOTH scope x AND y is applied?
+The second seems to be the case, not sure about the first.
+
+="'"
+' <- keyword.operator.assignment
+'^^^ string.quoted.double
+' ^ - punctuation.definition.annotation.begin
+'^ punctuation.definition.string.begin
+'  ^ punctuation.definition.string.end
+
+=""""
+' <- keyword.operator.assignment
+'^^^^ string.quoted.double - string string
+' ^^ constant.character.escape
+' ^ - punctuation.definition.string.begin - punctuation.definition.string.end
+'  ^ - punctuation.definition.string.begin - punctuation.definition.string.end
+'^ punctuation.definition.string.begin
+'   ^ punctuation.definition.string.end
+
+='""
+' Excel error
+
+=''""
+' Excel error
+
+'="""
+' Excel error
+
+="''"
+' <- keyword.operator.assignment
+'^^^^ string.quoted.double
+' ^ - punctuation.definition.annotation.begin
+'  ^ - punctuation.definition.annotation.end
+'^ punctuation.definition.string.begin
+'   ^ punctuation.definition.string.end
 
 ="?~*~?~~"
 ' <- keyword.operator.assignment
-' ^ keyword.operator.wildcard
-'  ^ keyword.operator.wildcard.escape
-'   ^ - keyword.operator.wildcard
-'    ^ keyword.operator.wildcard.escape
-'     ^ - keyword.operator.wildcard
-'      ^ keyword.operator.wildcard.escape.excel
-'       ^  - keyword.operator.wildcard.escape
 '^^^^^^^^^ string.quoted.double
+' ^ keyword.operator.wildcard
+'  ^^^^^^ constant.character.escape
+'   ^ - keyword.operator.wildcard
+'     ^ - keyword.operator.wildcard
 '^ punctuation.definition.string.begin
 '        ^ punctuation.definition.string.end
 
@@ -109,12 +152,55 @@
 
 
 =Table36[[#All],[ほあうぃふぉあうぃ]]
+' <- keyword.operator.assignment
+'^^^^^^^ entity.name.struct - keyword
+'         ^ keyword.operator.reference
+'          ^^^ storage.type
+'                ^^^^^^^^^ storage.type
+'       ^ punctuation.section.brackets.begin - entity
+'        ^ punctuation.section.brackets.begin
+'             ^ punctuation.section.brackets.end
+'              ^ punctuation.separator.sequence
+'               ^ punctuation.section.brackets.begin
+'                         ^ punctuation.section.brackets.end
+'                          ^ punctuation.section.brackets.end   
 
 =Table36[[#Headers],[한국어]]
+' <- keyword.operator.assignment
+'^^^^^^^ entity.name.struct - keyword
+'         ^ keyword.operator.reference
+'          ^^^^^^^ storage.type
+'                    ^^^ storage.type
+'       ^ punctuation.section.brackets.begin - entity
+'        ^ punctuation.section.brackets.begin
+'                 ^ punctuation.section.brackets.end
+'                  ^ punctuation.separator.sequence
+'                   ^ punctuation.section.brackets.begin
+'                       ^ punctuation.section.brackets.end
+'                        ^ punctuation.section.brackets.end   
 
 =한국어!L11
+' <- keyword.operator.assignment
+'^^^^^^^ meta.reference - meta meta
+'       ^ - meta.reference
+'^^^ entity.name.struct
+'   ^ punctuation.separator.sequence
+'    ^^^ storage.type
+
 
 =う[[#Headers],[>]]
+' <- keyword.operator.assignment
+'^ entity.name.struct
+'   ^ keyword.operator.reference
+'    ^^^^^^^ storage.type
+'              ^ storage.type.excel
+' ^ punctuation.section.brackets.begin - entity
+'  ^ punctuation.section.brackets.begin
+'           ^ punctuation.section.brackets.end
+'            ^ punctuation.separator.sequence
+'             ^ punctuation.section.brackets.begin
+'               ^ punctuation.section.brackets.end
+'                ^ punctuation.section.brackets.end   
 
 =_hello_2world!N36
 ' <- keyword.operator.assignment
@@ -204,7 +290,7 @@ wkdySouls,sOneSouls*(5/7),
 
 
 =LET(
-lab,[[#Headers],[GISO_1]]],
+lab,[[#Headers],[GISO_1]],
 rcidd,RCIndex[[ddCol]:[ddCol]],
 rcirc,RCIndex[[rcCol]:[rcCol]],
 val,
