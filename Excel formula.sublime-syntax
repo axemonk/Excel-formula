@@ -5,7 +5,7 @@ name: Excel formula
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.2.1 5/2/2023
+# v2.2.2 5/3/2023
 file_extensions: []
 scope: source.excel
 version: 2
@@ -184,8 +184,14 @@ contexts:
 
 
   operators:
-    # Matches logical operator (e.g., 'A1 = B2')
-    - match: '[=<>]'
+    # 3 or more is wrong
+    - match: '[<>=]{3,}'
+      scope: invalid.illegal.excel
+    # approved comparisons
+    - match: (?:=[=<>]|<<|>>|><)
+      scope: invalid.illegal.excel
+    # anything other combo
+    - match: '[<>=]+'
       scope: keyword.operator.logical.excel
 
     # Matches mathematical operators
@@ -311,6 +317,15 @@ contexts:
 
 
   constants:
+    - match: '#NULL!'
+      scope: constant.language.null.excel
+
+    - match: (#NUM!|#DIV/0!)
+      scope: constant.language.nan.excel
+
+    - match: (?:#VALUE!|#REF!|#NAME\?|#GETTING_DATA|#N/A)
+      scope: constant.language.excel
+
     - match: \b(?i:TRUE|FALSE)\b
       scope: constant.language.boolean.excel
     - include: numbers
