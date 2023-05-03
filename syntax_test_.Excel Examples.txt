@@ -35,6 +35,79 @@ TEXTJOIN(";",FALSE,valmax)
 '^ constant.numeric.value
 '  ^ constant.numeric.value
 
+=A1>=A2
+' <- keyword.operator.assignment
+'  ^^ keyword.operator.logical
+
+=A1<=A2
+' <- keyword.operator.assignment
+'  ^^ keyword.operator.logical
+
+=A1<>A2
+' <- keyword.operator.assignment
+'  ^^ keyword.operator.logical
+
+=A1=A2
+' <- keyword.operator.assignment
+'  ^ keyword.operator.logical
+
+
+=A1>>A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+
+=A1<<A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+
+=A1==A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+
+=A1><A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+
+=A1=<A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+
+=A1=>A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+
+=#NULL!
+' <- keyword.operator.assignment
+'^^^^^^ constant.language.null - constant.language.nan.excel - constant.language.excel
+
+=#NUM!
+' <- keyword.operator.assignment
+'^^^^^ constant.language.nan - constant.language.excel - constant.language.null
+
+=#DIV/0!
+' <- keyword.operator.assignment
+'^^^^^^^ constant.language.nan - constant.language.excel - constant.language.null
+
+=#N/A
+' <- keyword.operator.assignment
+'^^^^ constant.language.excel - constant.language.nan - constant.language.null
+
+=#VALUE!
+' <- keyword.operator.assignment
+'^^^^^^^ constant.language.excel - constant.language.nan - constant.language.null
+
+=#REF!
+' <- keyword.operator.assignment
+'^^^^^ constant.language.excel - constant.language.nan - constant.language.null
+
+=#NAME?
+' <- keyword.operator.assignment
+'^^^^^^ constant.language.excel - constant.language.nan - constant.language.null
+
+=#GETTING_DATA
+' <- keyword.operator.assignment
+'^^^^^^^^^^^^^ constant.language.excel - constant.language.nan - constant.language.null
+
 =#A1
 
 =A1<=B1
