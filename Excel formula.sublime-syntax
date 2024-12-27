@@ -1,6 +1,6 @@
 %YAML 1.2
 ---
-name: Excel formula
+name: Excel formula (LOCAL)
 # Made by Alco#0424 and [Q4]Fry#2960
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
@@ -10,8 +10,15 @@ file_extensions: []
 scope: source.excel
 version: 2
 
+#TODO: let commas and semicolons be interchangeable
+#TODO: figure out a way to treat locale-specific usage of . and , in numbers
+
 variables:
   cell: (?:\$?[A-Za-z]+\$?\d+)
+  column: (?:\$?[A-Za-z]+)
+  row: (?:\$?\d+)
+  # Match edge-case Google-Sheets-specific references
+  cell_special: (?:(?:\$?[A-Za-z]+|\d+)+(?:\$?[A-Za-z]+|\d+)?)
   sheet_name_component_delimited: (?:'.+')
   sheet_name_component_normal: \w+
   sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
@@ -65,6 +72,7 @@ contexts:
       scope: keyword.operator.assignment.excel
 
     # The weird text-qualifier Excel has? Pretend that's a comment.
+    # TODO: allow this to be used after the start of the document.
     - match: ^\'
       scope: punctuation.definition.comment.begin.excel
       # scope: punctuation.definition.string.begin.excel
@@ -90,7 +98,7 @@ contexts:
     - match: '[)}\]]'
       scope: invalid.illegal.stray-bracket-end.excel
 
-    # # Very speculative
+    # Very speculative
     - match: \w+
       scope: variable.other.readwrite.excel
 
@@ -184,10 +192,10 @@ contexts:
 
 
   operators:
-    # 3 or more is wrong
+    # three or more is wrong
     - match: '[<>=]{3,}'
       scope: invalid.illegal.excel
-    # approved comparisons
+    # illegal two-character operator combinations
     - match: (?:=[=<>]|<<|>>|><)
       scope: invalid.illegal.excel
     # anything other combo
@@ -221,16 +229,18 @@ contexts:
       scope: entity.name.struct.excel
     - include: immediately-pop
 
-
+  # Update: Allow for column, row, and Google-Sheets-specific (cell_special) references.
+  # # Row and column references are only valid in pairs separated by a colon. Google-Sheets-specific references must currently be matched as {{cell_special}}:{{cell_special}} to avoid breaking number formatting.
   cell-or-range-reference:
-    - match: (?=[#@]?{{cell}})
+    - match: (?=[#@]?{{cell}}|(?:{{column}}:{{column}})|(?:{{row}}:{{row}})|(?:{{cell_special}}:{{cell_special}}))
       push: cell-or-range-reference-body
 
   cell-or-range-reference-body:
     - meta_scope: meta.reference.excel
 
-    # Can't seem to get Space to match as an operator
-    # # (fails to) Match 'A1:B2 A1:A2' format 'cell:cell cell:cell' references
+    # Would be satisfying to solve this, but it's a moot point. Spaces between cell references don't break anything, they just aren't scoped)
+    # # Can't seem to get Space to match as an operator
+    # # # (fails to) Match 'A1:B2 A1:A2' format 'cell:cell cell:cell' references
     # - match: ({{left_cell}})(:)({{right_cell}})( )({{left_cell}})(:)({{right_cell}})
     #   captures:
     #     1: storage.type.excel
@@ -241,6 +251,15 @@ contexts:
     #     6: punctuation.separator.sequence.excel
     #     7: storage.type.excel
     #   pop: 1
+
+    # Update: Match Google Sheets references
+    - match: ([#@]?)({{cell_special}})(:)({{cell_special}})
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      pop: 1
 
     # Matches A1:B2 format 'cell:cell' references
     - match: ([#@]?)({{cell}})(:)({{cell}})
@@ -257,6 +276,25 @@ contexts:
         1: keyword.operator.reference.excel
         2: storage.type.excel
       pop: 1
+
+    # Update: Matches A:B format 'column:column' references
+    - match: ([#@]?)({{column}})(:)({{column}})
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      pop: 1
+
+    # Update: Matches 1:2 format 'row:row (fight the powah)' references
+    - match: ([#@]?)({{row}})(:)({{row}})
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      pop: 1
+
 
     # Bail if nothing matches
     - include: immediately-pop
@@ -341,9 +379,10 @@ contexts:
     # MATCH
     # SEARCH
 
-
+  # Update: Allow commas to be used as decimal separators. Can cause scope conflict depending on locale, but allows commas and periods to be formatted the same color in most if not all contexts in sublime's default color scheme
+  # # Conflict example: =SUM(0,0)
   numbers:
-    - match: -?\d+(\.)\d*|-?(\.)\d+
+    - match: -?\d+(\.|,)\d*|-?(\.|,)\d+
       scope: meta.number.float.decimal.excel constant.numeric.value.excel
       captures:
         1: punctuation.separator.decimal.excel
