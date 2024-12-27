@@ -2,7 +2,7 @@ Excel formula for Sublime Text
 
 -- Description --
 
-Excel formula syntax highlighting for Sublime Text.
+Excel formula syntax highlighting for Sublime Text (with support for Google Sheets, although currently experimental).
 
 -- Installation --
 
