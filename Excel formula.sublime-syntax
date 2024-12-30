@@ -1,11 +1,11 @@
 %YAML 1.2
 ---
-name: Excel formula (LOCAL)
+name: Excel formula
 # Made by Alco#0424 and [Q4]Fry#2960
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.2.2 5/3/2023
+# v2.3.1 12/30/2024
 file_extensions: []
 scope: source.excel
 version: 2
