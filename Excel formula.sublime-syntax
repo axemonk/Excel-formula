@@ -295,8 +295,11 @@ contexts:
   cell-or-range-reference-body:
     - meta_scope: meta.reference.excel
 
-    # Try to avoid matching names with numbers in the middle of them as cells.
-    - match: '[A-Za-z]+[0-9][A-Za-z]+'
+    # Try to avoid matching names with numbers in the middle.
+    # TODO: Is there a more kosher way or location to do this?
+    #       the important part here is that we prevent something like 't1'
+    #       from being matched as a cell in a name 't1test'
+    - match: '[A-Za-z\\?.]+[0-9]+[A-Za-z\\?.]+'
       pop: 1
 
     # Naked cell reference

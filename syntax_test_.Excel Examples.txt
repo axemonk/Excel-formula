@@ -277,12 +277,135 @@ TEXTJOIN(";",FALSE,valmax)
 ="hello world"
 
 =IF(골드_강화_효율!D12=골드_강화_효율!F25,"MAX",(Z17-100%)/골드_강화_효율!E12)
+'^^ meta.function-call.excel support.function.excel
+'  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'  ^ punctuation.section.arguments.begin.excel
+'   ^^^^^^^^^^^^ meta.reference.excel
+'   ^^^^^^^^ entity.name.struct.excel
+'           ^ punctuation.separator.sequence.excel
+'            ^^^ storage.type.excel
+'               ^ keyword.operator.logical.excel
+'                ^^^^^^^^^^^^ meta.reference.excel
+'                ^^^^^^^^ entity.name.struct.excel
+'                        ^ punctuation.separator.sequence.excel
+'                         ^^^ storage.type.excel
+'                            ^ punctuation.separator.sequence.excel
+'                             ^^^^^ string.quoted.double.excel
+'                             ^ punctuation.definition.string.begin.excel
+'                                 ^ punctuation.definition.string.end.excel
+'                                  ^ punctuation.separator.sequence.excel
+'                                   ^^^^^^^^^^ meta.group.excel
+'                                   ^ punctuation.section.group.begin.excel
+'                                    ^^^ meta.reference.excel storage.type.excel
+'                                       ^ keyword.operator.arithmetic.excel
+'                                        ^^^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'                                           ^ keyword.operator.arithmetic.excel
+'                                            ^ punctuation.section.group.end.excel
+'                                             ^ keyword.operator.arithmetic.excel
+'                                              ^^^^^^^^^^^^ meta.reference.excel
+'                                              ^^^^^^^^ entity.name.struct.excel
+'                                                      ^ punctuation.separator.sequence.excel
+'                                                       ^^^ storage.type.excel
+'                                                          ^ punctuation.section.arguments.end.excel
 
 =TEXT(골드_강화_효율!E15/(10^3),"#,##0.#0")&"천"
+'^^^^ meta.function-call.excel support.function.excel
+'    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'    ^ punctuation.section.arguments.begin.excel
+'     ^^^^^^^^^^^^ meta.reference.excel
+'     ^^^^^^^^ entity.name.struct.excel
+'             ^ punctuation.separator.sequence.excel
+'              ^^^ storage.type.excel
+'                 ^ keyword.operator.arithmetic.excel
+'                  ^^^^^^ meta.group.excel
+'                  ^ punctuation.section.group.begin.excel
+'                   ^^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'                     ^ keyword.operator.arithmetic.excel
+'                      ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'                       ^ punctuation.section.group.end.excel
+'                        ^ punctuation.separator.sequence.excel
+'                         ^^^^^^^^^^ string.quoted.double.excel
+'                         ^ punctuation.definition.string.begin.excel
+'                                  ^ punctuation.definition.string.end.excel
+'                                   ^ punctuation.section.arguments.end.excel
+'                                    ^ keyword.operator.concatenation.excel
+'                                     ^^^ string.quoted.double.excel
+'                                     ^ punctuation.definition.string.begin.excel
+'                                       ^ punctuation.definition.string.end.excel
 
 =INT((AH37-INT(AH37))*60)&"분"
+'^^^ meta.function-call.excel support.function.excel
+'   ^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'    ^^^^^^^^^^^^^^^^ meta.group.excel
+'    ^ punctuation.section.group.begin.excel
+'     ^^^^ meta.reference.excel storage.type.excel
+'         ^ keyword.operator.arithmetic.excel
+'          ^^^ meta.function-call.excel support.function.excel
+'             ^^^^^^ meta.function-call.arguments.excel
+'             ^ punctuation.section.arguments.begin.excel
+'              ^^^^ meta.reference.excel storage.type.excel
+'                  ^ punctuation.section.arguments.end.excel
+'                   ^ punctuation.section.group.end.excel
+'                    ^ keyword.operator.arithmetic.excel
+'                     ^^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'                       ^ punctuation.section.arguments.end.excel
+'                        ^ keyword.operator.concatenation.excel
+'                         ^^^ string.quoted.double.excel
+'                         ^ punctuation.definition.string.begin.excel
+'                           ^ punctuation.definition.string.end.excel
 
 =IF(C23="1차","",IF(C23="2차","(x 1.5)",IF(C23="3차","(x 2)")))
+'^^ meta.function-call.excel support.function.excel
+'  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'  ^ punctuation.section.arguments.begin.excel
+'   ^^^ meta.reference.excel storage.type.excel
+'      ^ keyword.operator.logical.excel
+'       ^^^^ string.quoted.double.excel
+'       ^ punctuation.definition.string.begin.excel
+'          ^ punctuation.definition.string.end.excel
+'           ^ punctuation.separator.sequence.excel
+'            ^^ string.quoted.double.excel
+'            ^ punctuation.definition.string.begin.excel
+'             ^ punctuation.definition.string.end.excel
+'              ^ punctuation.separator.sequence.excel
+'               ^^ meta.function-call.excel support.function.excel
+'                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'                 ^ punctuation.section.arguments.begin.excel
+'                  ^^^ meta.reference.excel storage.type.excel
+'                     ^ keyword.operator.logical.excel
+'                      ^^^^ string.quoted.double.excel
+'                      ^ punctuation.definition.string.begin.excel
+'                         ^ punctuation.definition.string.end.excel
+'                          ^ punctuation.separator.sequence.excel
+'                           ^^^^^^^^^ string.quoted.double.excel
+'                           ^ punctuation.definition.string.begin.excel
+'                                   ^ punctuation.definition.string.end.excel
+'                                    ^ punctuation.separator.sequence.excel
+'                                     ^^ meta.function-call.excel support.function.excel
+'                                       ^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'                                       ^ punctuation.section.arguments.begin.excel
+'                                        ^^^ meta.reference.excel storage.type.excel
+'                                           ^ keyword.operator.logical.excel
+'                                            ^^^^ string.quoted.double.excel
+'                                            ^ punctuation.definition.string.begin.excel
+'                                               ^ punctuation.definition.string.end.excel
+'                                                ^ punctuation.separator.sequence.excel
+'                                                 ^^^^^^^ string.quoted.double.excel
+'                                                 ^ punctuation.definition.string.begin.excel
+'                                                       ^ punctuation.definition.string.end.excel
+'                                                        ^ punctuation.section.arguments.end.excel
+'                                                         ^ punctuation.section.arguments.end.excel
+'                                                          ^ punctuation.section.arguments.end.excel
+
+=MyCustomFunction("foo")
+'^^^^^^^^^^^^^^^^ meta.function-call.excel variable.function.excel
+'                ^^^^^^^ meta.function-call.arguments.excel
+'                ^ punctuation.section.arguments.begin.excel
+'                 ^^^^^ string.quoted.double.excel
+'                 ^ punctuation.definition.string.begin.excel
+'                     ^ punctuation.definition.string.end.excel
+'                      ^ punctuation.section.arguments.end.excel
 
 ="~*"
 ' <- keyword.operator.assignment
