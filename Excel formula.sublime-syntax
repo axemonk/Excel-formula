@@ -124,21 +124,16 @@ variables:
 
 
 contexts:
-  immediately-pop:
-    - match: ''
-      pop: 1
-
-  # # Didn't turn out to need one of these
-  # else-pop:
-  #   - match: (?=\S)
-  #     pop: 1
 
   main:
     # Matches assignment operator '='
     - match: ^=
       scope: keyword.operator.assignment.excel
+    - include: comments-text-marker
+    - include: expressions
 
-    # The weird text-qualifier Excel has? Pretend that's a comment.
+  comments-text-marker:
+    # Pretend that the weird plain-text marker Excel uses is a comment
     # TODO: allow this to be used after the start of the document.
     - match: ^\'
       scope: punctuation.definition.comment.begin.excel
@@ -148,10 +143,6 @@ contexts:
         # - meta_scope: string.unquoted.excel
         - match: $
           pop: 1
-
-    # Formulae, etc.
-    - include: expressions
-
 
   expressions:
     - include: function-calls
@@ -185,6 +176,25 @@ contexts:
     - match: \t
       scope: invalid.illegal.excel
 
+  operators:
+    # three or more is wrong
+    - match: '[<>=]{3,}'
+      scope: invalid.illegal.excel
+    # illegal two-character operator combinations
+    - match: (?:=[=<>]|>[><]|<<)
+      scope: invalid.illegal.excel
+    # anything other combo
+    - match: '[<>=]+'
+      scope: keyword.operator.logical.excel
+
+    # Matches mathematical operators
+    - match: '[+\-*/^%]'
+      scope: keyword.operator.arithmetic.excel
+
+    - match: \&
+      scope: keyword.operator.concatenation.excel
+
+###[ FUNCTIONS ]###############################################################
 
   function-calls:
 
@@ -215,9 +225,12 @@ contexts:
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
-    # Update: Function naming for user defined functions appears to follow the same rules as tables. Pattern from table copied here. (capture group 1 was previously '([A-Za-z\.]+)').
+    # Update: Function naming for user defined functions appears to follow the
+    #   same rules as tables. Pattern from table copied here. (capture group 1
+    #   was previously '([A-Za-z\.]+)').
     #         e.g., T\?es.t1Test() is a valid function name.
-    # User defined and/or functions not included in the builtins. May currently not work for some users (see comment above builtins).
+    # User defined and/or functions not included in the builtins. May currently
+    #   not work for some users (see comment above builtins).
     - match: \b([\w\\][\w.?\\]+[\w?\\])(\()
       captures:
         1: meta.function-call.excel variable.function.excel
@@ -243,56 +256,7 @@ contexts:
   #   - match: \w+
   #     scope: variable.other.readwrite.excel
 
-
-  arrays:
-    - match: \{
-      scope: punctuation.section.braces.begin.excel
-      push: array-body
-
-  array-body:
-    - meta_scope: meta.array.excel
-    - match: \}
-      scope: punctuation.section.braces.end.excel
-      pop: 1
-    # The specification of row vs column should technically be locale dependent, but works fine otherwise.
-    - match: \,
-      scope: punctuation.separator.sequence.column.excel
-    - match: ;
-      scope: punctuation.separator.sequence.row.excel
-    - include: expressions
-
-
-  groups:
-    - match: \(
-      scope: punctuation.section.group.begin.excel
-      push: group-body
-
-  group-body:
-    - meta_scope: meta.group.excel
-    - match: \)
-      scope: punctuation.section.group.end.excel
-      pop: 1
-    - include: expressions
-
-
-  operators:
-    # three or more is wrong
-    - match: '[<>=]{3,}'
-      scope: invalid.illegal.excel
-    # illegal two-character operator combinations
-    - match: (?:=[=<>]|>[><]|<<)
-      scope: invalid.illegal.excel
-    # anything other combo
-    - match: '[<>=]+'
-      scope: keyword.operator.logical.excel
-
-    # Matches mathematical operators
-    - match: '[+\-*/^%]'
-      scope: keyword.operator.arithmetic.excel
-
-    - match: \&
-      scope: keyword.operator.concatenation.excel
-
+###[ REFERENCES ]##############################################################
 
   sheet-reference:
     - match: (?={{sheet}}!)
@@ -314,9 +278,12 @@ contexts:
     - include: immediately-pop
 
   # Update: Allow for column, row, and Google-Sheets-specific references.
-  # # Row and column references are only valid in pairs separated by a colon. Google-Sheets-specific references must currently be matched as {{cell_special}}:{{cell_special}} to avoid breaking number formatting.
-  # # Everything appears to work regardless, so maybe it's unnecessary, but I'm a little suspicious about how this doesn't explicitly have a {{cell}}:{{cell}} pattern.
-
+  #   Row and column references are only valid in pairs separated by a colon.
+  #   Google-Sheets-specific references must currently be matched as
+  #   {{cell_special}}:{{cell_special}} to avoid breaking number formatting.
+  # Everything appears to work regardless, so maybe it's unnecessary, but I'm a
+  #   little suspicious about how this doesn't explicitly have a
+  #   {{cell}}:{{cell}} pattern.
 
   cell-or-range-reference:
     - match: (?=[#@]?{{cell}}|(?:(?:{{column}}|{{row}}):(?:{{column}}|{{row}})))
@@ -325,14 +292,13 @@ contexts:
   cell-or-range-reference-body:
     - meta_scope: meta.reference.excel
 
-    # In combination, these three matche:
+    # In combination, these three match:
     # A1    'cell' references
     # A1:B2 'cell:cell' references
     # A:B   'column:column' references
     # 1:2   'row:row' references
     # A1:B  Google-Sheets-specific references
     # A:B1  Google-Sheets-specific references
-
 
     # Error: breaks the cell formatting at the end of, e.g., =_hello_2world!N36
 
@@ -371,16 +337,16 @@ contexts:
       pop: 1
 
     # Update: Flag illegal A:1 and 1:A references.
-    # Note:   Is the fact that this flags references as you are typing that are valid once complete (like when typing 1:A1) a problem from a UX POV? Is there a way to solve this?
+    # Note:   Is the fact that this flags references as you are typing that are
+    #         valid once complete (like when typing 1:A1) a problem from a UX
+    #         POV? Is there a way to solve this?
     - match: ((?:[#@]?)(?:{{column}}:{{row}}|{{row}}:{{column}}))
       captures:
         1: invalid.illegal.excel
       pop: 1
 
-
     # Bail if nothing matches
     - include: immediately-pop
-
 
   table-name:
     # Matches table name references
@@ -433,6 +399,40 @@ contexts:
     - include: sheet-reference
     - include: cell-or-range-reference
 
+###[ GROUPS ]##################################################################
+
+  groups:
+    - match: \(
+      scope: punctuation.section.group.begin.excel
+      push: group-body
+
+  group-body:
+    - meta_scope: meta.group.excel
+    - match: \)
+      scope: punctuation.section.group.end.excel
+      pop: 1
+    - include: expressions
+
+###[ ARRAYS ]##################################################################
+
+  arrays:
+    - match: \{
+      scope: punctuation.section.braces.begin.excel
+      push: array-body
+
+  array-body:
+    - meta_scope: meta.array.excel
+    - match: \}
+      scope: punctuation.section.braces.end.excel
+      pop: 1
+    # The specification of row vs column should technically be locale dependent, but works fine otherwise.
+    - match: \,
+      scope: punctuation.separator.sequence.column.excel
+    - match: ;
+      scope: punctuation.separator.sequence.row.excel
+    - include: expressions
+
+###[ LITERALS ]################################################################
 
   constants:
     - match: '#NULL!'
@@ -464,8 +464,10 @@ contexts:
     # MATCH
     # SEARCH
 
-  # Update: Allow commas to be used as decimal separators. Can cause scope conflict depending on locale, but allows commas and periods to be formatted the same color in most if not all contexts in Sublime's default color scheme
-  #         Conflict example: =SUM(0,0)
+  # Update: Allow commas to be used as decimal separators. Can cause scope
+  # conflict depending on locale, but allows commas and periods to be formatted
+  # the same color in most, if not all, contexts in Sublime's default color scheme
+  # # Conflict example: =SUM(0,0)
   numbers:
     - match: -?\d+(\.|,)\d*|-?(\.|,)\d+
       scope: meta.number.float.decimal.excel constant.numeric.value.excel
@@ -499,9 +501,21 @@ contexts:
     - meta_include_prototype: false
     - meta_scope: string.quoted.double.excel
 
-    # Tilde escapes wildcards and itself, but can also be used by itself and function as a literal
+    # Tilde escapes wildcards and itself, but can also be used by itself and
+    # functions as a literal
     - match: ~(?:~|{{string_wildcard}})
       scope: constant.character.escape.excel
     - match: '{{string_wildcard}}'
       scope: keyword.operator.wildcard.excel
     - include: string-body
+
+###[ PROTOTYPES ]##############################################################
+
+  immediately-pop:
+    - match: ''
+      pop: 1
+
+  # # Didn't turn out to need one of these
+  # else-pop:
+  #   - match: (?=\S)
+  #     pop: 1
