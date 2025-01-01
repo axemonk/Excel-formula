@@ -1,60 +1,127 @@
 %YAML 1.2
 ---
 name: Excel formula
-# Made by Alco#0424 and [Q4]Fry#2960
+# Made by _alco and michaelblyons. Thanks to acid_form for the first key bug reports we've received and for the updated builtin function list with Google Sheets functions added.
 # Repo: https://github.com/axemonk/Excel-formula
-# Please send any bug reports and suggestions to Alco#0424 via a direct message on Discord.
+# Please send any bug reports and suggestions to _alco via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.3.1 12/30/2024
+# v2.4.0 1/1/2025
 file_extensions: []
 scope: source.excel
 version: 2
 
-#TODO: let commas and semicolons be interchangeable
-#TODO: figure out a way to treat locale-specific usage of . and , in numbers
+# TODO: figure out a way to properly scope locale-specific usage of . and , in decimal numbers. Haven't found an example of this breaking anything outright, although.
+#       if there is a simple way to match stuff conditional to user locale, swapping ;/, in arrays as column/row separators depending on locale would probably be best practice.
+
 
 variables:
   cell: (?:\$?[A-Za-z]+\$?\d+)
   column: (?:\$?[A-Za-z]+)
   row: (?:\$?\d+)
-  # Match edge-case Google-Sheets-specific references
-  cell_special: (?:(?:\$?[A-Za-z]+|\d+)+(?:\$?[A-Za-z]+|\d+)?)
   sheet_name_component_delimited: (?:'.+')
   sheet_name_component_normal: \w+
   sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
   string_wildcard: '[*?]'
-  function_name: (?:[A-Za-z\d.]+)
+  # function_name: (?:[A-Za-z\d.]+)
 
-  # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
+
+  # A French MacOS user on dev channel build 4168 was having issues with functions specific to Google Sheets not highlighting properly. They put together the following updated function_builtins list.
+  # Relatively major concerns here:
+  # - The reporting user's functions would not format if they weren't included in the function_builtins list. When they manually updated their syntax definition to include their updated version of the builtins list, they said it fixed the problem.
+  # - I could not for the life of me recreate their highlighting issue. Could it be due to OS/locale/Sublime differences?
+  # - For me, all functions, whether they are in the builtins list or not, match so long as they end with an open parenthesis.
+  #   e.g., THISISNOTAREALFUNCTION( turns blue in the default color scheme for me.
+  #   In line with previous concerns, the above example THISIS... function does not highlight for them.
+
+  # Update:
+  # MS Excel:
+  # - https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
+  # Google Sheets:
+  # - https://support.google.com/docs/table/25273
+  # As of 12/27/2024
+
   function_builtins: |-
     \b(?xi:
-      ABS | ACCRINT | ACCRINTM | ACOS | ACOSH | ACOT | ACOTH | AGGREGATE | ADDRESS | AMORDEGRC | AMORLINC | AND | ARABIC | AREAS | ARRAYTOTEXT | ASC | ASIN | ASINH | ATAN | ATAN2 | ATANH | AVEDEV | AVERAGE | AVERAGEA | AVERAGEIF | AVERAGEIFS
-    | BAHTTEXT | BASE | BESSELI | BESSELJ | BESSELK | BESSELY | BETADIST | BETA\.DIST | BETAINV | BETA\.INV | BIN2DEC | BIN2HEX | BIN2OCT | BINOMDIST | BINOM\.DIST | BINOM\.DIST\.RANGE | BINOM\.INV | BITAND | BITLSHIFT | BITOR | BITRSHIFT | BITXOR | BYCOL | BYROW
-    | CALL | CEILING | CEILING\.MATH | CEILING\.PRECISE | CELL | CHAR | CHIDIST | CHIINV | CHITEST | CHISQ\.DIST | CHISQ\.DIST\.RT | CHISQ\.INV | CHISQ\.INV\.RT | CHISQ\.TEST | CHOOSE | CHOOSECOLS | CHOOSEROWS | CLEAN | CODE | COLUMN | COLUMNS | COMBIN | COMBINA | COMPLEX | CONCAT | CONCATENATE | CONFIDENCE | CONFIDENCE\.NORM | CONFIDENCE\.T | CONVERT | CORREL | COS | COSH | COT | COTH | COUNT | COUNTA | COUNTBLANK | COUNTIF | COUNTIFS | COUPDAYBS | COUPDAYS | COUPDAYSNC | COUPNCD | COUPNUM | COUPPCD | COVAR | COVARIANCE\.P | COVARIANCE\.S | CRITBINOM | CSC | CSCH | CUBEKPIMEMBER | CUBEMEMBER | CUBEMEMBERPROPERTY | CUBERANKEDMEMBER | CUBESET | CUBESETCOUNT | CUBEVALUE | CUMIPMT | CUMPRINC
-    | DATE | DATEDIF | DATEVALUE | DAVERAGE | DAY | DAYS | DAYS360 | DB | DBCS | DCOUNT | DCOUNTA | DDB | DEC2BIN | DEC2HEX | DEC2OCT | DECIMAL | DEGREES | DELTA | DEVSQ | DGET | DISC | DMAX | DMIN | DOLLAR | DOLLARDE | DOLLARFR | DPRODUCT | DROP | DSTDEV | DSTDEVP | DSUM | DURATION | DVAR | DVARP
-    | EDATE | EFFECT | ENCODEURL | EOMONTH | ERF | ERF\.PRECISE | ERFC | ERFC\.PRECISE | ERF | ERROR\.TYPE | EUROCONVERT | EVEN | EXACT | EXP | EXPAND | EXPON\.DIST | EXPONDIST
-    | FACT | FACTDOUBLE | FALSE | F\.DIST | FDIST | F\.DIST\.RT | FILTER | FILTERXML | FIND | FINDB | F\.INV | F\.INV\.RT | FINV | FISHER | FISHERINV | FIXED | FLOOR | FLOOR\.MATH | FLOOR\.PRECISE | FORECAST | FORECAST\.ETS | FORECAST\.ETS\.CONFINT | FORECAST\.ETS\.SEASONALITY | FORECAST\.ETS\.STAT | FORECAST\.LINEAR | FORMULATEXT | FREQUENCY | F\.TEST | FTEST | FV | FVSCHEDULE
-    | GAMMA | GAMMA\.DIST | GAMMADIST | GAMMA\.INV | GAMMAINV | GAMMALN | GAMMALN\.PRECISE | GAUSS | GCD | GEOMEAN | GESTEP | GETPIVOTDATA | GROWTH
-    | HARMEAN | HEX2BIN | HEX2DEC | HEX2OCT | HLOOKUP | HOUR | HSTACK | HYPERLINK | HYPGEOM\.DIST | HYPGEOMDIST
-    | IF | IFERROR | IFNA | IFS | IMABS | IMAGINARY | IMARGUMENT | IMCONJUGATE | IMCOS | IMCOSH | IMCOT | IMCSC | IMCSCH | IMDIV | IMEXP | IMLN | IMLOG10 | IMLOG2 | IMPOWER | IMPRODUCT | IMREAL | IMSEC | IMSECH | IMSIN | IMSINH | IMSQRT | IMSUB | IMSUM | IMTAN | INDEX | INDIRECT | INFO | INT | INTERCEPT | INTRATE | IPMT | IRR | ISBLANK | ISERR | ISERROR | ISEVEN | ISFORMULA | ISLOGICAL | ISNA | ISNONTEXT | ISNUMBER | ISODD | ISOMITTED | ISREF | ISTEXT | ISO\.CEILING | ISOWEEKNUM | ISPMT
-    | JIS
-    | KURT
-    | LAMBDA | LARGE | LCM | LEFT | LEFTB | LEN | LENB | LET | LINEST | LN | LOG | LOG10 | LOGEST | LOGINV | LOGNORM\.DIST | LOGNORMDIST | LOGNORM\.INV | LOOKUP | LOWER
-    | MAKEARRAY | MAP | MATCH | MAX | MAXA | MAXIFS | MDETERM | MDURATION | MEDIAN | MID | MIDB | MIN | MINIFS | MINA | MINUTE | MINVERSE | MIRR | MMULT | MOD | MODE | MODE\.MULT | MODE\.SNGL | MONTH | MROUND | MULTINOMIAL | MUNIT
-    | N | NA | NEGBINOM\.DIST | NEGBINOMDIST | NETWORKDAYS | NETWORKDAYS\.INTL | NOMINAL | NORM\.DIST | NORMDIST | NORMINV | NORM\.INV | NORM\.S\.DIST | NORMSDIST | NORM\.S\.INV | NORMSINV | NOT | NOW | NPER | NPV | NUMBERVALUE
-    | OCT2BIN | OCT2DEC | OCT2HEX | ODD | ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD | OFFSET | OR
-    | PDURATION | PEARSON | PERCENTILE\.EXC | PERCENTILE\.INC | PERCENTILE | PERCENTRANK\.EXC | PERCENTRANK\.INC | PERCENTRANK | PERMUT | PERMUTATIONA | PHI | PHONETIC | PI | PMT | POISSON\.DIST | POISSON | POWER | PPMT | PRICE | PRICEDISC | PRICEMAT | PROB | PRODUCT | PROPER | PV
-    | QUARTILE | QUARTILE\.EXC | QUARTILE\.INC | QUOTIENT
-    | RADIANS | RAND | RANDARRAY | RANDBETWEEN | RANK\.AVG | RANK\.EQ | RANK | RATE | RECEIVED | REDUCE | REGISTER\.ID | REPLACE | REPLACEB | REPT | RIGHT | RIGHTB | ROMAN | ROUND | ROUNDDOWN | ROUNDUP | ROW | ROWS | RRI | RSQ | RTD
-    | SCAN | SEARCH | SEARCHB | SEC | SECH | SECOND | SEQUENCE | SERIESSUM | SHEET | SHEETS | SIGN | SIN | SINH | SKEW | SKEW\.P | SLN | SLOPE | SMALL | SORT | SORTBY | SQRT | SQRTPI | STANDARDIZE | STOCKHISTORY | STDEV | STDEV\.P | STDEV\.S | STDEVA | STDEVP | STDEVPA | STEYX | SUBSTITUTE | SUBTOTAL | SUM | SUMIF | SUMIFS | SUMPRODUCT | SUMSQ | SUMX2MY2 | SUMX2PY2 | SUMXMY2 | SWITCH | SYD
-    | T | TAN | TANH | TAKE | TBILLEQ | TBILLPRICE | TBILLYIELD | T\.DIST | T\.DIST\.2T | T\.DIST\.RT | TDIST | TEXT | TEXTAFTER | TEXTBEFORE | TEXTJOIN | TEXTSPLIT | TIME | TIMEVALUE | T\.INV | T\.INV\.2T | TINV | TOCOL | TOROW | TODAY | TRANSPOSE | TREND | TRIM | TRIMMEAN | TRUE | TRUNC | T\.TEST | TTEST | TYPE
-    | UNICHAR | UNICODE | UNIQUE | UPPER
-    | VALUE | VALUETOTEXT | VAR | VAR\.P | VAR\.S | VARA | VARP | VARPA | VDB | VLOOKUP | VSTACK
-    | WEBSERVICE | WEEKDAY | WEEKNUM | WEIBULL | WEIBULL\.DIST | WORKDAY | WORKDAY\.INTL | WRAPCOLS | WRAPROWS
-    | XIRR | XLOOKUP | XMATCH | XNPV | XOR
-    | YEAR | YEARFRAC | YIELD | YIELDDISC | YIELDMAT
-    | Z\.TEST | ZTEST
+
+      (?# Common to both MS Excel and Google Sheets)
+
+      ABS | ACCRINT | ACCRINTM | ACOS | ACOSH | ACOT | ACOTH | ADDRESS | AMORLINC | AND | ARABIC | ASC | ASIN | ASINH | ATAN | ATAN2 | ATANH | AVEDEV | AVERAGE | AVERAGEA | AVERAGEIF | AVERAGEIFS |
+      BASE | BETA\.DIST | BETA\.INV | BETADIST | BETAINV | BIN2DEC | BIN2HEX | BIN2OCT | BINOM\.DIST | BINOM\.INV | BINOMDIST | BITAND | BITLSHIFT | BITOR | BITRSHIFT | BITXOR | BYCOL | BYROW |
+      CEILING | CEILING\.MATH | CEILING\.PRECISE | CELL | CHAR | CHIDIST | CHIINV | CHISQ\.DIST | CHISQ\.DIST\.RT | CHISQ\.INV | CHISQ\.INV\.RT | CHISQ\.TEST | CHITEST | CHOOSE | CHOOSECOLS | CHOOSEROWS |
+      CLEAN | CODE | COLUMN | COLUMNS | COMBIN | COMBINA | COMPLEX | CONCAT | CONCATENATE | CONFIDENCE | CONFIDENCE\.NORM | CONFIDENCE\.T | CONVERT | CORREL | COS | COSH | COT | COTH | COUNT | COUNTA |
+      COUNTBLANK | COUNTIF | COUNTIFS | COUPDAYBS | COUPDAYS | COUPDAYSNC | COUPNCD | COUPNUM | COUPPCD | COVAR | COVARIANCE\.P | COVARIANCE\.S | CRITBINOM | CSC | CSCH | CUMIPMT | CUMPRINC |
+      DATE | DATEDIF | DATEVALUE | DAVERAGE | DAY | DAYS | DAYS360 | DB | DCOUNT | DCOUNTA | DDB | DEC2BIN | DEC2HEX | DEC2OCT | DECIMAL | DEGREES | DELTA | DEVSQ | DGET | DISC | DMAX | DMIN |
+      DOLLAR | DOLLARDE | DOLLARFR | DPRODUCT | DSTDEV | DSTDEVP | DSUM | DURATION | DVAR | DVARP |
+      EDATE | EFFECT | ENCODEURL | EOMONTH | ERF | ERF\.PRECISE | ERFC | ERFC\.PRECISE | ERROR\.TYPE | EVEN | EXACT | EXP | EXPON\.DIST | EXPONDIST |
+      F\.DIST | F\.DIST\.RT | F\.INV | F\.INV\.RT | F\.TEST | FACT | FACTDOUBLE | FALSE | FDIST | FILTER | FIND | FINDB | FINV | FISHER | FISHERINV | FIXED | FLOOR | FLOOR\.MATH | FLOOR\.PRECISE |
+      FORECAST | FORECAST\.LINEAR | FORMULATEXT | FREQUENCY | FTEST | FV | FVSCHEDULE |
+      GAMMA | GAMMA\.DIST | GAMMA\.INV | GAMMADIST | GAMMAINV | GAMMALN | GAMMALN\.PRECISE | GAUSS | GCD | GEOMEAN | GESTEP | GETPIVOTDATA | GROWTH |
+      HARMEAN | HEX2BIN | HEX2DEC | HEX2OCT | HLOOKUP | HOUR | HSTACK | HYPERLINK | HYPGEOM\.DIST | HYPGEOMDIST |
+      IF | IFERROR | IFNA | IFS | IMABS | IMAGE | IMAGINARY | IMARGUMENT | IMCONJUGATE | IMCOS | IMCOSH | IMCOT | IMCSC | IMCSCH | IMDIV | IMEXP | IMLN | IMLOG10 | IMLOG2 | IMPOWER | IMPRODUCT | IMREAL |
+      IMSEC | IMSECH | IMSIN | IMSINH | IMSQRT | IMSUB | IMSUM | IMTAN | INDEX | INDIRECT | INT | INTERCEPT | INTRATE | IPMT | IRR | ISBLANK | ISERR | ISERROR | ISEVEN | ISFORMULA | ISLOGICAL | ISNA |
+      ISNONTEXT | ISNUMBER | ISO\.CEILING | ISODD | ISOWEEKNUM | ISPMT | ISREF | ISTEXT |
+      KURT |
+      LAMBDA | LARGE | LCM | LEFT | LEFTB | LEN | LENB | LET | LINEST | LN | LOG | LOG10 | LOGEST | LOGINV | LOGNORM\.DIST | LOGNORM\.INV | LOGNORMDIST | LOOKUP | LOWER |
+      MAKEARRAY | MAP | MATCH | MAX | MAXA | MAXIFS | MDETERM | MDURATION | MEDIAN | MID | MIDB | MIN | MINA | MINIFS | MINUTE | MINVERSE | MIRR | MMULT | MOD | MODE | MODE\.MULT | MODE\.SNGL |
+      MONTH | MROUND | MULTINOMIAL | MUNIT |
+      N | NA | NEGBINOM\.DIST | NEGBINOMDIST | NETWORKDAYS | NETWORKDAYS\.INTL | NOMINAL | NORM\.DIST | NORM\.INV | NORM\.S\.DIST | NORM\.S\.INV | NORMDIST | NORMINV | NORMSDIST | NORMSINV | NOT | NOW | NPER | NPV |
+      OCT2BIN | OCT2DEC | OCT2HEX | ODD | OFFSET | OR |
+      PDURATION | PEARSON | PERCENTILE | PERCENTILE\.EXC | PERCENTILE\.INC | PERCENTRANK | PERCENTRANK\.EXC | PERCENTRANK\.INC | PERMUT | PERMUTATIONA | PHI | PI | PMT | POISSON | POISSON\.DIST | POWER | PPMT |
+      PRICE | PRICEDISC | PRICEMAT | PROB | PRODUCT | PROPER | PV |
+      QUARTILE | QUARTILE\.EXC | QUARTILE\.INC | QUOTIENT |
+      RADIANS | RAND | RANDARRAY | RANDBETWEEN | RANK | RANK\.AVG | RANK\.EQ | RATE | RECEIVED | REDUCE | REPLACE | REPLACEB | REPT | RIGHT | RIGHTB | ROMAN | ROUND | ROUNDDOWN | ROUNDUP | ROW | ROWS | RRI | RSQ |
+      SCAN | SEARCH | SEARCHB | SEC | SECH | SECOND | SEQUENCE | SERIESSUM | SIGN | SIN | SINH | SKEW | SKEW\.P | SLN | SLOPE | SMALL | SORT | SQRT | SQRTPI |
+      STANDARDIZE | STDEV | STDEV\.P | STDEV\.S | STDEVA | STDEVP | STDEVPA | STEYX | SUBSTITUTE | SUBTOTAL | SUM | SUMIF | SUMIFS | SUMPRODUCT | SUMSQ | SUMX2MY2 | SUMX2PY2 | SUMXMY2 | SWITCH | SYD |
+      T | T\.DIST | T\.DIST\.2T | T\.DIST\.RT | T\.INV | T\.INV\.2T | T\.TEST | TAN | TANH | TBILLEQ | TBILLPRICE | TBILLYIELD | TDIST | TEXT | TEXTJOIN | TIME | TIMEVALUE | TINV | TRANSPOSE | TREND | TRIM | TRIMMEAN |
+      TRUE | TRUNC | TTEST | TYPE |
+      UNICHAR | UNICODE | UNIQUE | UPPER |
+      VALUE | VAR | VAR\.P | VAR\.S | VARA | VARP | VARPA | VDB | VLOOKUP | VSTACK |
+      WEEKDAY | WEEKNUM | WEIBULL | WEIBULL\.DIST | WORKDAY | WORKDAY\.INTL | WRAPCOLS | WRAPROWS |
+      XIRR | XLOOKUP | XNPV | XOR |
+      YEAR | YEARFRAC | YIELD | YIELDDISC | YIELDMAT |
+      Z\.TEST | ZTEST |
+
+      (?# MS Excel only)
+
+      AGGREGATE | AMORDEGRC | AREAS | ARRAYTOTEXT |
+      BAHTTEXT | BESSELI | BESSELJ | BESSELK | BESSELY | BINOM\.DIST\.RANGE |
+      CALL | CUBEKPIMEMBER | CUBEMEMBER | CUBEMEMBERPROPERTY | CUBERANKEDMEMBER | CUBESET | CUBESETCOUNT | CUBEVALUE |
+      DBCS | DROP |
+      EUROCONVERT | EXPAND |
+      FILTERXML | FORECAST\.ETS | FORECAST\.ETS\.CONFINT | FORECAST\.ETS\.SEASONALITY | FORECAST\.ETS\.STAT |
+      INFO | ISOMITTED |
+      JIS |
+      NUMBERVALUE |
+      ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD |
+      PHONETIC |
+      REGISTER\.ID | RTD |
+      SHEET | SHEETS | SORTBY | STOCKHISTORY |
+      TAKE | TEXTAFTER | TEXTBEFORE | TEXTSPLIT | TOCOL | TODAY | TOROW |
+      VALUETOTEXT |
+      WEBSERVICE |
+      XMATCH |
+
+      (?# Google Sheets only)
+
+      ADD | ARRAY_CONSTRAIN | ARRAYFORMULA | AVERAGE\.WEIGHTED |
+      COUNTUNIQUE |
+      DETECTLANGUAGE | DIVIDE |
+      EPOCHTODATE | EQ |
+      FLATTEN |
+      GOOGLEFINANCE | GOOGLETRANSLATE | GT | GTE |
+      IMCOTH | IMLOG | IMPORTDATA | IMPORTFEED | IMPORTHTML | IMPORTRANGE | IMPORTXML | IMTANH | ISBETWEEN | ISDATE | ISEMAIL | ISURL |
+      JOIN |
+      LT | LTE |
+      MARGINOFERROR | MINUS | MULTIPLY |
+      NE |
+      POW |
+      QUERY |
+      REGEXEXTRACT | REGEXMATCH | REGEXREPLACE |
+      SORTN | SPARKLINE | SPLIT |
+      TO_DATE | TO_DOLLARS | TO_PERCENT | TO_PURE_NUMBER | TO_TEXT | TOCOL | TODAY | TOROW |
+      UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
     )\b
+
 
 contexts:
   immediately-pop:
@@ -98,8 +165,21 @@ contexts:
     - match: '[)}\]]'
       scope: invalid.illegal.stray-bracket-end.excel
 
-    # Very speculative
-    - match: \w+
+    # Update: allow for named ranges and names defined in LET functions to follow the same naming rules as table and user-defined-function names.
+    #         e.g., = LET(
+    #                   T\?es.t1Test,
+    #                   1,
+    #                   T\?es.t1Test
+    #               )
+    #         is a valid formula.
+    #         Was previously just '\w+'
+
+
+    # TODO: think about flagging illegal names (e.g., '.hello')
+    #       this could start to get really messy now that I want to not make Google Sheets user's stuff break (I also don't like the idea of having to test a million edge cases in both Excel and Sheets).
+    # Note: Why is it that the '1' in '=LET(Test1Test,2,Test1Test)' gets scoped correctly when digits aren't specified here? does it have something to do with '/w'?
+    # This is really ugly and I hate it but it works.
+    - match: '[\w\\][\w.?\\]+[\w?\\]'
       scope: variable.other.readwrite.excel
 
     - match: \t
@@ -135,19 +215,22 @@ contexts:
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
-    # Other functions ??
-    - match: \b([A-Za-z\.]+)(\()
+    # Update: Function naming for user defined functions appears to follow the same rules as tables. Pattern from table copied here. (capture group 1 was previously '([A-Za-z\.]+)').
+    #         e.g., T\?es.t1Test() is a valid function name.
+    # User defined and/or functions not included in the builtins. May currently not work for some users (see comment above builtins).
+    - match: \b([\w.?\\]+)(\()
       captures:
         1: meta.function-call.excel variable.function.excel
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
+  # Update: allow for ; to be a separator in functions (for locale support).
   function-call-body:
     - meta_content_scope: meta.function-call.arguments.excel
     - match: \)
       scope: meta.function-call.arguments.excel punctuation.section.arguments.end.excel
       pop: 1
-    - match: \,
+    - match: '[\,;]'
       scope: punctuation.separator.sequence.excel
     - include: expressions
 
@@ -171,6 +254,7 @@ contexts:
     - match: \}
       scope: punctuation.section.braces.end.excel
       pop: 1
+    # The specification of row vs column should technically be locale dependent, but works fine otherwise.
     - match: \,
       scope: punctuation.separator.sequence.column.excel
     - match: ;
@@ -196,7 +280,7 @@ contexts:
     - match: '[<>=]{3,}'
       scope: invalid.illegal.excel
     # illegal two-character operator combinations
-    - match: (?:=[=<>]|<<|>>|><)
+    - match: (?:=[=<>]|>[><]|<<)
       scope: invalid.illegal.excel
     # anything other combo
     - match: '[<>=]+'
@@ -229,31 +313,40 @@ contexts:
       scope: entity.name.struct.excel
     - include: immediately-pop
 
-  # Update: Allow for column, row, and Google-Sheets-specific (cell_special) references.
+  # Update: Allow for column, row, and Google-Sheets-specific references.
   # # Row and column references are only valid in pairs separated by a colon. Google-Sheets-specific references must currently be matched as {{cell_special}}:{{cell_special}} to avoid breaking number formatting.
+  # # Everything appears to work regardless, so maybe it's unnecessary, but I'm a little suspicious about how this doesn't explicitly have a {{cell}}:{{cell}} pattern.
+
+
   cell-or-range-reference:
-    - match: (?=[#@]?{{cell}}|(?:{{column}}:{{column}})|(?:{{row}}:{{row}})|(?:{{cell_special}}:{{cell_special}}))
+    - match: (?=[#@]?{{cell}}|(?:(?:{{column}}|{{row}}):(?:{{column}}|{{row}})))
       push: cell-or-range-reference-body
 
   cell-or-range-reference-body:
     - meta_scope: meta.reference.excel
 
-    # Would be satisfying to solve this, but it's a moot point. Spaces between cell references don't break anything, they just aren't scoped)
-    # # Can't seem to get Space to match as an operator
-    # # # (fails to) Match 'A1:B2 A1:A2' format 'cell:cell cell:cell' references
-    # - match: ({{left_cell}})(:)({{right_cell}})( )({{left_cell}})(:)({{right_cell}})
-    #   captures:
-    #     1: storage.type.excel
-    #     2: punctuation.separator.sequence.excel
-    #     3: storage.type.excel
-    #     4: keyword.operator.reference.excel
-    #     5: storage.type.excel
-    #     6: punctuation.separator.sequence.excel
-    #     7: storage.type.excel
-    #   pop: 1
+    # In combination, these three matche:
+    # A1    'cell' references
+    # A1:B2 'cell:cell' references
+    # A:B   'column:column' references
+    # 1:2   'row:row' references
+    # A1:B  Google-Sheets-specific references
+    # A:B1  Google-Sheets-specific references
 
-    # Update: Match Google Sheets references
-    - match: ([#@]?)({{cell_special}})(:)({{cell_special}})
+
+    # Error: breaks the cell formatting at the end of, e.g., =_hello_2world!N36
+
+    - match: ([#@]?)({{cell}})(?!:)
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+
+    # Try to avoid matching names with numbers in the middle of them as cells.
+    # TODO: Is there a more kosher way to do this?
+    - match: \b[\w.?\\]+[0-9][\w.?\\]+
+      pop: 1
+
+    - match: ([#@]?)({{cell}})(?:(:)({{cell}}|{{column}}|{{row}}))?
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -261,8 +354,7 @@ contexts:
         4: storage.type.excel
       pop: 1
 
-    # Matches A1:B2 format 'cell:cell' references
-    - match: ([#@]?)({{cell}})(:)({{cell}})
+    - match: ([#@]?)({{column}})(:)({{cell}}|{{column}})
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -270,15 +362,7 @@ contexts:
         4: storage.type.excel
       pop: 1
 
-    # Matches A1 format 'cell' references
-    - match: ([#@]?)({{cell}})
-      captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-      pop: 1
-
-    # Update: Matches A:B format 'column:column' references
-    - match: ([#@]?)({{column}})(:)({{column}})
+    - match: ([#@]?)({{row}})(:)({{cell}}|{{row}})
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -286,13 +370,11 @@ contexts:
         4: storage.type.excel
       pop: 1
 
-    # Update: Matches 1:2 format 'row:row (fight the powah)' references
-    - match: ([#@]?)({{row}})(:)({{row}})
+    # Update: Flag illegal A:1 and 1:A references.
+    # Note:   Is the fact that this flags references as you are typing that are valid once complete (like when typing 1:A1) a problem from a UX POV? Is there a way to solve this?
+    - match: ((?:[#@]?)(?:{{column}}:{{row}}|{{row}}:{{column}}))
       captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: punctuation.separator.sequence.excel
-        4: storage.type.excel
+        1: invalid.illegal.excel
       pop: 1
 
 
@@ -319,8 +401,6 @@ contexts:
         2: punctuation.separator.sequence.excel
       pop: 1
 
-    # CHANGE: Matches escaped brackets and operators and prevents conflict between
-    # brackets and ,:
     - match: ([,:]*'[\[\]@#][,:]*)
       scope: storage.type.excel
 
@@ -379,8 +459,8 @@ contexts:
     # MATCH
     # SEARCH
 
-  # Update: Allow commas to be used as decimal separators. Can cause scope conflict depending on locale, but allows commas and periods to be formatted the same color in most if not all contexts in sublime's default color scheme
-  # # Conflict example: =SUM(0,0)
+  # Update: Allow commas to be used as decimal separators. Can cause scope conflict depending on locale, but allows commas and periods to be formatted the same color in most if not all contexts in Sublime's default color scheme
+  #         Conflict example: =SUM(0,0)
   numbers:
     - match: -?\d+(\.|,)\d*|-?(\.|,)\d+
       scope: meta.number.float.decimal.excel constant.numeric.value.excel
