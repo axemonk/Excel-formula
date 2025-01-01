@@ -18,8 +18,11 @@ Excel formula syntax highlighting for Sublime Text (with support for Google Shee
 
 
 Please send any bug reports or suggestions to _alco via a direct message on Discord.
+<<<<<<< attribution
 You can find me on the official Sublime Text Discord server.
+=======
 Made by _alco and @michaelblyons. Thanks to acid_form for the first key bug reports we've received and for the updated builtin function list with Google Sheets functions added.
+>>>>>>> main
 https://github.com/axemonk/Excel-formula
 
 A HUGE thank you to @michaelblyons for his collaboration.
