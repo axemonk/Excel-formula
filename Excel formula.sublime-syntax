@@ -294,16 +294,18 @@ contexts:
 
     # In combination, the following blocks match:
     # A1    'cell' references
+    # A1#   dynamic array references
     # A1:B2 'cell:cell' references
     # A:B   'column:column' references
     # 1:2   'row:row' references
     # A1:B  Google-Sheets-specific references
     # A:B1  Google-Sheets-specific references
 
-    - match: ([#@]?)({{cell}})(?!:)
+    - match: (@?)({{cell}})(#?)(?!:)
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
+        3: keyword.operator.reference.excel
       set: maybe-union-operator
 
     # Try to avoid matching names with numbers in the middle of them as cells.
@@ -311,7 +313,17 @@ contexts:
     - match: \b[\w.?\\]+[0-9][\w.?\\]+
       pop: 1
 
-    - match: ([#@]?)({{cell}})(?:(:)({{cell}}|{{column}}|{{row}}))?
+    - match: (@?)({{cell}})(#?)(:)({{cell}})(#?)
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: keyword.operator.reference.excel
+        4: punctuation.separator.sequence.excel
+        5: storage.type.excel
+        6: keyword.operator.reference.excel
+      set: maybe-union-operator
+
+    - match: (@?)({{cell}})(?:(:)({{column}}|{{row}}))?
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -319,7 +331,7 @@ contexts:
         4: storage.type.excel
       set: maybe-union-operator
 
-    - match: ([#@]?)({{column}})(:)({{cell}}|{{column}})
+    - match: (@?)({{column}})(:)({{cell}}|{{column}})
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -327,7 +339,7 @@ contexts:
         4: storage.type.excel
       set: maybe-union-operator
 
-    - match: ([#@]?)({{row}})(:)({{cell}}|{{row}})
+    - match: (@?)({{row}})(:)({{cell}}|{{row}})
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -335,11 +347,11 @@ contexts:
         4: storage.type.excel
       set: maybe-union-operator
 
-    # Update: Flag illegal A:1 and 1:A references.
+    # Revert: Flag illegal A:1 and 1:A references.
     # Note:   Is the fact that this flags references as you are typing that are
     #         valid once complete (like when typing 1:A1) a problem from a UX
     #         POV? Is there a way to solve this?
-    - match: ((?:[#@]?)(?:{{column}}:{{row}}|{{row}}:{{column}}))
+    - match: ((?:@?)(?:{{column}}:{{row}}|{{row}}:{{column}}))
       captures:
         1: invalid.illegal.excel
       pop: 1
