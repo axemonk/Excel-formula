@@ -5,7 +5,7 @@ name: Excel formula
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to _alco via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.4.0 1/1/2025
+# v2.4.2 1/1/2025
 file_extensions: []
 scope: source.excel
 version: 2
@@ -23,7 +23,7 @@ variables:
   sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
   string_wildcard: '[*?]'
   # function_name: (?:[A-Za-z\d.]+)
-  before_reference: (?=[#@]?{{cell}}|(?:(?:{{column}}|{{row}}):(?:{{column}}|{{row}})))
+  before_reference: (?=@?{{cell}}|(?:(?:{{column}}|{{row}}):(?:{{column}}|{{row}})))
 
   # A French MacOS user on dev channel build 4168 was having issues with functions specific to Google Sheets not highlighting properly.
   # They put together the following updated function_builtins list.
@@ -301,7 +301,11 @@ contexts:
     # A1:B  Google-Sheets-specific references
     # A:B1  Google-Sheets-specific references
 
-    - match: (@?)({{cell}})(#?)(?!:)
+    # Try AGAIN to avoid matching names with numbers in the middle.
+    - match: ([A-Za-z]+[0-9][A-Za-z]+)
+      pop: 1
+
+    - match: (@?)({{cell}})(#?)(?![:#])
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -313,6 +317,15 @@ contexts:
     - match: \b[\w.?\\]+[0-9][\w.?\\]+
       pop: 1
 
+    # Cell range
+    # A1:B2
+    # A1#:B2
+    # A1#:B2#
+    # A1:B2#
+    # @A1:B2
+    # @A1#:B2
+    # @A1#:B2#
+    # @A1:B2#
     - match: (@?)({{cell}})(#?)(:)({{cell}})(#?)
       captures:
         1: keyword.operator.reference.excel
@@ -323,6 +336,11 @@ contexts:
         6: keyword.operator.reference.excel
       set: maybe-union-operator
 
+    # Cell to column-or-row (Accidently naked cell again?)
+    # A1:B
+    # A1:2
+    # @A1:B
+    # @A1:2
     - match: (@?)({{cell}})(?:(:)({{column}}|{{row}}))?
       captures:
         1: keyword.operator.reference.excel
@@ -331,6 +349,11 @@ contexts:
         4: storage.type.excel
       set: maybe-union-operator
 
+    # Column to cell-or-column
+    # A:B
+    # A:B2
+    # @A:B
+    # @A:B2
     - match: (@?)({{column}})(:)({{cell}}|{{column}})
       captures:
         1: keyword.operator.reference.excel
@@ -339,6 +362,11 @@ contexts:
         4: storage.type.excel
       set: maybe-union-operator
 
+    # Row to cell-or-row
+    # 1:2
+    # 1:B2
+    # @1:B
+    # @1:B2
     - match: (@?)({{row}})(:)({{cell}}|{{row}})
       captures:
         1: keyword.operator.reference.excel
@@ -346,6 +374,7 @@ contexts:
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
       set: maybe-union-operator
+
 
     # Revert: Flag illegal A:1 and 1:A references.
     # Note:   Is the fact that this flags references as you are typing that are
