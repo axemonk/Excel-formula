@@ -123,7 +123,8 @@ TEXTJOIN(";",FALSE,valmax)
 =@$A1:A10
 
 =SUM(B7:D7 C6:C8)
-'         ^ keyword.operator.reference
+''         ^ keyword.operator.reference
+' Disable for now
 
 =#VALUE!
 
