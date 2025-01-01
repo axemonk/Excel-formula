@@ -281,8 +281,6 @@ contexts:
 
   # Update: Allow for column, row, and Google-Sheets-specific references.
   #   Row and column references are only valid in pairs separated by a colon.
-  #   Google-Sheets-specific references must currently be matched as
-  #   {{cell_special}}:{{cell_special}} to avoid breaking number formatting.
   # Everything appears to work regardless, so maybe it's unnecessary, but I'm a
   #   little suspicious about how this doesn't explicitly have a
   #   {{cell}}:{{cell}} pattern.
