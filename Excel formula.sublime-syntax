@@ -25,9 +25,11 @@ variables:
   # function_name: (?:[A-Za-z\d.]+)
 
 
-  # A French MacOS user on dev channel build 4168 was having issues with functions specific to Google Sheets not highlighting properly. They put together the following updated function_builtins list.
+  # A French MacOS user on dev channel build 4168 was having issues with functions specific to Google Sheets not highlighting properly.
+  # They put together the following updated function_builtins list.
   # Relatively major concerns here:
-  # - The reporting user's functions would not format if they weren't included in the function_builtins list. When they manually updated their syntax definition to include their updated version of the builtins list, they said it fixed the problem.
+  # - The reporting user's functions would not format if they weren't included in the function_builtins list.
+  #   When they manually updated their syntax definition to include their updated version of the builtins list, they said it fixed the problem.
   # - I could not for the life of me recreate their highlighting issue. Could it be due to OS/locale/Sublime differences?
   # - For me, all functions, whether they are in the builtins list or not, match so long as they end with an open parenthesis.
   #   e.g., THISISNOTAREALFUNCTION( turns blue in the default color scheme for me.
