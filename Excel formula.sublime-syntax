@@ -353,6 +353,9 @@ contexts:
         4: storage.type.excel
       set: maybe-union-operator
 
+    # The Google stuff
+    - include: reference-body-google
+
     # Column to column
     # A:B
     # @A:B
@@ -374,8 +377,6 @@ contexts:
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
       set: maybe-union-operator
-
-    - include: reference-body-google
 
     # Bail if nothing matches
     - include: immediately-pop
