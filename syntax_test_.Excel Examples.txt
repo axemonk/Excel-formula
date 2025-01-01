@@ -114,7 +114,149 @@ TEXTJOIN(";",FALSE,valmax)
 =FALSE
 '^^^^^ constant.language.boolean.false.excel
 
-=#A1
+'''[ GOOD REFERENCES ]'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=A1
+'^^ meta.reference.excel storage.type.excel
+=A1#
+'^^^ meta.reference.excel
+'^^ storage.type.excel
+'  ^ keyword.operator.reference.excel
+=@A1
+'^^^ meta.reference.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+=@A1#
+'^^^^ meta.reference.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ keyword.operator.reference.excel
+=A1#:B2
+'^^^^^^ meta.reference.excel
+'^^ storage.type.excel
+'  ^ keyword.operator.reference.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+=A1#:B2#
+'^^^^^^^ meta.reference.excel
+'^^ storage.type.excel
+'  ^ keyword.operator.reference.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+'      ^ keyword.operator.reference.excel
+=@A1#:B2
+'^^^^^^^ meta.reference.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ keyword.operator.reference.excel
+'    ^ punctuation.separator.sequence.excel
+'     ^^ storage.type.excel
+=@A1#:B2#
+'^^^^^^^^ meta.reference.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ keyword.operator.reference.excel
+'    ^ punctuation.separator.sequence.excel
+'     ^^ storage.type.excel
+'       ^ keyword.operator.reference.excel
+=A1:B2
+'^^^^^ meta.reference.excel
+'^^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^^ storage.type.excel
+=@A1:B2
+'^^^^^^ meta.reference.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+=A:B
+'^^^ meta.reference.excel
+'^ storage.type.excel
+' ^ punctuation.separator.sequence.excel
+'  ^ storage.type.excel
+=@A:B
+'^^^^ meta.reference.excel
+'^ keyword.operator.reference.excel
+' ^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^ storage.type.excel
+=1:2
+'^^^ meta.reference.excel
+'^ storage.type.excel
+' ^ punctuation.separator.sequence.excel
+'  ^ storage.type.excel
+=@1:2
+'^^^^ meta.reference.excel
+'^ keyword.operator.reference.excel
+' ^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^ storage.type.excel
+
+'''[ GOOGLE SHEETS REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''
+
+=A1:B
+'^^^^ meta.reference.excel
+'^^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^ storage.type.excel
+=A1:2
+'^^^^ meta.reference.excel
+'^^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^ storage.type.excel
+=A:B2
+'^^^^ meta.reference.excel
+'^ storage.type.excel
+' ^ punctuation.separator.sequence.excel
+'  ^^ storage.type.excel
+=1:B2
+'^^^^ meta.reference.excel
+'^ storage.type.excel
+' ^ punctuation.separator.sequence.excel
+'  ^^ storage.type.excel
+
+
+'''[ BAD REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=@A1#:B
+'^^^^^^ - meta.reference - keyword
+=@A1#:B#
+'^^^^^^^ - meta.reference - keyword
+=@A1:B#
+'^ - keyword
+'     ^ - keyword
+=@A#:B
+'^^^^^ - meta.reference - keyword
+=@A#:B#
+'^^^^^^ - meta.reference - keyword
+=@A:B#
+'    ^ - meta.reference - keyword
+=@A#:B2
+'^^^^ - meta.reference - keyword
+=@A#:B2#
+'^^^^ - meta.reference - keyword
+=@A:B2#
+'    ^^ - meta.reference - keyword
+=@1#:2
+'^^^^^ - meta.reference - keyword
+=@1#:2#
+'^^^^^^ - meta.reference - keyword
+=@1:2#
+'    ^ - meta.reference - keyword
+=@1#:B2
+'^^^^ - meta.reference - keyword
+=@1#:B2#
+'^^^^ - meta.reference - keyword
+=@1:B2#
+'^ - meta.reference - keyword
+'     ^ - meta.reference - keyword
+=@A1:B
+'^ - meta.reference - keyword
+=@A1:2
+'^ - meta.reference - keyword
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 =A1<=B1
 
