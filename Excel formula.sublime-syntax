@@ -444,9 +444,14 @@ contexts:
     - match: (?:#VALUE!|#REF!|#NAME\?|#GETTING_DATA|#N/A)
       scope: constant.language.excel
 
-    - match: \b(?i:TRUE|FALSE)\b
-      scope: constant.language.boolean.excel
+    - match: \b(?i)TRUE\b
+      scope: constant.language.boolean.true.excel
+
+    - match: \b(?i)FALSE\b
+      scope: constant.language.boolean.false.excel
+
     - include: numbers
+
     # TODO: only include wildcards where appropriate
     - include: strings-with-wildcards
 

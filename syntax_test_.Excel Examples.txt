@@ -108,6 +108,12 @@ TEXTJOIN(";",FALSE,valmax)
 ' <- keyword.operator.assignment
 '^^^^^^^^^^^^^ constant.language.excel - constant.language.nan - constant.language.null
 
+=TRUE
+'^^^^ constant.language.boolean.true.excel
+
+=FALSE
+'^^^^^ constant.language.boolean.false.excel
+
 =#A1
 
 =A1<=B1
