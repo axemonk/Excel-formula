@@ -292,15 +292,13 @@ contexts:
   cell-or-range-reference-body:
     - meta_scope: meta.reference.excel
 
-    # In combination, these three match:
+    # In combination, the following blocks match:
     # A1    'cell' references
     # A1:B2 'cell:cell' references
     # A:B   'column:column' references
     # 1:2   'row:row' references
     # A1:B  Google-Sheets-specific references
     # A:B1  Google-Sheets-specific references
-
-    # Error: breaks the cell formatting at the end of, e.g., =_hello_2world!N36
 
     - match: ([#@]?)({{cell}})(?!:)
       captures:
