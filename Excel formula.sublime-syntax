@@ -23,7 +23,15 @@ variables:
   sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
   string_wildcard: '[*?]'
   # function_name: (?:[A-Za-z\d.]+)
-  before_reference: (?=@?{{cell}}|(?:(?:{{column}}|{{row}}):(?:{{column}}|{{row}})))
+  before_reference: |-
+    (?x:(?=
+      @?  # Reference operator
+      (?:
+        {{cell}}
+      | (?:{{column}}|{{row}}):
+        (?:{{column}}|{{row}}|{{cell}})
+      )
+    ))
 
   # A French MacOS user on dev channel build 4168 was having issues with functions specific to Google Sheets not highlighting properly.
   # They put together the following updated function_builtins list.
@@ -143,7 +151,8 @@ contexts:
       push:
         - meta_scope: comment.line.single-quote.excel
         # - meta_scope: string.unquoted.excel
-        - match: $
+        - match: $\n?
+        # - match: $
           pop: 1
 
   expressions:
@@ -279,12 +288,6 @@ contexts:
       scope: entity.name.struct.excel
     - include: immediately-pop
 
-  # Update: Allow for column, row, and Google-Sheets-specific references.
-  #   Row and column references are only valid in pairs separated by a colon.
-  # Everything appears to work regardless, so maybe it's unnecessary, but I'm a
-  #   little suspicious about how this doesn't explicitly have a
-  #   {{cell}}:{{cell}} pattern.
-
   cell-or-range-reference:
     - match: '{{before_reference}}'
       push: cell-or-range-reference-body
@@ -296,18 +299,14 @@ contexts:
     # TODO: Is there a more kosher way or location to do this?
     #       the important part here is that we prevent something like 't1'
     #       from being matched as a cell in a name 't1test'
-    - match: ([A-Za-z\\?.]+[0-9]+[A-Za-z\\?.]+)
+    - match: '[A-Za-z\\?.]+[0-9]+[A-Za-z\\?.]+'
       pop: 1
 
-    # In combination, the following blocks match:
-    # A1    'cell' references
-    # A1#   dynamic array references
-    # A1:B2 'cell:cell' references
-    # A:B   'column:column' references
-    # 1:2   'row:row' references
-    # A1:B  Google-Sheets-specific references
-    # A:B1  Google-Sheets-specific references
-
+    # Naked cell reference
+    # A1
+    # A1#
+    # @A1
+    # @A1#
     - match: (@?)({{cell}})(#?)(?![:#])
       captures:
         1: keyword.operator.reference.excel
@@ -315,16 +314,28 @@ contexts:
         3: keyword.operator.reference.excel
       set: maybe-union-operator
 
-    # Cell range
-    # A1:B2
+    # # Zero-dimensional cell range w/ dynamics
+    # # Cannot use sregex
+    # # A1#:A1#
+    # # A1:A1#
+    # # @A1#:A1#
+    # # @A1:A1#
+    # - match: (@?)({{cell}})(#?)(:)(\2)(#)
+    #   captures:
+    #     1: keyword.operator.reference.excel
+    #     2: storage.type.excel
+    #     3: keyword.operator.reference.excel
+    #     4: punctuation.separator.sequence.excel
+    #     5: storage.type.excel
+    #     6: keyword.operator.reference.excel
+    #   set: maybe-union-operator
+
+    # Cell range with dynamics
     # A1#:B2
     # A1#:B2#
-    # A1:B2#
-    # @A1:B2
     # @A1#:B2
     # @A1#:B2#
-    # @A1:B2#
-    - match: (@?)({{cell}})(#?)(:)({{cell}})(#?)
+    - match: (@?)({{cell}})(#)(:)({{cell}})(#?)
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -334,54 +345,75 @@ contexts:
         6: keyword.operator.reference.excel
       set: maybe-union-operator
 
-    # Cell to column-or-row (Accidently naked cell again?)
+    # Cell range without dynamics
+    # A1:B2
+    # @A1:B2
+    - match: (@?)({{cell}})(:)({{cell}})
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      set: maybe-union-operator
+
+    # The Google stuff
+    - include: reference-body-google
+
+    # Column to column
+    # A:B
+    # @A:B
+    - match: (@?)({{column}})(:)({{column}})
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      set: maybe-union-operator
+
+    # Row to row
+    # 1:2
+    # @1:2
+    - match: (@?)({{row}})(:)({{row}})
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      set: maybe-union-operator
+
+    # Bail if nothing matches
+    - include: immediately-pop
+
+  reference-body-google:
+    # The @ operator is not available in Google Sheets
+
+    # Cell to column-or-row
     # A1:B
     # A1:2
-    # @A1:B
-    # @A1:2
-    - match: (@?)({{cell}})(?:(:)({{column}}|{{row}}))?
+    - match: ({{cell}})(?:(:)({{column}}|{{row}}))
       captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: punctuation.separator.sequence.excel
-        4: storage.type.excel
+        1: storage.type.excel
+        2: punctuation.separator.sequence.excel
+        3: storage.type.excel
       set: maybe-union-operator
 
-    # Column to cell-or-column
-    # A:B
+    # Column to cell
     # A:B2
-    # @A:B
-    # @A:B2
-    - match: (@?)({{column}})(:)({{cell}}|{{column}})
+    - match: ({{column}})(:)({{cell}})
       captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: punctuation.separator.sequence.excel
-        4: storage.type.excel
+        1: storage.type.excel
+        2: punctuation.separator.sequence.excel
+        3: storage.type.excel
       set: maybe-union-operator
 
-    # Row to cell-or-row
-    # 1:2
+    # Row to cell
     # 1:B2
-    # @1:B
-    # @1:B2
-    - match: (@?)({{row}})(:)({{cell}}|{{row}})
+    - match: ({{row}})(:)({{cell}})
       captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: punctuation.separator.sequence.excel
-        4: storage.type.excel
+        1: storage.type.excel
+        2: punctuation.separator.sequence.excel
+        3: storage.type.excel
       set: maybe-union-operator
-
-
-    # Revert: Flag illegal A:1 and 1:A references.
-    # Note:   Is the fact that this flags references as you are typing that are
-    #         valid once complete (like when typing 1:A1) a problem from a UX
-    #         POV? Is there a way to solve this?
-    - match: ((?:@?)(?:{{column}}:{{row}}|{{row}}:{{column}}))
-      captures:
-        1: invalid.illegal.excel
-      pop: 1
 
   maybe-union-operator:
     - match: '[ ]{{before_reference}}'
