@@ -218,7 +218,7 @@ contexts:
     # Update: Function naming for user defined functions appears to follow the same rules as tables. Pattern from table copied here. (capture group 1 was previously '([A-Za-z\.]+)').
     #         e.g., T\?es.t1Test() is a valid function name.
     # User defined and/or functions not included in the builtins. May currently not work for some users (see comment above builtins).
-    - match: \b([\w.?\\]+)(\()
+    - match: \b([\w\\][\w.?\\]+[\w?\\])(\()
       captures:
         1: meta.function-call.excel variable.function.excel
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
