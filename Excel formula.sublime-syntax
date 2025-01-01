@@ -292,6 +292,13 @@ contexts:
   cell-or-range-reference-body:
     - meta_scope: meta.reference.excel
 
+    # Try to avoid matching names with numbers in the middle.
+    # TODO: Is there a more kosher way or location to do this?
+    #       the important part here is that we prevent something like 't1'
+    #       from being matched as a cell in a name 't1test'
+    - match: ([A-Za-z\\?.]+[0-9]+[A-Za-z\\?.]+)
+      pop: 1
+
     # In combination, the following blocks match:
     # A1    'cell' references
     # A1#   dynamic array references
@@ -301,21 +308,12 @@ contexts:
     # A1:B  Google-Sheets-specific references
     # A:B1  Google-Sheets-specific references
 
-    # Try AGAIN to avoid matching names with numbers in the middle.
-    - match: ([A-Za-z]+[0-9][A-Za-z]+)
-      pop: 1
-
     - match: (@?)({{cell}})(#?)(?![:#])
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: keyword.operator.reference.excel
       set: maybe-union-operator
-
-    # Try to avoid matching names with numbers in the middle of them as cells.
-    # TODO: Is there a more kosher way to do this?
-    - match: \b[\w.?\\]+[0-9][\w.?\\]+
-      pop: 1
 
     # Cell range
     # A1:B2
