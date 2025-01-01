@@ -353,27 +353,6 @@ contexts:
         4: storage.type.excel
       set: maybe-union-operator
 
-    # Cell to column-or-row, for Google Sheets
-    # The @ operator is not available
-    # A1:B
-    # A1:2
-    - match: ({{cell}})(?:(:)({{column}}|{{row}}))
-      captures:
-        1: storage.type.excel
-        2: punctuation.separator.sequence.excel
-        3: storage.type.excel
-      set: maybe-union-operator
-
-    # Column to cell, for Google Sheets
-    # The @ operator is not available
-    # A:B2
-    - match: ({{column}})(:)({{cell}})
-      captures:
-        1: storage.type.excel
-        2: punctuation.separator.sequence.excel
-        3: storage.type.excel
-      set: maybe-union-operator
-
     # Column to column
     # A:B
     # @A:B
@@ -383,16 +362,6 @@ contexts:
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      set: maybe-union-operator
-
-    # Row to cell for Google Sheets
-    # The @ operator is not available
-    # 1:B2
-    - match: ({{row}})(:)({{cell}})
-      captures:
-        1: storage.type.excel
-        2: punctuation.separator.sequence.excel
-        3: storage.type.excel
       set: maybe-union-operator
 
     # Row to row
@@ -406,8 +375,41 @@ contexts:
         4: storage.type.excel
       set: maybe-union-operator
 
+    - include: reference-body-google
+
     # Bail if nothing matches
     - include: immediately-pop
+
+  reference-body-google:
+    # The @ operator is not available in Google Sheets
+
+    # Cell to column-or-row
+    # A1:B
+    # A1:2
+    - match: ({{cell}})(?:(:)({{column}}|{{row}}))
+      captures:
+        1: storage.type.excel
+        2: punctuation.separator.sequence.excel
+        3: storage.type.excel
+      set: maybe-union-operator
+
+    # Column to cell
+    # A:B2
+    - match: ({{column}})(:)({{cell}})
+      captures:
+        1: storage.type.excel
+        2: punctuation.separator.sequence.excel
+        3: storage.type.excel
+      set: maybe-union-operator
+
+    # Row to cell
+    # 1:B2
+    - match: ({{row}})(:)({{cell}})
+      captures:
+        1: storage.type.excel
+        2: punctuation.separator.sequence.excel
+        3: storage.type.excel
+      set: maybe-union-operator
 
   maybe-union-operator:
     - match: '[ ]{{before_reference}}'
