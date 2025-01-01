@@ -220,41 +220,41 @@ TEXTJOIN(";",FALSE,valmax)
 '''[ BAD REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 =@A1#:B
-'^^^^^^ - meta.reference - keyword
+'^^^^^^ - storage - keyword
 =@A1#:B#
-'^^^^^^^ - meta.reference - keyword
+'^^^^^^^ - storage - keyword
 =@A1:B#
 '^ - keyword
 '     ^ - keyword
 =@A#:B
-'^^^^^ - meta.reference - keyword
+'^^^^^ - storage - keyword
 =@A#:B#
-'^^^^^^ - meta.reference - keyword
+'^^^^^^ - storage - keyword
 =@A:B#
-'    ^ - meta.reference - keyword
+'    ^ - storage - keyword
 =@A#:B2
-'^^^^ - meta.reference - keyword
+'^^^^ - storage - keyword
 =@A#:B2#
-'^^^^ - meta.reference - keyword
+'^^^^ - storage - keyword
 =@A:B2#
-'    ^^ - meta.reference - keyword
+'    ^^ - storage - keyword
 =@1#:2
-'^^^^^ - meta.reference - keyword
+'^^^^^ - storage - keyword
 =@1#:2#
-'^^^^^^ - meta.reference - keyword
+'^^^^^^ - storage - keyword
 =@1:2#
-'    ^ - meta.reference - keyword
+'    ^ - storage - keyword
 =@1#:B2
-'^^^^ - meta.reference - keyword
+'^^^^ - storage - keyword
 =@1#:B2#
-'^^^^ - meta.reference - keyword
+'^^^^ - storage - keyword
 =@1:B2#
-'^ - meta.reference - keyword
-'     ^ - meta.reference - keyword
+'^ - storage - keyword
+'     ^ - storage - keyword
 =@A1:B
-'^ - meta.reference - keyword
+'^ - storage - keyword
 =@A1:2
-'^ - meta.reference - keyword
+'^ - storage - keyword
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
