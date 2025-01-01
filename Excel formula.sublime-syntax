@@ -23,7 +23,7 @@ variables:
   sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
   string_wildcard: '[*?]'
   # function_name: (?:[A-Za-z\d.]+)
-
+  before_reference: (?=[#@]?{{cell}}|(?:(?:{{column}}|{{row}}):(?:{{column}}|{{row}})))
 
   # A French MacOS user on dev channel build 4168 was having issues with functions specific to Google Sheets not highlighting properly.
   # They put together the following updated function_builtins list.
@@ -286,7 +286,7 @@ contexts:
   #   {{cell}}:{{cell}} pattern.
 
   cell-or-range-reference:
-    - match: (?=[#@]?{{cell}}|(?:(?:{{column}}|{{row}}):(?:{{column}}|{{row}})))
+    - match: '{{before_reference}}'
       push: cell-or-range-reference-body
 
   cell-or-range-reference-body:
@@ -304,6 +304,7 @@ contexts:
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
+      set: maybe-union-operator
 
     # Try to avoid matching names with numbers in the middle of them as cells.
     # TODO: Is there a more kosher way to do this?
@@ -316,7 +317,7 @@ contexts:
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      pop: 1
+      set: maybe-union-operator
 
     - match: ([#@]?)({{column}})(:)({{cell}}|{{column}})
       captures:
@@ -324,7 +325,7 @@ contexts:
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      pop: 1
+      set: maybe-union-operator
 
     - match: ([#@]?)({{row}})(:)({{cell}}|{{row}})
       captures:
@@ -332,7 +333,7 @@ contexts:
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      pop: 1
+      set: maybe-union-operator
 
     # Update: Flag illegal A:1 and 1:A references.
     # Note:   Is the fact that this flags references as you are typing that are
@@ -342,6 +343,11 @@ contexts:
       captures:
         1: invalid.illegal.excel
       pop: 1
+
+  maybe-union-operator:
+    - match: '[ ]{{before_reference}}'
+      scope: keyword.operator.set.excel
+      set: cell-or-range-reference-body
 
     # Bail if nothing matches
     - include: immediately-pop

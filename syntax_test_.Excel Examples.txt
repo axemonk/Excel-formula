@@ -123,8 +123,8 @@ TEXTJOIN(";",FALSE,valmax)
 =@$A1:A10
 
 =SUM(B7:D7 C6:C8)
-''         ^ keyword.operator.reference
-' Disable for now
+'         ^ keyword.operator.set
+' TODO: Fix keyword also getting meta.reference
 
 =#VALUE!
 
