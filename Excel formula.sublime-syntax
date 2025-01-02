@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 name: Excel formula
-# Made by _alco and michaelblyons. Thanks to acid_form for the first key bug reports we've received and for the updated builtin function list with Google Sheets functions added.
+# Made by _alco and @michaelblyons. Thanks to acid_form for the first key bug reports we've received and for the updated builtin function list with Google Sheets functions added.
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to _alco via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
