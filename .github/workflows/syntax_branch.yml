@@ -1,0 +1,33 @@
+name: Syntax Tests Branch
+# https://github.com/sublimetext/syntax-test-action
+
+on:
+  push:
+    paths:
+      - '**.sublime-syntax'
+      - '**/syntax_test*'
+      - '**.tmPreferences'
+  pull_request:
+    paths:
+      - '**.sublime-syntax'
+      - '**/syntax_test*'
+      - '**.tmPreferences'
+
+jobs:
+  syntax_tests:
+    name: Syntax Tests Branch (${{ matrix.build }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        include:
+          - build: 'latest'
+          # - build: 3211  # libgl1-mesa-glx is not available on ubuntu-latest SublimeText/syntax-action#17
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: 'axemonk/Excel-formula/tree/axemonk-patch-1'
+      - uses: SublimeText/syntax-test-action@v2
+        with:
+          build: ${{ matrix.build }}
+          package_name: 'Excel formula'
