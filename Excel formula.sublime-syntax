@@ -5,7 +5,7 @@ name: Excel formula
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to _alco via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.4.2 1/1/2025
+# v2.5.0 1/1/2025
 file_extensions: []
 scope: source.excel
 version: 2
