@@ -314,21 +314,20 @@ contexts:
         3: keyword.operator.reference.excel
       set: maybe-union-operator
 
-    # # Zero-dimensional cell range w/ dynamics
-    # # Cannot use sregex
-    # # A1#:A1#
-    # # A1:A1#
-    # # @A1#:A1#
-    # # @A1:A1#
-    # - match: (@?)({{cell}})(#?)(:)(\2)(#)
-    #   captures:
-    #     1: keyword.operator.reference.excel
-    #     2: storage.type.excel
-    #     3: keyword.operator.reference.excel
-    #     4: punctuation.separator.sequence.excel
-    #     5: storage.type.excel
-    #     6: keyword.operator.reference.excel
-    #   set: maybe-union-operator
+    # Zero-dimensional cell range w/ dynamics
+    # A1#:A1#
+    # A1:A1#
+    # @A1#:A1#
+    # @A1:A1#
+    - match: (@?)({{cell}})(#?)(:)(\2)(#)
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: keyword.operator.reference.excel
+        4: punctuation.separator.sequence.excel
+        5: storage.type.excel
+        6: keyword.operator.reference.excel
+      set: maybe-union-operator
 
     # Cell range with dynamics
     # A1#:B2
