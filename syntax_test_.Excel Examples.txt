@@ -27,51 +27,101 @@ TEXTJOIN(";",FALSE,valmax)
 
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
-=Table1[Col]-2.5   
+=-1
+
+=-1=-1
+
+=Table1[Col]-2.5
+
+=IF()
+' <- keyword.operator.assignment.excel
+'^^ meta.function-call.excel keyword.control.conditional.if.excel
+'  ^^ meta.function-call.arguments.excel
+'  ^ punctuation.section.arguments.begin.excel
+'   ^ punctuation.section.arguments.end.excel
+=IFS()
+' <- keyword.operator.assignment.excel
+'^^^ meta.function-call.excel keyword.control.conditional.if.excel
+'   ^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'    ^ punctuation.section.arguments.end.excel
+=IFERROR()
+' <- keyword.operator.assignment.excel
+'^^^^^^^ meta.function-call.excel keyword.control.conditional.if.excel
+'       ^^ meta.function-call.arguments.excel
+'       ^ punctuation.section.arguments.begin.excel
+'        ^ punctuation.section.arguments.end.excel
+=IFNA()
+' <- keyword.operator.assignment.excel
+'^^^^ meta.function-call.excel keyword.control.conditional.if.excel
+'    ^^ meta.function-call.arguments.excel
+'    ^ punctuation.section.arguments.begin.excel
+'     ^ punctuation.section.arguments.end.excel
+=SWITCH()
+' <- keyword.operator.assignment.excel
+'^^^^^^ meta.function-call.excel keyword.control.conditional.if.excel
+'      ^^ meta.function-call.arguments.excel
+'      ^ punctuation.section.arguments.begin.excel
+'       ^ punctuation.section.arguments.end.excel
+
+=AND()
+' <- keyword.operator.assignment
+'^^^ meta.function-call.excel keyword.operator.logical.excel
+'   ^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'    ^ punctuation.section.arguments.end.excel
+=OR()
+' <- keyword.operator.assignment
+'^^ meta.function-call.excel keyword.operator.logical.excel
+'  ^^ meta.function-call.arguments.excel
+'  ^ punctuation.section.arguments.begin.excel
+'   ^ punctuation.section.arguments.end.excel
+=XOR()
+' <- keyword.operator.assignment
+'^^^ meta.function-call.excel keyword.operator.logical.excel
+'   ^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'    ^ punctuation.section.arguments.end.excel
+=NOT()
+' <- keyword.operator.assignment
+'^^^ meta.function-call.excel keyword.operator.logical.excel
+'   ^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'    ^ punctuation.section.arguments.end.excel
 
 =1>0
 ' <- keyword.operator.assignment
 ' ^ keyword.operator.logical
 '^ constant.numeric.value
 '  ^ constant.numeric.value
-
 =A1>=A2
 ' <- keyword.operator.assignment
 '  ^^ keyword.operator.logical
-
 =A1<=A2
 ' <- keyword.operator.assignment
 '  ^^ keyword.operator.logical
-
 =A1<>A2
 ' <- keyword.operator.assignment
 '  ^^ keyword.operator.logical
-
 =A1=A2
 ' <- keyword.operator.assignment
 '  ^ keyword.operator.logical
 
-
 =A1>>A2
 ' <- keyword.operator.assignment
 '  ^^ invalid.illegal
-
 =A1<<A2
 ' <- keyword.operator.assignment
 '  ^^ invalid.illegal
-
 =A1==A2
 ' <- keyword.operator.assignment
 '  ^^ invalid.illegal
-
 =A1><A2
 ' <- keyword.operator.assignment
 '  ^^ invalid.illegal
-
 =A1=<A2
 ' <- keyword.operator.assignment
 '  ^^ invalid.illegal
-
 =A1=>A2
 ' <- keyword.operator.assignment
 '  ^^ invalid.illegal
@@ -79,38 +129,29 @@ TEXTJOIN(";",FALSE,valmax)
 =#NULL!
 ' <- keyword.operator.assignment
 '^^^^^^ constant.language.null - constant.language.nan.excel - constant.language.excel
-
 =#NUM!
 ' <- keyword.operator.assignment
 '^^^^^ constant.language.nan - constant.language.excel - constant.language.null
-
 =#DIV/0!
 ' <- keyword.operator.assignment
 '^^^^^^^ constant.language.nan - constant.language.excel - constant.language.null
-
 =#N/A
 ' <- keyword.operator.assignment
 '^^^^ constant.language.excel - constant.language.nan - constant.language.null
-
 =#VALUE!
 ' <- keyword.operator.assignment
 '^^^^^^^ constant.language.excel - constant.language.nan - constant.language.null
-
 =#REF!
 ' <- keyword.operator.assignment
 '^^^^^ constant.language.excel - constant.language.nan - constant.language.null
-
 =#NAME?
 ' <- keyword.operator.assignment
 '^^^^^^ constant.language.excel - constant.language.nan - constant.language.null
-
 =#GETTING_DATA
 ' <- keyword.operator.assignment
 '^^^^^^^^^^^^^ constant.language.excel - constant.language.nan - constant.language.null
-
 =TRUE
 '^^^^ constant.language.boolean.true.excel
-
 =FALSE
 '^^^^^ constant.language.boolean.false.excel
 
@@ -159,34 +200,55 @@ TEXTJOIN(";",FALSE,valmax)
 '    ^ punctuation.separator.sequence.excel
 '     ^^ storage.type.excel
 '       ^ keyword.operator.reference.excel
+=A1:A1#
+' <- keyword.operator.assignment.excel
+'^^^^^^ meta.reference.excel
+'^^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^^ storage.type.excel
+'     ^ keyword.operator.reference.excel
+=@A1:A1#
+' <- keyword.operator.assignment.excel
+'^^^^^^^ meta.reference.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+'      ^ keyword.operator.reference.excel
 =A1:B2
+' <- keyword.operator.assignment.excel
 '^^^^^ meta.reference.excel
 '^^ storage.type.excel
 '  ^ punctuation.separator.sequence.excel
 '   ^^ storage.type.excel
 =@A1:B2
+' <- keyword.operator.assignment.excel
 '^^^^^^ meta.reference.excel
 '^ keyword.operator.reference.excel
 ' ^^ storage.type.excel
 '   ^ punctuation.separator.sequence.excel
 '    ^^ storage.type.excel
 =A:B
+' <- keyword.operator.assignment.excel
 '^^^ meta.reference.excel
 '^ storage.type.excel
 ' ^ punctuation.separator.sequence.excel
 '  ^ storage.type.excel
 =@A:B
+' <- keyword.operator.assignment.excel
 '^^^^ meta.reference.excel
 '^ keyword.operator.reference.excel
 ' ^ storage.type.excel
 '  ^ punctuation.separator.sequence.excel
 '   ^ storage.type.excel
 =1:2
+' <- keyword.operator.assignment.excel
 '^^^ meta.reference.excel
 '^ storage.type.excel
 ' ^ punctuation.separator.sequence.excel
 '  ^ storage.type.excel
 =@1:2
+' <- keyword.operator.assignment.excel
 '^^^^ meta.reference.excel
 '^ keyword.operator.reference.excel
 ' ^ storage.type.excel
@@ -255,29 +317,20 @@ TEXTJOIN(";",FALSE,valmax)
 '^ - storage - keyword
 =@A1:2
 '^ - storage - keyword
+=A1:A2#
+'     ^ - storage - keyword
+=@A1:A2#
+'      ^ - storage - keyword
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-=A1<=B1
-
-=A1<>B1
-
-=@$A1:A10
 
 =SUM(B7:D7 C6:C8)
 '         ^ keyword.operator.set
 ' TODO: Fix keyword also getting meta.reference
 
-=#VALUE!
-
-=-1
-
-=-1=-1
-
-="hello world"
 
 =IF(골드_강화_효율!D12=골드_강화_효율!F25,"MAX",(Z17-100%)/골드_강화_효율!E12)
-'^^ meta.function-call.excel support.function.excel
+'^^ meta.function-call.excel keyword.control.conditional.if
 '  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
 '  ^ punctuation.section.arguments.begin.excel
 '   ^^^^^^^^^^^^ meta.reference.excel
@@ -356,7 +409,7 @@ TEXTJOIN(";",FALSE,valmax)
 '                           ^ punctuation.definition.string.end.excel
 
 =IF(C23="1차","",IF(C23="2차","(x 1.5)",IF(C23="3차","(x 2)")))
-'^^ meta.function-call.excel support.function.excel
+'^^ meta.function-call.excel keyword.control.conditional.if
 '  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
 '  ^ punctuation.section.arguments.begin.excel
 '   ^^^ meta.reference.excel storage.type.excel
@@ -369,7 +422,7 @@ TEXTJOIN(";",FALSE,valmax)
 '            ^ punctuation.definition.string.begin.excel
 '             ^ punctuation.definition.string.end.excel
 '              ^ punctuation.separator.sequence.excel
-'               ^^ meta.function-call.excel support.function.excel
+'               ^^ meta.function-call.excel keyword.control.conditional.if
 '                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
 '                 ^ punctuation.section.arguments.begin.excel
 '                  ^^^ meta.reference.excel storage.type.excel
@@ -382,7 +435,7 @@ TEXTJOIN(";",FALSE,valmax)
 '                           ^ punctuation.definition.string.begin.excel
 '                                   ^ punctuation.definition.string.end.excel
 '                                    ^ punctuation.separator.sequence.excel
-'                                     ^^ meta.function-call.excel support.function.excel
+'                                     ^^ meta.function-call.excel keyword.control.conditional.if
 '                                       ^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
 '                                       ^ punctuation.section.arguments.begin.excel
 '                                        ^^^ meta.reference.excel storage.type.excel
@@ -429,9 +482,9 @@ TEXTJOIN(";",FALSE,valmax)
 '^ punctuation.definition.string.begin
 '  ^ punctuation.definition.string.end
 
-does: - x - y fail only if BOTH/EITHER scope x AND/OR y is applied?
-does: - x y fail only if BOTH scope x AND y is applied?
-The second seems to be the case, not sure about the first.
+' does: - x - y fail only if BOTH/EITHER scope x AND/OR y is applied?
+' does: - x y fail only if BOTH scope x AND y is applied?
+' The second seems to be the case, not sure about the first.
 
 ="'"
 ' <- keyword.operator.assignment
@@ -680,6 +733,7 @@ wkdySouls,sOneSouls*(5/7),
 lab,[[#Headers],[GISO_1]],
 rcidd,RCIndex[[ddCol]:[ddCol]],
 rcirc,RCIndex[[rcCol]:[rcCol]],
+
 val,
 INDEX(
 XLOOKUP(
