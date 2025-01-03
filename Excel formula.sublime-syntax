@@ -5,13 +5,15 @@ name: Excel formula
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to _alco via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
-# v2.5.0 1/1/2025
+# v2.5.1 1/3/2025
 file_extensions: []
 scope: source.excel
 version: 2
 
-# TODO: figure out a way to properly scope locale-specific usage of . and , in decimal numbers. Haven't found an example of this breaking anything outright, although.
-#       if there is a simple way to match stuff conditional to user locale, swapping ;/, in arrays as column/row separators depending on locale would probably be best practice.
+# TODO: figure out a way to properly scope locale-specific usage of . and , in decimal numbers.
+#       Haven't found an example of this breaking anything outright, although.
+#       if there is a simple way to match stuff conditional to user locale,
+#       swapping ;/, in arrays as column/row separators depending on locale would probably be best practice.
 
 
 variables:
@@ -178,8 +180,10 @@ contexts:
 
 
     # TODO: think about flagging illegal names (e.g., '.hello')
-    #       this could start to get really messy now that I want to not make Google Sheets user's stuff break (I also don't like the idea of having to test a million edge cases in both Excel and Sheets).
-    # Note: Why is it that the '1' in '=LET(Test1Test,2,Test1Test)' gets scoped correctly when digits aren't specified here? does it have something to do with '/w'?
+    #       this could start to get really messy now that I want to not make Google Sheets user's stuff break
+    #       (I also don't like the idea of having to test a million edge cases in both Excel and Sheets).
+    # Note: Why is it that the '1' in '=LET(Test1Test,2,Test1Test)' gets scoped correctly when digits aren't specified here?
+    #       does it have something to do with '/w'?
     # This is really ugly and I hate it but it works.
     - match: '[\w\\][\w.?\\]+[\w?\\]'
       scope: variable.other.readwrite.excel
@@ -209,12 +213,24 @@ contexts:
 
   function-calls:
 
-    # # Can't decide whether to do things like this or not.
-    # - match: \b((?i:(?:COUNT|SUM)?IF))(\()
-    #   captures:
-    #     1: meta.function-call.excel keyword.control.conditional.if.excel
-    #     2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
-    #   push: function-call-body
+    # Update: Make logical flow functions special snowflakes
+    # Note:   Should the scope be specific to each of these?
+    #         conditional.ifs, conditional.switch etc.
+    #         or just conditional.switch and conditional.if for everything else?
+    - match: \b((?i:IF|IFS|IFERROR|IFNA|SWITCH))(\()
+      captures:
+        1: meta.function-call.excel keyword.control.conditional.if.excel
+        2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+      push: function-call-body
+
+    # Update: Make logical compator functions special snowflakes
+    # Note:   What about ISERROR ISNUMBER ISTEXT? (there are like a dozen IS... functions)
+    #         My gut tells me to leave them as functions.
+    - match: \b((?i:AND|OR|NOT|XOR))(\()
+      captures:
+        1: meta.function-call.excel keyword.operator.logical.excel
+        2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+      push: function-call-body
 
     # # TODO: LAMBDA's *last* argument is a calc. Previous args are parameters.
     # #   I don't imagine there's a good way to identify that without branching.
@@ -314,35 +330,9 @@ contexts:
         3: keyword.operator.reference.excel
       set: maybe-union-operator
 
-    # Zero-dimensional cell range w/ dynamics
-    # A1#:A1#
-    # A1:A1#
-    # @A1#:A1#
-    # @A1:A1#
-    - match: (@?)({{cell}})(#?)(:)(\2)(#)
-      captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: keyword.operator.reference.excel
-        4: punctuation.separator.sequence.excel
-        5: storage.type.excel
-        6: keyword.operator.reference.excel
-      set: maybe-union-operator
-
-    # Cell range with dynamics
-    # A1#:B2
-    # A1#:B2#
-    # @A1#:B2
-    # @A1#:B2#
-    - match: (@?)({{cell}})(#)(:)({{cell}})(#?)
-      captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: keyword.operator.reference.excel
-        4: punctuation.separator.sequence.excel
-        5: storage.type.excel
-        6: keyword.operator.reference.excel
-      set: maybe-union-operator
+    # Push to dynamic context to isolate forced anonymity to just dynamic refs
+    - match: (?=(?:@?{{cell}})(?:(?:#?:{{cell}}#)|(?:#:{{cell}}#?)))
+      push: dynamic-reference
 
     # Cell range without dynamics
     # A1:B2
@@ -414,10 +404,49 @@ contexts:
         3: storage.type.excel
       set: maybe-union-operator
 
+    # Update: Added this for symmetry.
+    # Bail if nothing matches
+    - include: immediately-pop
+
   maybe-union-operator:
     - match: '[ ]{{before_reference}}'
       scope: keyword.operator.set.excel
       set: cell-or-range-reference-body
+
+    # Bail if nothing matches
+    - include: immediately-pop
+
+  dynamic-reference:
+    # Zero-dimensional cell range w/ dynamics
+    # Verified as sregex compatible with \n but not with \k<n>
+    # A1#:A1#
+    # A1:A1#
+    # @A1#:A1#
+    # @A1:A1#
+    - match: (@?)({{cell}})(#?)(:)(\2)(#)
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: keyword.operator.reference.excel
+        4: punctuation.separator.sequence.excel
+        5: storage.type.excel
+        6: keyword.operator.reference.excel
+      set: maybe-union-operator
+
+    # Cell range with dynamics
+    # A1#:B2
+    # A1#:B2#
+    # @A1#:B2
+    # @A1#:B2#
+    - match: (@?)({{cell}})(#)(:)({{cell}})(#?)
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: keyword.operator.reference.excel
+        4: punctuation.separator.sequence.excel
+        5: storage.type.excel
+        6: keyword.operator.reference.excel
+      set: maybe-union-operator
 
     # Bail if nothing matches
     - include: immediately-pop
