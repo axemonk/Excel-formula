@@ -3,7 +3,8 @@
 Excel formula syntax highlighting for Sublime Text (with some explicit
 support for Google Sheets, although currently experimental).
 
-Potential future enhancements include explicit support for OpenOffice Calc and Mac Numbers.
+Potential future enhancements include explicit support for LibreOffice Calc
+and Mac Numbers as separate extensions of this definition.
 Using this syntax with formulae written for those programs should be more or less
 functional, although differences in things like naming rules and legal cell reference
 formats may break formatting in places.
