@@ -35,56 +35,56 @@ TEXTJOIN(";",FALSE,valmax)
 
 =IF()
 ' <- keyword.operator.assignment.excel
-'^^ meta.function-call.excel keyword.control.conditional.if.excel
+'^^ meta.function-call.excel support.function.excel keyword.control.conditional.if.excel
 '  ^^ meta.function-call.arguments.excel
 '  ^ punctuation.section.arguments.begin.excel
 '   ^ punctuation.section.arguments.end.excel
 =IFS()
 ' <- keyword.operator.assignment.excel
-'^^^ meta.function-call.excel keyword.control.conditional.if.excel
+'^^^ meta.function-call.excel support.function.excel keyword.control.conditional.if.excel
 '   ^^ meta.function-call.arguments.excel
 '   ^ punctuation.section.arguments.begin.excel
 '    ^ punctuation.section.arguments.end.excel
 =IFERROR()
 ' <- keyword.operator.assignment.excel
-'^^^^^^^ meta.function-call.excel keyword.control.conditional.if.excel
+'^^^^^^^ meta.function-call.excel support.function.excel keyword.control.conditional.if.excel
 '       ^^ meta.function-call.arguments.excel
 '       ^ punctuation.section.arguments.begin.excel
 '        ^ punctuation.section.arguments.end.excel
 =IFNA()
 ' <- keyword.operator.assignment.excel
-'^^^^ meta.function-call.excel keyword.control.conditional.if.excel
+'^^^^ meta.function-call.excel support.function.excel keyword.control.conditional.if.excel
 '    ^^ meta.function-call.arguments.excel
 '    ^ punctuation.section.arguments.begin.excel
 '     ^ punctuation.section.arguments.end.excel
 =SWITCH()
 ' <- keyword.operator.assignment.excel
-'^^^^^^ meta.function-call.excel keyword.control.conditional.if.excel
+'^^^^^^ meta.function-call.excel support.function.excel keyword.control.conditional.if.excel
 '      ^^ meta.function-call.arguments.excel
 '      ^ punctuation.section.arguments.begin.excel
 '       ^ punctuation.section.arguments.end.excel
 
 =AND()
 ' <- keyword.operator.assignment
-'^^^ meta.function-call.excel keyword.operator.logical.excel
+'^^^ meta.function-call.excel support.function.excel keyword.operator.logical.excel
 '   ^^ meta.function-call.arguments.excel
 '   ^ punctuation.section.arguments.begin.excel
 '    ^ punctuation.section.arguments.end.excel
 =OR()
 ' <- keyword.operator.assignment
-'^^ meta.function-call.excel keyword.operator.logical.excel
+'^^ meta.function-call.excel support.function.excel keyword.operator.logical.excel
 '  ^^ meta.function-call.arguments.excel
 '  ^ punctuation.section.arguments.begin.excel
 '   ^ punctuation.section.arguments.end.excel
 =XOR()
 ' <- keyword.operator.assignment
-'^^^ meta.function-call.excel keyword.operator.logical.excel
+'^^^ meta.function-call.excel support.function.excel keyword.operator.logical.excel
 '   ^^ meta.function-call.arguments.excel
 '   ^ punctuation.section.arguments.begin.excel
 '    ^ punctuation.section.arguments.end.excel
 =NOT()
 ' <- keyword.operator.assignment
-'^^^ meta.function-call.excel keyword.operator.logical.excel
+'^^^ meta.function-call.excel support.function.excel keyword.operator.logical.excel
 '   ^^ meta.function-call.arguments.excel
 '   ^ punctuation.section.arguments.begin.excel
 '    ^ punctuation.section.arguments.end.excel
