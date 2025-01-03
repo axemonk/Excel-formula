@@ -25,6 +25,8 @@ TEXTJOIN(";",FALSE,valmax)
 )
 )
 
+=test1 test2
+
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
 =-1
@@ -32,6 +34,21 @@ TEXTJOIN(";",FALSE,valmax)
 =-1=-1
 
 =Table1[Col]-2.5
+
+
+=a_\?a()
+' <- keyword.operator.assignment.excel
+'^^^^^ meta.function-call.excel variable.function.excel
+'     ^^ meta.function-call.arguments.excel
+'     ^ punctuation.section.arguments.begin.excel
+'      ^ punctuation.section.arguments.end.excel
+
+=a()
+' <- keyword.operator.assignment.excel
+'^ meta.function-call.excel variable.function.excel
+' ^^ meta.function-call.arguments.excel
+' ^ punctuation.section.arguments.begin.excel
+'  ^ punctuation.section.arguments.end.excel
 
 =IF()
 ' <- keyword.operator.assignment.excel

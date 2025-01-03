@@ -20,6 +20,8 @@ variables:
   cell: (?:\$?[A-Za-z]+\$?\d+)
   column: (?:\$?[A-Za-z]+)
   row: (?:\$?\d+)
+  name_excel: (?:[\w_\\]+[\w_?\\]*)
+  name_google: (?:[\w_]+[\w_.?]*)
   sheet_name_component_delimited: (?:'.+')
   sheet_name_component_normal: \w+
   sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
@@ -175,7 +177,7 @@ contexts:
     # Note: Why is it that the '1' in '=LET(Test1Test,2,Test1Test)' gets scoped correctly when digits aren't specified here?
     #       does it have something to do with '/w'?
     # This is really ugly and I hate it but it works.
-    - match: '[\w\\][\w.?\\]+[\w?\\]'
+    - match: '(?:{{name_excel}}|{{name_google}})'
       scope: variable.other.readwrite.excel
 
     - match: \t
@@ -246,7 +248,7 @@ contexts:
     #   same rules as tables. Pattern from table copied here. (capture group 1
     #   was previously '([A-Za-z\.]+)').
     #         e.g., T\?es.t1Test() is a valid function name.
-    - match: \b([\w\\][\w.?\\]+[\w?\\])(\()
+    - match: \b({{name_excel}}|{{name_google}})(\()
       captures:
         1: meta.function-call.excel variable.function.excel
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
