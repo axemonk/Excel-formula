@@ -161,22 +161,9 @@ contexts:
     - match: '[)}\]]'
       scope: invalid.illegal.stray-bracket-end.excel
 
-    # Update: allow for named ranges and names defined in LET functions to follow the same naming rules as table and user-defined-function names.
-    #         e.g., = LET(
-    #                   T\?es.t1Test,
-    #                   1,
-    #                   T\?es.t1Test
-    #               )
-    #         is a valid formula.
-    #         Was previously just '\w+'
-
-
     # TODO: think about flagging illegal names (e.g., '.hello')
     #       this could start to get really messy now that I want to not make Google Sheets user's stuff break
     #       (I also don't like the idea of having to test a million edge cases in both Excel and Sheets).
-    # Note: Why is it that the '1' in '=LET(Test1Test,2,Test1Test)' gets scoped correctly when digits aren't specified here?
-    #       does it have something to do with '/w'?
-    # This is really ugly and I hate it but it works.
     - match: '(?:{{name_excel}}|{{name_google}})'
       scope: variable.other.readwrite.excel
 
@@ -244,10 +231,6 @@ contexts:
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
-    # Update: Function naming for user defined functions appears to follow the
-    #   same rules as tables. Pattern from table copied here. (capture group 1
-    #   was previously '([A-Za-z\.]+)').
-    #         e.g., T\?es.t1Test() is a valid function name.
     - match: \b({{name_excel}}|{{name_google}})(\()
       captures:
         1: meta.function-call.excel variable.function.excel
