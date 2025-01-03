@@ -1,7 +1,8 @@
 # [Excel formula for Sublime Text][gh]
 
-Excel formula syntax highlighting for Sublime Text (with support for
-Google Sheets, although currently experimental).
+Excel formula syntax highlighting for Sublime Text (with some support for
+Google Sheets, although currently experimental). Potential future
+enhancements include support for OpenOffice Calc and Mac Numbers.
 
 ## Installation
 
@@ -9,8 +10,8 @@ Google Sheets, although currently experimental).
 
 ## Usage
 
-1. In Sublime, open, navigate to, or create a '.txt' file containing the Excel
-formulae you wish to be highlighted.
+1. In Sublime, open or navigate to a `.txt` file containing the Excel
+formulae you wish to be highlighted (or create a new file with `CTRL+N`).
 2. Activation options:
    - Select the "Excel formula" syntax option from the syntax selection menu at
    the bottom right of Sublime Text.
@@ -20,8 +21,8 @@ formulae you wish to be highlighted.
 
 ## Issues
 
-Please send any bug reports or suggestions to \_alco via a direct message on
-Discord or open an issue on GitHub.
+Please send any bug reports or suggestions by opening an issue on Github
+or to \_alco via a direct message on Discord.
 You can find me on the official Sublime Text Discord server.
 
 ## Credits
