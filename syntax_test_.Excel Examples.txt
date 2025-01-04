@@ -36,6 +36,46 @@ TEXTJOIN(";",FALSE,valmax)
 =Table1[Col]-2.5
 
 =@()
+=_()
+
+' Trying out new style of scope categorization here.
+' Makes annotating much faster with use of duplicate line since
+' you don't need to manually remove duplicate scopes every line.
+=LET(tst1, 1, tst2, 2, tst1+tst2)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'                               ^ punctuation.section.arguments.end.excel
+'    ^^^^ storage.type.excel
+'             ^^^^ storage.type.excel
+'                      ^^^^ storage.type.excel
+'                           ^^^^ storage.type.excel
+'          ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'                   ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'        ^ punctuation.separator.sequence.excel
+'           ^ punctuation.separator.sequence.excel
+'                 ^ punctuation.separator.sequence.excel
+'                    ^ punctuation.separator.sequence.excel
+'                          ^ keyword.operator.arithmetic.excel 
+
+=LET(test1, 1, test2, 2, test1+test2)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'                                   ^ punctuation.section.arguments.end.excel
+'    ^^^^^ variable.other.readwrite.excel
+'              ^^^^^ variable.other.readwrite.excel
+'                        ^^^^^ variable.other.readwrite.excel
+'                              ^^^^^ variable.other.readwrite.excel
+'         ^ punctuation.separator.sequence.excel
+'            ^ punctuation.separator.sequence.excel
+'                   ^ punctuation.separator.sequence.excel
+'                      ^ punctuation.separator.sequence.excel
+'                             ^ keyword.operator.arithmetic.excel 
 
 =a_\?a()
 ' <- keyword.operator.assignment.excel

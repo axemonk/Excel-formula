@@ -17,8 +17,11 @@ version: 2
 
 
 variables:
-  cell: (?:\$?[A-Za-z]+\$?\d+)
-  column: (?:\$?[A-Za-z]+)
+  # Max col index:
+  # # Excel & Libre: XFD (16,384)
+  # # Google Sheets: ZZZ (18,278)
+  cell: (?:\$?[A-Za-z]{1,3}\$?\d+)
+  column: (?:\$?[A-Za-z]{1,3})
   row: (?:\$?\d+)
   # Note to self: Underscore is included in \w
   # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
@@ -569,12 +572,10 @@ contexts:
     # MATCH
     # SEARCH
 
-  # Update: Allow commas to be used as decimal separators. Can cause scope
-  # conflict depending on locale, but allows commas and periods to be formatted
-  # the same color in most, if not all, contexts in Sublime's default color scheme
-  # # Conflict example: =SUM(0,0)
+
+  # Update: Revert previous change regarding commas as decimal separators. Makes unit tests too confusing.
   numbers:
-    - match: -?\d+(\.|,)\d*|-?(\.|,)\d+
+    - match: -?\d+(\.)\d*|-?(\.)\d+
       scope: meta.number.float.decimal.excel constant.numeric.value.excel
       captures:
         1: punctuation.separator.decimal.excel
