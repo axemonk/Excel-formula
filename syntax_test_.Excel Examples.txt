@@ -41,6 +41,10 @@ TEXTJOIN(";",FALSE,valmax)
 ' Trying out new style of scope categorization here.
 ' Makes annotating much faster with use of duplicate line since
 ' you don't need to manually remove duplicate scopes every line.
+' Note: Due to how LET arumgents work, this is an invalid formula.
+'       I've provided it here since it is dead obvious what I'm
+'       getting at when compared with the following test,
+'       which is actually a valid formula.
 =LET(tst1, 1, tst2, 2, tst1+tst2)
 ' <- keyword.operator.assignment.excel
 '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call
