@@ -57,6 +57,12 @@ variables:
         (?:{{column}}|{{row}}|{{cell}})
       )
     ))
+  before_name: |-
+    (?x:(?=
+      {{name_excel}} |
+      {{name_google}} |
+      {{name_libre}}
+    ))
 
   # Update:
   # MS Excel:
@@ -185,6 +191,7 @@ contexts:
     # Follows the same rules as functions.
     - match: '(?:{{name_excel}}|{{name_google}}|{{name_libre}})'
       scope: variable.other.readwrite.excel
+      push: maybe-union-operator
 
     # Tabs are, for the most part, illegal characters in Excel, GSheets, and LibreCalc.
     # The former errors out **except as part of a string**.
@@ -419,6 +426,9 @@ contexts:
     - match: '[ ]{{before_reference}}'
       scope: keyword.operator.set.excel
       set: cell-or-range-reference-body
+
+    - match: '[ ]{{before_name}}'
+      scope: keyword.operator.set.excel
 
     # Bail if nothing matches
     - include: immediately-pop
