@@ -20,8 +20,25 @@ variables:
   cell: (?:\$?[A-Za-z]+\$?\d+)
   column: (?:\$?[A-Za-z]+)
   row: (?:\$?\d+)
-  name_excel: (?:[\w_\\]+[\w_?\\]*)
-  name_google: (?:[\w_]+[\w_.?]*)
+  # Note to self: Underscore is included in \w
+  # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
+  #               (barring the possibility of UDF in VBA allowing '.', which they probably do)
+  name_excel: |-
+    (?x:
+      [A-Za-z_\\]+
+      [\w?\\]*
+    )
+  name_google: |-
+    (?x:
+      [A-Za-z_]+
+      [\w.?]*
+    )
+  name_libre: |-
+    (?x:
+      [_.?@`\\] |
+      [\w?$]+
+      [\w.$]*
+    )
   sheet_name_component_delimited: (?:'.+')
   sheet_name_component_normal: \w+
   sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
@@ -161,12 +178,20 @@ contexts:
     - match: '[)}\]]'
       scope: invalid.illegal.stray-bracket-end.excel
 
-    # TODO: think about flagging illegal names (e.g., '.hello')
-    #       this could start to get really messy now that I want to not make Google Sheets user's stuff break
-    #       (I also don't like the idea of having to test a million edge cases in both Excel and Sheets).
-    - match: '(?:{{name_excel}}|{{name_google}})'
+    # Capture names like those defined by LAMBDA and the various Name Managers found in these three applications.
+    # Follows the same rules as functions.
+    - match: '(?:{{name_excel}}|{{name_google}}|{{name_libre}})'
       scope: variable.other.readwrite.excel
 
+    # Tabs are, for the most part, illegal characters in Excel, GSheets, and LibreCalc.
+    # The former errors out **except as part of a string**.
+    #
+    # Syntax tests do not support tab characters whatsoever.
+    # When used in strings, tab characters are formatted correctly.
+    #
+    # The latter two convert tabs to spaces immediately upon entry, with GSheets
+    # exhibiting strange behavior (inserting a bunch of spaces in front of the cursor
+    # and a single space behind it) in the process of doing so with CTRL+V in formula edit mode.
     - match: \t
       scope: invalid.illegal.excel
 
@@ -192,7 +217,7 @@ contexts:
 
   function-calls:
 
-    # Update: Make logical flow functions special snowflakes
+    # Update: Give logical comparator functions an extra scope.
     # Note:   Should the scope be specific to each of these?
     #         conditional.ifs, conditional.switch etc.
     #         or just conditional.switch and conditional.if for everything else?
@@ -202,9 +227,11 @@ contexts:
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
-    # Update: Make logical compator functions special snowflakes
+    # Update: Give logical comparator functions an extra scope.
     # Note:   What about ISERROR ISNUMBER ISTEXT? (there are like a dozen IS... functions)
-    #         My gut tells me to leave them as functions.
+    #         My gut tells me to leave them as functions. They are very different in behavior.
+    #         AND/OR/NOT/XOR convert one or more TRUE/FALSE values to a single TRUE/FALSE value
+    #         IS... functions convert one or more values into one or more TRUE/FALSE values
     - match: \b((?i:AND|OR|NOT|XOR))(\()
       captures:
         1: meta.function-call.excel support.function.excel keyword.operator.logical.excel
@@ -231,7 +258,7 @@ contexts:
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
-    - match: \b({{name_excel}}|{{name_google}})(\()
+    - match: \b({{name_excel}}|{{name_google}}|{{name_libre}})(\()
       captures:
         1: meta.function-call.excel variable.function.excel
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
