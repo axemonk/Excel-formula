@@ -569,7 +569,7 @@ TEXTJOIN(";",FALSE,valmax)
 '^ - storage - keyword
 =@A1:2
 '^ - storage - keyword
-=A1:A2##
+=A1:A2#
 '     ^ - storage - keyword
 =@A1:A2#
 '      ^ - storage - keyword
