@@ -323,7 +323,7 @@ contexts:
       push: cell-or-range-reference-body
 
   cell-or-range-reference-body:
-    - meta_scope: meta.reference.excel
+    - meta_content_scope: meta.reference.excel
 
     # Try to avoid matching names with numbers in the middle.
     # TODO: Is there a more kosher way or location to do this?
@@ -342,7 +342,7 @@ contexts:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: keyword.operator.reference.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
     # Push to dynamic context to isolate forced anonymity to just dynamic refs
     - match: (?=(?:@?{{cell}})(?:(?:#?:{{cell}}#)|(?:#:{{cell}}#?)))
@@ -357,7 +357,7 @@ contexts:
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
     # The Google stuff
     - include: reference-body-google
@@ -371,7 +371,7 @@ contexts:
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
     # Row to row
     # 1:2
@@ -382,7 +382,7 @@ contexts:
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
     # Bail if nothing matches
     - include: immediately-pop
@@ -398,7 +398,7 @@ contexts:
         1: storage.type.excel
         2: punctuation.separator.sequence.excel
         3: storage.type.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
     # Column to cell
     # A:B2
@@ -407,7 +407,7 @@ contexts:
         1: storage.type.excel
         2: punctuation.separator.sequence.excel
         3: storage.type.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
     # Row to cell
     # 1:B2
@@ -416,16 +416,19 @@ contexts:
         1: storage.type.excel
         2: punctuation.separator.sequence.excel
         3: storage.type.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
     # Update: Added this for symmetry.
     # Bail if nothing matches
     - include: immediately-pop
 
   maybe-union-operator:
+    # Note: Is there a way to pop the meta.reference.excel scope off of the union operator? That way
+    #       union operators always scoped the exact same regardless of whether they follow a name
+    #       or a cell reference.
     - match: '[ ]{{before_reference}}'
       scope: keyword.operator.set.excel
-      set: cell-or-range-reference-body
+      push: cell-or-range-reference-body
 
     - match: '[ ]{{before_name}}'
       scope: keyword.operator.set.excel

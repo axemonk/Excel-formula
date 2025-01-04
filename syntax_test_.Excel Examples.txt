@@ -87,7 +87,23 @@ TEXTJOIN(";",FALSE,valmax)
 '^^^^ storage.type.excel
 '     ^^^^ storage.type.excel
 '    ^ keyword.operator.set.excel
-
+=tst1 test1 tst2
+'<- keyword.operator.assignment.excel
+'^^^^ meta.reference.excel storage.type.excel
+'           ^^^^ meta.reference.excel storage.type.excel
+'    ^ keyword.operator.set.excel
+'    ^ - meta.reference.excel
+'          ^ keyword.operator.set.excel
+'          ^ - meta.reference.excel
+'     ^^^^^ variable.other.readwrite.excel
+=test1 tst2 test2
+' <- keyword.operator.assignment.excel
+'^^^^^ variable.other.readwrite.excel
+'           ^^^^^ variable.other.readwrite.excel
+'     ^ keyword.operator.set.excel
+'     ^ - meta.reference.excel
+'          ^ keyword.operator.set.excel
+'          ^ - meta.reference.excel
 
 ' Single-char functions through libre (to be revisited after VBA-like UDF testing)
 =@()
