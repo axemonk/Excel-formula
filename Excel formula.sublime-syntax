@@ -23,6 +23,7 @@ variables:
   # Note to self: Underscore is included in \w
   # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
   #               (barring the possibility of UDF in VBA allowing '.', which they probably do)
+  # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
   name_excel: |-
     (?x:
       [A-Za-z_\\]+
