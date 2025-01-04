@@ -25,6 +25,22 @@ TEXTJOIN(";",FALSE,valmax)
 )
 )
 
+=LET(にほんご,1,にほんご)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'    ^^^^ variable.other.readwrite.excel
+'           ^^^^ variable.other.readwrite.excel
+
+=LET(hel4lo,4,hel4lo)
+'<- keyword.operator.assignment.excel
+'^^^^^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'    ^^^^^^ variable.other.readwrite.excel
+'             ^^^^^^ variable.other.readwrite.excel
+
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
 =-1

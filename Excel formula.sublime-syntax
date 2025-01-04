@@ -20,13 +20,15 @@ variables:
   # Max col index:
   # # Excel & Libre: XFD (16,384)
   # # Google Sheets: ZZZ (18,278)
-  cell: (?:\$?[A-Za-z]{1,3}\$?\d+)
+  cell: (?:\$?[A-Za-z]{1,3}\$?\d+(?!\w))
   column: (?:\$?[A-Za-z]{1,3})
   row: (?:\$?\d+)
-  # Note to self: Underscore is included in \w
-  # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
+  # Note to self: Underscore and 0-9 is included in \w
+  # Note:         Excel has builtin functio ns containing a '.', but does not allow names with '.' otherwise
   #               (barring the possibility of UDF in VBA allowing '.', which they probably do)
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
+
+  # TODO:         Add non-English Unicode support back in. I probably just suck at Regex. Anything that says A-Za-z_ should really be \w minus 0-9
   name_excel: |-
     (?x:
       [A-Za-z_\\]+
@@ -42,6 +44,11 @@ variables:
       [_.?@`\\] |
       [\w?$]+
       [\w.$]*
+    )
+  table_excel: |-
+    (?x:
+      [A-Za-z_\\]+
+      [\w.?\\]*
     )
   sheet_name_component_delimited: (?:'.+')
   sheet_name_component_normal: \w+
@@ -319,13 +326,6 @@ contexts:
     - include: immediately-pop
 
   cell-or-range-reference:
-
-    # Try to avoid matching names with numbers in the middle.
-    # TODO: Is there a more kosher way or location to do this?
-    #       the important part here is that we prevent something like 't1'
-    #       from being matched as a cell in a name 't1test'
-    - match: '[A-Za-z\\?.]+[0-9]+[A-Za-z\\?.]+'
-      pop: 1
 
     # Naked cell reference
     # A1
