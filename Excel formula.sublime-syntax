@@ -318,12 +318,7 @@ contexts:
       scope: entity.name.struct.excel
     - include: immediately-pop
 
-  # cell-or-range-reference:
-  #   - match: '{{before_reference}}'
-  #     push: cell-or-range-reference-body
-
-  cell-or-range-reference-body:
-    # - meta_content_scope: meta.reference.excel
+  cell-or-range-reference:
 
     # Try to avoid matching names with numbers in the middle.
     # TODO: Is there a more kosher way or location to do this?
@@ -388,9 +383,6 @@ contexts:
         4: storage.type.excel
       push: maybe-union-operator
 
-    # # Bail if nothing matches
-    # - include: immediately-pop
-
   reference-body-google:
     # The @ operator is not available in Google Sheets
 
@@ -424,10 +416,6 @@ contexts:
         2: punctuation.separator.sequence.excel
         3: storage.type.excel
       push: maybe-union-operator
-
-    # # Update: Added this for symmetry.
-    # # Bail if nothing matches
-    # - include: immediately-pop
 
   maybe-union-operator:
     - match: '[ ]{{before_reference}}'
@@ -473,10 +461,8 @@ contexts:
         6: keyword.operator.reference.excel
       push: maybe-union-operator
 
+    # Bail if nothing matches
     - include: immediately-pop
-
-    # # Bail if nothing matches
-    # - include: immediately-pop
 
   table-name:
     # Matches table name references
@@ -527,7 +513,7 @@ contexts:
 
     - include: table-name
     - include: sheet-reference
-    - include: cell-or-range-reference-body
+    - include: cell-or-range-reference
 
 ###[ GROUPS ]##################################################################
 
