@@ -47,7 +47,6 @@ variables:
   sheet_name_component_normal: \w+
   sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
   string_wildcard: '[*?]'
-  # function_name: (?:[A-Za-z\d.]+)
   before_reference: |-
     (?x:(?=
       @?  # Reference operator
@@ -301,9 +300,10 @@ contexts:
 
   sheet-reference:
     - match: (?={{sheet}}!)
-      push: [cell-or-range-reference-body, sheet-reference-body]
+      push: sheet-reference-body
 
   sheet-reference-body:
+    - meta_scope: meta.reference.excel
     - match: \!
       scope: punctuation.separator.sequence.excel
       pop: 1
@@ -318,12 +318,12 @@ contexts:
       scope: entity.name.struct.excel
     - include: immediately-pop
 
-  cell-or-range-reference:
-    - match: '{{before_reference}}'
-      push: cell-or-range-reference-body
+  # cell-or-range-reference:
+  #   - match: '{{before_reference}}'
+  #     push: cell-or-range-reference-body
 
   cell-or-range-reference-body:
-    - meta_content_scope: meta.reference.excel
+    # - meta_content_scope: meta.reference.excel
 
     # Try to avoid matching names with numbers in the middle.
     # TODO: Is there a more kosher way or location to do this?
@@ -338,6 +338,7 @@ contexts:
     # @A1
     # @A1#
     - match: (@?)({{cell}})(#?)(?![:#])
+      scope: meta.reference.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -352,6 +353,7 @@ contexts:
     # A1:B2
     # @A1:B2
     - match: (@?)({{cell}})(:)({{cell}})
+      scope: meta.reference.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -366,6 +368,7 @@ contexts:
     # A:B
     # @A:B
     - match: (@?)({{column}})(:)({{column}})
+      scope: meta.reference.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -377,6 +380,7 @@ contexts:
     # 1:2
     # @1:2
     - match: (@?)({{row}})(:)({{row}})
+      scope: meta.reference.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -384,8 +388,8 @@ contexts:
         4: storage.type.excel
       push: maybe-union-operator
 
-    # Bail if nothing matches
-    - include: immediately-pop
+    # # Bail if nothing matches
+    # - include: immediately-pop
 
   reference-body-google:
     # The @ operator is not available in Google Sheets
@@ -394,6 +398,7 @@ contexts:
     # A1:B
     # A1:2
     - match: ({{cell}})(?:(:)({{column}}|{{row}}))
+      scope: meta.reference.excel
       captures:
         1: storage.type.excel
         2: punctuation.separator.sequence.excel
@@ -403,6 +408,7 @@ contexts:
     # Column to cell
     # A:B2
     - match: ({{column}})(:)({{cell}})
+      scope: meta.reference.excel
       captures:
         1: storage.type.excel
         2: punctuation.separator.sequence.excel
@@ -412,23 +418,20 @@ contexts:
     # Row to cell
     # 1:B2
     - match: ({{row}})(:)({{cell}})
+      scope: meta.reference.excel
       captures:
         1: storage.type.excel
         2: punctuation.separator.sequence.excel
         3: storage.type.excel
       push: maybe-union-operator
 
-    # Update: Added this for symmetry.
-    # Bail if nothing matches
-    - include: immediately-pop
+    # # Update: Added this for symmetry.
+    # # Bail if nothing matches
+    # - include: immediately-pop
 
   maybe-union-operator:
-    # Note: Is there a way to pop the meta.reference.excel scope off of the union operator? That way
-    #       union operators always scoped the exact same regardless of whether they follow a name
-    #       or a cell reference.
     - match: '[ ]{{before_reference}}'
       scope: keyword.operator.set.excel
-      push: cell-or-range-reference-body
 
     - match: '[ ]{{before_name}}'
       scope: keyword.operator.set.excel
@@ -444,6 +447,7 @@ contexts:
     # @A1#:A1#
     # @A1:A1#
     - match: (@?)({{cell}})(#?)(:)(\2)(#)
+      scope: meta.reference.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -451,7 +455,7 @@ contexts:
         4: punctuation.separator.sequence.excel
         5: storage.type.excel
         6: keyword.operator.reference.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
     # Cell range with dynamics
     # A1#:B2
@@ -459,6 +463,7 @@ contexts:
     # @A1#:B2
     # @A1#:B2#
     - match: (@?)({{cell}})(#)(:)({{cell}})(#?)
+      scope: meta.reference.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
@@ -466,10 +471,12 @@ contexts:
         4: punctuation.separator.sequence.excel
         5: storage.type.excel
         6: keyword.operator.reference.excel
-      set: maybe-union-operator
+      push: maybe-union-operator
 
-    # Bail if nothing matches
     - include: immediately-pop
+
+    # # Bail if nothing matches
+    # - include: immediately-pop
 
   table-name:
     # Matches table name references
@@ -520,7 +527,7 @@ contexts:
 
     - include: table-name
     - include: sheet-reference
-    - include: cell-or-range-reference
+    - include: cell-or-range-reference-body
 
 ###[ GROUPS ]##################################################################
 

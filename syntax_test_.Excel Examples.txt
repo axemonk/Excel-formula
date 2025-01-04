@@ -40,7 +40,8 @@ TEXTJOIN(";",FALSE,valmax)
 '   ^^^^^^^ meta.function-call.arguments.excel
 '   ^ punctuation.section.arguments.begin.excel
 '         ^ punctuation.section.arguments.end.excel
-'    ^^^^^ meta.reference.excel
+'    ^^ meta.reference.excel
+'       ^^ meta.reference.excel
 '    ^^ storage.type.excel
 '       ^^ storage.type.excel
 '      ^ keyword.operator.set.excel
@@ -49,7 +50,8 @@ TEXTJOIN(";",FALSE,valmax)
 '^^^^^^^ meta.group.excel
 '^ punctuation.section.group.begin.excel
 '      ^ punctuation.section.group.end.excel
-' ^^^^^ meta.reference.excel
+' ^^ meta.reference.excel
+'    ^^ meta.reference.excel
 ' ^^ storage.type.excel
 '    ^^ storage.type.excel
 '   ^ keyword.operator.set.excel
@@ -83,7 +85,8 @@ TEXTJOIN(";",FALSE,valmax)
 '     ^ keyword.operator.set.excel
 =tst1 tst2
 ' <- keyword.operator.assignment.excel
-'^^^^^^^^^ meta.reference.excel
+'^^^^ meta.reference.excel
+'     ^^^^ meta.reference.excel
 '^^^^ storage.type.excel
 '     ^^^^ storage.type.excel
 '    ^ keyword.operator.set.excel
@@ -566,7 +569,7 @@ TEXTJOIN(";",FALSE,valmax)
 '^ - storage - keyword
 =@A1:2
 '^ - storage - keyword
-=A1:A2#
+=A1:A2##
 '     ^ - storage - keyword
 =@A1:A2#
 '      ^ - storage - keyword
