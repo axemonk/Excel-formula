@@ -35,12 +35,129 @@ TEXTJOIN(";",FALSE,valmax)
 
 =Table1[Col]-2.5
 
+
+' Single-char functions through libre (to be revisited after VBA-like UDF testing)
 =@()
+' <- keyword.operator.assignment.excel
+'^^^ meta.function-call
+'^ variable.function.excel
+' ^^ meta.function-call.arguments.excel
+' ^ punctuation.section.arguments.begin.excel
+'  ^ punctuation.section.arguments.end.excel
 =_()
+' <- keyword.operator.assignment.excel
+'^^^ meta.function-call
+'^ variable.function.excel
+' ^^ meta.function-call.arguments.excel
+' ^ punctuation.section.arguments.begin.excel
+'  ^ punctuation.section.arguments.end.excel
+=.()
+' <- keyword.operator.assignment.excel
+'^^^ meta.function-call
+'^ variable.function.excel
+' ^^ meta.function-call.arguments.excel
+' ^ punctuation.section.arguments.begin.excel
+'  ^ punctuation.section.arguments.end.excel
+=?()
+' <- keyword.operator.assignment.excel
+'^^^ meta.function-call
+'^ variable.function.excel
+' ^^ meta.function-call.arguments.excel
+' ^ punctuation.section.arguments.begin.excel
+'  ^ punctuation.section.arguments.end.excel
 
 ' Trying out new style of scope categorization here.
 ' Makes annotating much faster with use of duplicate line since
 ' you don't need to manually remove duplicate scopes every line.
+
+' Single-char names through libre
+=LET(@,1,@)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'         ^ punctuation.section.arguments.end.excel
+'    ^ variable.other.readwrite.excel
+'        ^ variable.other.readwrite.excel
+'      ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'     ^ punctuation.separator.sequence.excel
+'       ^ punctuation.separator.sequence.excel
+=LET(.,1,.)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'         ^ punctuation.section.arguments.end.excel
+'    ^ variable.other.readwrite.excel
+'        ^ variable.other.readwrite.excel
+'      ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'     ^ punctuation.separator.sequence.excel
+'       ^ punctuation.separator.sequence.excel
+=LET(_,1,_)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'         ^ punctuation.section.arguments.end.excel
+'    ^ variable.other.readwrite.excel
+'        ^ variable.other.readwrite.excel
+'      ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'     ^ punctuation.separator.sequence.excel
+'       ^ punctuation.separator.sequence.excel
+=LET(_,1,_)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'         ^ punctuation.section.arguments.end.excel
+'    ^ variable.other.readwrite.excel
+'        ^ variable.other.readwrite.excel
+'      ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'     ^ punctuation.separator.sequence.excel
+'       ^ punctuation.separator.sequence.excel
+=LET(?,1,?)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'         ^ punctuation.section.arguments.end.excel
+'    ^ variable.other.readwrite.excel
+'        ^ variable.other.readwrite.excel
+'      ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'     ^ punctuation.separator.sequence.excel
+'       ^ punctuation.separator.sequence.excel
+=LET(`,1,`)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'         ^ punctuation.section.arguments.end.excel
+'    ^ variable.other.readwrite.excel
+'        ^ variable.other.readwrite.excel
+'      ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'     ^ punctuation.separator.sequence.excel
+'       ^ punctuation.separator.sequence.excel
+=LET(\,1,\)
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.excel
+'   ^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'         ^ punctuation.section.arguments.end.excel
+'    ^ variable.other.readwrite.excel
+'        ^ variable.other.readwrite.excel
+'      ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+'     ^ punctuation.separator.sequence.excel
+'       ^ punctuation.separator.sequence.excel
+
+
+
 ' Note: Due to how LET arumgents work, this is an invalid formula.
 '       I've provided it here since it is dead obvious what I'm
 '       getting at when compared with the following test,
