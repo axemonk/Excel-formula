@@ -35,6 +35,7 @@ TEXTJOIN(";",FALSE,valmax)
 
 =Table1[Col]-2.5
 
+=@()
 
 =a_\?a()
 ' <- keyword.operator.assignment.excel
@@ -42,6 +43,7 @@ TEXTJOIN(";",FALSE,valmax)
 '     ^^ meta.function-call.arguments.excel
 '     ^ punctuation.section.arguments.begin.excel
 '      ^ punctuation.section.arguments.end.excel
+
 
 =a()
 ' <- keyword.operator.assignment.excel
