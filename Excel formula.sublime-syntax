@@ -24,6 +24,8 @@ variables:
   # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
   #               (barring the possibility of UDF in VBA allowing '.', which they probably do)
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
+  # TODO:         Figure out why legal single character names defined by name_libre don't match as functions.
+  #               (e.g. in '=@()' '@' matches as a readwrite var and not a function)
   name_excel: |-
     (?x:
       [A-Za-z_\\]+
@@ -156,7 +158,6 @@ contexts:
 
   comments-text-marker:
     # Pretend that the weird plain-text marker Excel uses is a comment
-    # TODO: allow this to be used after the start of the document.
     - match: ^\'
       scope: punctuation.definition.comment.begin.excel
       # scope: punctuation.definition.string.begin.excel
