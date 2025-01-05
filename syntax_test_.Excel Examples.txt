@@ -25,6 +25,8 @@ TEXTJOIN(";",FALSE,valmax)
 )
 )
 
+=LET(hello,H3.summary,LOWER(hello))
+
 =LET(にほんご,1,にほんご)
 ' <- keyword.operator.assignment.excel
 '^^^^^^^^^^^^^^^^ meta.function-call
