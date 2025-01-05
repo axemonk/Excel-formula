@@ -25,23 +25,46 @@ TEXTJOIN(";",FALSE,valmax)
 )
 )
 
-=LET(hello,H3.summary,LOWER(hello))
-
 =LET(にほんご,1,にほんご)
 ' <- keyword.operator.assignment.excel
 '^^^^^^^^^^^^^^^^ meta.function-call
 '^^^ support.function.excel
 '   ^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'               ^ punctuation.section.arguments.end.excel
 '    ^^^^ variable.other.readwrite.excel
 '           ^^^^ variable.other.readwrite.excel
-
+'        ^ punctuation.separator.sequence.excel
+'          ^ punctuation.separator.sequence.excel
+'         ^ meta.number.integer.decimal.excel constant.numeric.value.excel
 =LET(hel4lo,4,hel4lo)
 '<- keyword.operator.assignment.excel
 '^^^^^^^^^^^^^^^^^^^^ meta.function-call
 '^^^ support.function.excel
 '   ^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'   ^ punctuation.section.arguments.begin.excel
+'                   ^ punctuation.section.arguments.end.excel
 '    ^^^^^^ variable.other.readwrite.excel
 '             ^^^^^^ variable.other.readwrite.excel
+'          ^ punctuation.separator.sequence.excel
+'            ^ punctuation.separator.sequence.excel
+'           ^ meta.number.integer.decimal.excel constant.numeric.value.excel
+
+'Avoid breaking or inadvertently changing Google Sheets Smart Chip references if possible/practical.
+=A2.date
+'^^ meta.reference.excel storage.type.excel
+'  ^^^^^ - meta
+'  ^ - variable - storage
+'   ^^^^ variable.other.readwrite.excel
+=LET(hello,H3.summary,LOWER(hello))
+'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.excel
+'          ^^ meta.reference.excel storage.type.excel
+'            ^^^^^^^^ - meta.reference.excel
+'            ^ - variable - storage
+'             ^^^^^^^ variable.other.readwrite.excel
+'         ^ punctuation.separator.sequence.excel
+'                    ^ punctuation.separator.sequence.excel
+
 
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
