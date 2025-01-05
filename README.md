@@ -4,10 +4,14 @@ Excel formula syntax highlighting for Sublime Text (with some explicit
 support for Google Sheets, although currently experimental).
 
 Potential future enhancements include explicit support for LibreOffice Calc
-and Mac Numbers as separate extensions of this definition.
+and Mac Numbers as separate extensions of this definition and potentially configurable
+on demand through the command palette.
 Using this syntax with formulae written for those programs should be more or less
 functional, although differences in things like naming rules and legal cell reference
 formats may break formatting in places.
+Explicit support for locales/users that use a decimal separator other than `.`, row
+and column separators in arrays other than `,` and `;`, and argument separators in functions
+other than `,` is planned in a similar manner.
 
 ## Installation
 
