@@ -29,6 +29,7 @@ variables:
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
 
   # TODO:         Add non-English Unicode support back in. I probably just suck at Regex. Anything that says A-Za-z_ should really be \w minus 0-9
+  #               The only reason non-English Unicode still works is because of the \w in name_libre.
   name_excel: |-
     (?x:
       [A-Za-z_\\]+
