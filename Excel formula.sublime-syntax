@@ -15,7 +15,6 @@ version: 2
 #       if there is a simple way to match stuff conditional to user locale,
 #       swapping ;/, in arrays as column/row separators depending on locale would probably be best practice.
 
-
 variables:
   # Max col index:
   # # Excel & Libre: XFD (16,384)
@@ -38,9 +37,12 @@ variables:
       [\w&&[^0-9]]+
       [\w.?]*
     )
+  # Note: Negative lookahead prevents this pattern from chaining matches like in '@name' (i.e., only a single '@' is a valid name).
+  # TODO: Is there a better way to do this?
   name_libre: |-
     (?x:
-      [_.?@`\\] |
+      [_.?@`\\]
+      (?![\w?$]+[\w.$]*) |
       [\w?$]+
       [\w.$]*
     )
@@ -48,6 +50,15 @@ variables:
     (?x:
       [\w\\&&[^0-9]]+
       [\w.?\\]*
+    )
+  table_google: (?# WIP)
+  # Libre does not support tables
+  function_excel: (?# WIP)
+  function_google: (?# WIP)
+  function_libre: |-
+    (?x:
+      [A-Za-z]+
+      [\w]*
     )
   sheet_name_component_delimited: (?:'.+')
   sheet_name_component_normal: \w+
