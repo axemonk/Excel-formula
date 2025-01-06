@@ -75,9 +75,18 @@ variables:
       [A-Za-z]+
       [\w]*
     )
-  sheet_name_component_delimited: (?:'.+')
-  sheet_name_component_normal: \w+
-  sheet: (?:(?:{{sheet_name_component_delimited}}|{{sheet_name_component_normal}})+)
+  #sheet_name_component_delimited_excel: (?:'[^*/?\[\]\\]+')
+  sheet_name_component_delimited_excel: (?:(?:'[^*/?\[\]\\]+('')*[^*/?\[\]\\]+')|(?:'[^*/?\[\]\\]+'))
+  sheet_name_component_delimited_google: (?:'.+')
+
+  # Dummy patterns for that sweet YAML syntax highlighting
+  Pattern that Excel will auto escape/delimit with `'`: '^[0-9]'
+  Pattern that Google Sheets will auto escape/delimit with `'`: '^[_[0-9]]'
+
+  sheet_name_component_normal_excel: \w+
+  sheet_name_component_normal_google: '[\w ]+'
+  # sheet: (?:(?:{{sheet_name_component_delimited_excel}}|{{sheet_name_component_delimited_google}}|{{sheet_name_component_normal_excel}})+)
+  sheet: (?:(?:{{sheet_name_component_delimited_excel}}|{{sheet_name_component_normal_excel}})+)
   string_wildcard: '[*?]'
   before_reference: |-
     (?x:(?=
@@ -346,7 +355,7 @@ contexts:
         - match: (')
           scope: punctuation.definition.annotation.end.excel
           pop: 1
-    - match: '{{sheet_name_component_normal}}'
+    - match: '{{sheet_name_component_normal_excel}}'
       scope: entity.name.struct.excel
     - include: immediately-pop
 

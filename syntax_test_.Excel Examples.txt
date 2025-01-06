@@ -883,6 +883,14 @@ TEXTJOIN(";",FALSE,valmax)
 '^^^^^^ entity.name.struct
 '      ^ punctuation.separator.sequence - entity
 
+='s''''s'!N36
+' <- keyword.operator.assignment
+'^^^^^^^^^^^^ meta.reference - meta meta
+'            ^ - meta.reference
+'^^^^^^^^ entity.name.struct
+'        ^ punctuation.separator.sequence - entity
+
+
 
 =Table36[[#All],[ほあうぃふぉあうぃ]]
 ' <- keyword.operator.assignment
@@ -950,6 +958,15 @@ TEXTJOIN(";",FALSE,valmax)
 '         ^ punctuation.section.brackets.begin - entity
 '          ^^^^ storage.type
 '              ^ punctuation.section.brackets.end
+
+
+
+
+
+' illegal in Excel. Legal in Sheets.
+'='['!A1
+
+='^'!A1
 
 =-1
 '^ keyword.operator.arithmetic
