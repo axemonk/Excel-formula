@@ -249,7 +249,7 @@ contexts:
     #
     # The latter two convert tabs to spaces immediately upon entry, with GSheets
     # exhibiting strange behavior (inserting a bunch of spaces in front of the cursor
-    # and a single space behind it) in the process of doing so with CTRL+V in formula edit mode.
+    # and a single space behind it) in the process of doing so with CTRL+V in formula/cell edit mode.
     - match: \t
       scope: invalid.illegal.excel
 
@@ -541,7 +541,7 @@ contexts:
       scope: punctuation.section.brackets.begin.excel
       push: table-name-body
 
-    # Anything that should't match but could otherwise be within the body
+    # Anything that shouldn't match but could otherwise be within the body
     # Technically, we could do `.`, but that slows down tokenization
     - match: '[^#@\[\]]+'
       scope: storage.type.excel
