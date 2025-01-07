@@ -58,7 +58,7 @@ variables:
   #       These tables are referenced like =Table[Column1], exactly like Excel tables, and support the `#` table operator and `,` table argument
   #       separator, like in =Table1[[#HEADERS],[Column1]]. But do not (yet) support use of the `@` table operator for relative row referencing.
   #
-  #       Something I discovered recently: Google Sheets has objects called "smart chips" which are a fancy way to embedd things from the
+  #       Something I discovered recently: Google Sheets has objects called "smart chips" which are a fancy way to embed things from the
   #       Google Drive ecosystem, like calendar events and documents. These Smart Chips have attributes which can be referenced with `.`
   #       e.g., =A2.url returns the url for a calendar event Smart Chip located in cell A2.
   #
