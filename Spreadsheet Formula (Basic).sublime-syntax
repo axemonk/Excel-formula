@@ -80,20 +80,20 @@ variables:
       [A-Za-z]+
       [\w]*
     )
-  #sheet_name_delimited_excel: (?:'[^*/?\[\]\\]+')
+
   # TODO: Is there a cleaner more compact (and probably more efficient) way to do this? `'` are only legal in excel sheet names when padded on either
-  #       end with a legal character matched by [^*/?\[\]\\] and said `'` must come in pairs. Single character sheet names are otherwise legal,
-  #       and are delimited when containing characters matching [^*/?\[\]\\&[\w]] (not sure if that pattern is correct actually).
+  #       end with a legal character matched by [^*/?\[\]\\] and said `'` must come in pairs.
   sheet_name_delimited_excel: (?:(?:'[^*/?\[\]\\]+('')*[^*/?\[\]\\]+')|(?:'[^*/?\[\]\\]+'))
-  # Note: The shortest possible reference for a sheet named `'` is `''''!`
   sheet_name_delimited_google: (?:(?:'[^']'+)|(?:'[^']*(?:'')+[^']*'))
 
   # Dummy patterns for that sweet YAML syntax highlighting
-  Pattern that Excel will auto escape/delimit with `'`: '^\d+\w+'
-  Pattern that Google Sheets will auto escape/delimit with `'`: '^[_\d]+\w+'
+  # # Not exhaustive. The fact that I'm not testing combinations of spec chars complicates this...
+  Pattern that Excel will auto escape/delimit with `'`: '^\d+\w*'
+  Pattern that Google Sheets will auto escape/delimit with `'`: '^[\d_.?$]+\w*'
+  # #                                                                      ^^^ ...for example, this is naive until tested.
 
-  sheet_name_normal_excel: \w+
-  sheet_name_normal_google: '[\w ]+'
+  sheet_name_normal_excel: '[\w&&[^0-9]]+\w*'
+  sheet_name_normal_google: '[\w]+[\w.?]*'
   sheet: (?:(?:{{sheet_name_delimited_excel}}|{{sheet_name_delimited_google}}|{{sheet_name_normal_excel}}))
 
   string_wildcard: '[*?]'
@@ -319,14 +319,13 @@ contexts:
     - match: \!
       scope: punctuation.separator.sequence.sheet
       pop: 1
-    - match: (')
+    - match: \'
       scope: punctuation.definition.annotation.begin.sheet
       push:
         - meta_content_scope: entity.name.struct.sheet
-        - match: ('')
-          captures:
-            1: constant.character.escape.sheet
-        - match: ('(?=!))
+        - match: \'\'
+          scope: constant.character.escape.sheet
+        - match: \'(?=!)
           scope: punctuation.definition.annotation.end.sheet
           pop: 1
     - match: '{{sheet_name_normal_excel}}'
