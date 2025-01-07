@@ -66,8 +66,10 @@ variables:
   #
   #       Current syntax at time of writing captures the 'date' as variable.other.readwrite.excel, but does not apply anything to the `.`
   #       Other than `source.excel`.
+  # TODO: buckle down and test a bunch of tables manually. Use desktop macros to speed up the process.
   table_google: (?# WIP)
   # Libre does not support tables
+
   function_excel: (?# WIP)
   function_google: (?# WIP)
   function_libre: |-
@@ -469,6 +471,7 @@ contexts:
     # @A1#:A1#
     # @A1:A1#
     - match: (@?)({{cell}})(#?)(:)(\2)(#)
+    # - match: (@?)({{cell}})(#?)(:)(\k<2>)(#)
       scope: meta.reference.excel
       captures:
         1: keyword.operator.reference.excel
