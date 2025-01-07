@@ -756,7 +756,7 @@ TEXTJOIN(";",FALSE,valmax)
 ="~*"
 ' <- keyword.operator.assignment
 '^^^^ string.quoted.double
-' ^ constant.character.escape
+' ^^ constant.character.escape
 '  ^ - keyword.operator.wildcard
 '^ punctuation.definition.string.begin
 '   ^ punctuation.definition.string.end
@@ -963,13 +963,38 @@ TEXTJOIN(";",FALSE,valmax)
 '              ^ punctuation.section.brackets.end
 
 
+' Changes to Sheet Naming Demo:
+' 1. Single quotes are no longer given the entity.name.struct.excel scope by default
+' 2. Single quotes are no longer given punctuation scopes by default
+='This''sASheetWithAnEscapedSingleQuote'!A1
+' <- keyword.operator.assignment.excel
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.excel - meta meta
+'^ punctuation.definition.annotation.begin.excel
+'                                      ^ punctuation.definition.annotation.end.excel
+' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ entity.name.struct.excel
+'     ^^ constant.character.escape.excel - punctuation
+'                                       ^ punctuation.separator.sequence.excel
+'                                        ^^ storage.type.excel
+'                                          ^ - meta.reference
 
-
-
-' illegal in Excel. Legal in Sheets.
-'='['!A1
-
+=''''!A1
+' <- keyword.operator.assignment.excel
+'^^^^^^^ meta.reference.excel
+'^ punctuation.definition.annotation.begin.excel
+'   ^ punctuation.definition.annotation.end.excel
+' ^^ entity.name.struct.excel constant.character.escape.excel - punctuation
+'    ^ punctuation.separator.sequence.excel
+'     ^^ storage.type.excel
+'       ^ - meta.reference
 ='^'!A1
+' <- keyword.operator.assignment.excel
+'^^^^^^ meta.reference.excel
+'^ punctuation.definition.annotation.begin.excel
+'  ^ punctuation.definition.annotation.end.excel
+' ^ entity.name.struct.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+'      ^ - meta.reference
 
 =-1
 '^ keyword.operator.arithmetic
@@ -1098,3 +1123,7 @@ ISNUMBER(FIND("Response",txt)),MID(txt,FIND("Response ",txt)+9,3),
 ""))))),
 IF(LEN(out),VALUE(SUBSTITUTE(out," (","")),"")
 )
+
+' illegal in Excel. Legal in Sheets.
+' TODO: figure out a clean way to test this specific to each program after extensions are made since it breaks the assertions themselves.
+'='['!A1
