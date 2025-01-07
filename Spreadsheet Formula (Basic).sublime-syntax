@@ -1,13 +1,14 @@
 %YAML 1.2
 ---
-name: Excel formula
+name: Spreadsheet Formula
 # Made by _alco and @michaelblyons. Thanks to acid_form for the first key bug reports we've received and for the updated builtin function list with Google Sheets functions added.
 # Repo: https://github.com/axemonk/Excel-formula
 # Please send any bug reports and suggestions to _alco via a direct message on Discord.
 # You can find me on the official Sublime Text Discord server.
 # v2.5.2 1/5/2025
 file_extensions: []
-scope: source.excel
+scope: source.sheet.basic
+hidden: true
 version: 2
 
 # TODO: figure out a way to properly scope locale-specific usage of . and , in decimal numbers.
@@ -19,9 +20,11 @@ variables:
   # Max col index:
   # # Excel & Libre: XFD (16,384)
   # # Google Sheets: ZZZ (18,278)
-  cell: (?:\$?[A-Za-z]{1,3}\$?\d+(?!\w))
   column: (?:\$?[A-Za-z]{1,3})
-  row: (?:\$?\d+)
+  # Row numbers do not include international numbers
+  row: (?:\$?[1-9][0-9]{0,10})
+  cell: (?:{{column}}{{row}}(?!\w))
+
   # Note to self: Underscore and 0-9 is included in \w
   # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
   #               (barring the possibility of UDF in VBA allowing '.', which they probably do)
@@ -113,9 +116,6 @@ variables:
 
   function_builtins: |-
     \b(?xi:
-
-      (?# Common to both MS Excel and Google Sheets)
-
       ABS | ACCRINT | ACCRINTM | ACOS | ACOSH | ACOT | ACOTH | ADDRESS | AMORLINC | AND | ARABIC | ASC | ASIN | ASINH | ATAN | ATAN2 | ATANH | AVEDEV | AVERAGE | AVERAGEA | AVERAGEIF | AVERAGEIFS |
       BASE | BETA\.DIST | BETA\.INV | BETADIST | BETAINV | BIN2DEC | BIN2HEX | BIN2OCT | BINOM\.DIST | BINOM\.INV | BINOMDIST | BITAND | BITLSHIFT | BITOR | BITRSHIFT | BITXOR | BYCOL | BYROW |
       CEILING | CEILING\.MATH | CEILING\.PRECISE | CELL | CHAR | CHIDIST | CHIINV | CHISQ\.DIST | CHISQ\.DIST\.RT | CHISQ\.INV | CHISQ\.INV\.RT | CHISQ\.TEST | CHITEST | CHOOSE | CHOOSECOLS | CHOOSEROWS |
@@ -150,67 +150,26 @@ variables:
       WEEKDAY | WEEKNUM | WEIBULL | WEIBULL\.DIST | WORKDAY | WORKDAY\.INTL | WRAPCOLS | WRAPROWS |
       XIRR | XLOOKUP | XNPV | XOR |
       YEAR | YEARFRAC | YIELD | YIELDDISC | YIELDMAT |
-      Z\.TEST | ZTEST |
-
-      (?# MS Excel only)
-
-      AGGREGATE | AMORDEGRC | AREAS | ARRAYTOTEXT |
-      BAHTTEXT | BESSELI | BESSELJ | BESSELK | BESSELY | BINOM\.DIST\.RANGE |
-      CALL | CUBEKPIMEMBER | CUBEMEMBER | CUBEMEMBERPROPERTY | CUBERANKEDMEMBER | CUBESET | CUBESETCOUNT | CUBEVALUE |
-      DBCS | DROP |
-      EUROCONVERT | EXPAND |
-      FILTERXML | FORECAST\.ETS | FORECAST\.ETS\.CONFINT | FORECAST\.ETS\.SEASONALITY | FORECAST\.ETS\.STAT |
-      INFO | ISOMITTED |
-      JIS |
-      NUMBERVALUE |
-      ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD |
-      PHONETIC |
-      REGISTER\.ID | RTD |
-      SHEET | SHEETS | SORTBY | STOCKHISTORY |
-      TAKE | TEXTAFTER | TEXTBEFORE | TEXTSPLIT | TOCOL | TODAY | TOROW |
-      VALUETOTEXT |
-      WEBSERVICE |
-      XMATCH |
-
-      (?# Google Sheets only)
-
-      ADD | ARRAY_CONSTRAIN | ARRAYFORMULA | AVERAGE\.WEIGHTED |
-      COUNTUNIQUE |
-      DETECTLANGUAGE | DIVIDE |
-      EPOCHTODATE | EQ |
-      FLATTEN |
-      GOOGLEFINANCE | GOOGLETRANSLATE | GT | GTE |
-      IMCOTH | IMLOG | IMPORTDATA | IMPORTFEED | IMPORTHTML | IMPORTRANGE | IMPORTXML | IMTANH | ISBETWEEN | ISDATE | ISEMAIL | ISURL |
-      JOIN |
-      LT | LTE |
-      MARGINOFERROR | MINUS | MULTIPLY |
-      NE |
-      POW |
-      QUERY |
-      REGEXEXTRACT | REGEXMATCH | REGEXREPLACE |
-      SORTN | SPARKLINE | SPLIT |
-      TO_DATE | TO_DOLLARS | TO_PERCENT | TO_PURE_NUMBER | TO_TEXT | TOCOL | TODAY | TOROW |
-      UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
+      Z\.TEST | ZTEST
     )\b
-
 
 contexts:
 
   main:
     # Matches assignment operator '='
     - match: ^=
-      scope: keyword.operator.assignment.excel
+      scope: keyword.operator.assignment.sheet
     - include: comments-text-marker
     - include: expressions
 
   comments-text-marker:
     # Pretend that the weird plain-text marker Excel uses is a comment
     - match: ^\'
-      scope: punctuation.definition.comment.begin.excel
-      # scope: punctuation.definition.string.begin.excel
+      scope: punctuation.definition.comment.begin.sheet
+      # scope: punctuation.definition.string.begin.sheet
       push:
-        - meta_scope: comment.line.single-quote.excel
-        # - meta_scope: string.unquoted.excel
+        - meta_scope: comment.line.single-quote.sheet
+        # - meta_scope: string.unquoted.sheet
         - match: $\n?
         # - match: $
           pop: 1
@@ -225,12 +184,12 @@ contexts:
 
     # Sanity checks
     - match: '[)}\]]'
-      scope: invalid.illegal.stray-bracket-end.excel
+      scope: invalid.illegal.stray-bracket-end.sheet
 
     # Capture names like those defined by LAMBDA and the various Name Managers found in these three applications.
     # Follows the same rules as functions.
     - match: '(?:{{name_excel}}|{{name_google}}|{{name_libre}})'
-      scope: variable.other.readwrite.excel
+      scope: variable.other.readwrite.sheet
       push: maybe-union-operator
 
     # Tabs are, for the most part, illegal characters in Excel, GSheets, and LibreCalc.
@@ -243,25 +202,25 @@ contexts:
     # exhibiting strange behavior (inserting a bunch of spaces in front of the cursor
     # and a single space behind it) in the process of doing so with CTRL+V in formula edit mode.
     - match: \t
-      scope: invalid.illegal.excel
+      scope: invalid.illegal.sheet
 
   operators:
     # three or more is wrong
     - match: '[<>=]{3,}'
-      scope: invalid.illegal.excel
+      scope: invalid.illegal.sheet
     # illegal two-character operator combinations
     - match: (?:=[=<>]|>[><]|<<)
-      scope: invalid.illegal.excel
+      scope: invalid.illegal.sheet
     # anything other combo
     - match: '[<>=]+'
-      scope: keyword.operator.logical.excel
+      scope: keyword.operator.logical.sheet
 
     # Matches mathematical operators
     - match: '[+\-*/^%]'
-      scope: keyword.operator.arithmetic.excel
+      scope: keyword.operator.arithmetic.sheet
 
     - match: \&
-      scope: keyword.operator.concatenation.excel
+      scope: keyword.operator.concatenation.sheet
 
 ###[ FUNCTIONS ]###############################################################
 
@@ -273,8 +232,8 @@ contexts:
     #         or just conditional.switch and conditional.if for everything else?
     - match: \b((?i:IF|IFS|IFERROR|IFNA|SWITCH))(\()
       captures:
-        1: meta.function-call.excel support.function.excel keyword.control.conditional.if.excel
-        2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+        1: meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+        2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
       push: function-call-body
 
     # Update: Give logical comparator functions an extra scope.
@@ -284,8 +243,8 @@ contexts:
     #         IS... functions convert one or more values into one or more TRUE/FALSE values
     - match: \b((?i:AND|OR|NOT|XOR))(\()
       captures:
-        1: meta.function-call.excel support.function.excel keyword.operator.logical.excel
-        2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+        1: meta.function-call.sheet support.function.sheet keyword.operator.logical.sheet
+        2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
       push: function-call-body
 
     # # TODO: LAMBDA's *last* argument is a calc. Previous args are parameters.
@@ -297,16 +256,18 @@ contexts:
     # # https://support.microsoft.com/en-us/office/let-function-34842dd8-b92b-4d3f-b325-b8b8f9908999
     # - match: \b((?:LET))(\()
     #   captures:
-    #     1: meta.function-call.excel keyword.declaration.excel
-    #     2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+    #     1: meta.function-call.sheet keyword.declaration.sheet
+    #     2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
     #   push: [let-declarations-body, function-call-body]
 
     # Builtins
     - match: \b({{function_builtins}})(\()
       captures:
-        1: meta.function-call.excel support.function.excel
-        2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+        1: meta.function-call.sheet support.function.sheet
+        2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
       push: function-call-body
+
+    - include: function-builtins-extra
 
     # Update: remove \b in favor of wrapping '' to allow single special-character functions to match through
     #         name_libre. The idea is for functions and names to follow the same rules, at least for now
@@ -314,18 +275,18 @@ contexts:
     #         name in libre, @() should be a valid function (again, for now).
     - match: '({{name_excel}}|{{name_google}}|{{name_libre}})(\()'
       captures:
-        1: meta.function-call.excel variable.function.excel
-        2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+        1: meta.function-call.sheet variable.function.sheet
+        2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
       push: function-call-body
 
   # Update: allow for ; to be a separator in functions (for locale support).
   function-call-body:
-    - meta_content_scope: meta.function-call.arguments.excel
+    - meta_content_scope: meta.function-call.arguments.sheet
     - match: \)
-      scope: meta.function-call.arguments.excel punctuation.section.arguments.end.excel
+      scope: meta.function-call.arguments.sheet punctuation.section.arguments.end.sheet
       pop: 1
     - match: '[\,;]'
-      scope: punctuation.separator.sequence.excel
+      scope: punctuation.separator.sequence.sheet
     - include: expressions
 
   # let-declarations-body:
@@ -335,7 +296,9 @@ contexts:
   #     pop: 1
   #   - include: references
   #   - match: \w+
-  #     scope: variable.other.readwrite.excel
+  #     scope: variable.other.readwrite.sheet
+
+  function-builtins-extra: []
 
 ###[ REFERENCES ]##############################################################
 
@@ -344,156 +307,65 @@ contexts:
       push: sheet-reference-body
 
   sheet-reference-body:
-    - meta_scope: meta.reference.excel
+    - meta_scope: meta.reference.sheet
     - match: \!
-      scope: punctuation.separator.sequence.excel
+      scope: punctuation.separator.sequence.sheet
       pop: 1
     - match: (')
-      scope: punctuation.definition.annotation.begin.excel
+      scope: punctuation.definition.annotation.begin.sheet
       push:
-        - meta_scope: entity.name.struct.excel
+        - meta_scope: entity.name.struct.sheet
         - match: (')
-          scope: punctuation.definition.annotation.end.excel
+          scope: punctuation.definition.annotation.end.sheet
           pop: 1
     - match: '{{sheet_name_component_normal_excel}}'
-      scope: entity.name.struct.excel
+      scope: entity.name.struct.sheet
     - include: immediately-pop
 
   cell-or-range-reference:
 
+    # Cell range
+    # A1:B2
+    - match: ({{cell}})(:)({{cell}})(?!#)
+      scope: meta.reference.range.cell.sheet
+      captures:
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
+      push: maybe-union-operator
+
     # Naked cell reference
     # A1
-    # A1#
-    # @A1
-    # @A1#
-    - match: (@?)({{cell}})(#?)(?![:#])
-      scope: meta.reference.excel
-      captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: keyword.operator.reference.excel
+    - match: ({{cell}})(?![:#])
+      scope: meta.reference.cell.sheet storage.type.sheet
       push: maybe-union-operator
-
-    # Push to dynamic context to isolate forced anonymity to just dynamic refs
-    - match: (?=(?:@?{{cell}})(?:(?:#?:{{cell}}#)|(?:#:{{cell}}#?)))
-      push: dynamic-reference
-
-    # Cell range without dynamics
-    # A1:B2
-    # @A1:B2
-    - match: (@?)({{cell}})(:)({{cell}})
-      scope: meta.reference.excel
-      captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: punctuation.separator.sequence.excel
-        4: storage.type.excel
-      push: maybe-union-operator
-
-    # The Google stuff
-    - include: reference-body-google
 
     # Column to column
     # A:B
-    # @A:B
-    - match: (@?)({{column}})(:)({{column}})
-      scope: meta.reference.excel
+    - match: ({{column}})(:)({{column}})(?![0-9])
+      scope: meta.reference.range.column.sheet
       captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: punctuation.separator.sequence.excel
-        4: storage.type.excel
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
       push: maybe-union-operator
 
     # Row to row
     # 1:2
-    # @1:2
-    - match: (@?)({{row}})(:)({{row}})
-      scope: meta.reference.excel
+    - match: ({{row}})(:)({{row}})
+      scope: meta.reference.range.row.sheet
       captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: punctuation.separator.sequence.excel
-        4: storage.type.excel
-      push: maybe-union-operator
-
-  reference-body-google:
-    # The @ operator is not available in Google Sheets
-
-    # Cell to column-or-row
-    # A1:B
-    # A1:2
-    - match: ({{cell}})(?:(:)({{column}}|{{row}}))
-      scope: meta.reference.excel
-      captures:
-        1: storage.type.excel
-        2: punctuation.separator.sequence.excel
-        3: storage.type.excel
-      push: maybe-union-operator
-
-    # Column to cell
-    # A:B2
-    - match: ({{column}})(:)({{cell}})
-      scope: meta.reference.excel
-      captures:
-        1: storage.type.excel
-        2: punctuation.separator.sequence.excel
-        3: storage.type.excel
-      push: maybe-union-operator
-
-    # Row to cell
-    # 1:B2
-    - match: ({{row}})(:)({{cell}})
-      scope: meta.reference.excel
-      captures:
-        1: storage.type.excel
-        2: punctuation.separator.sequence.excel
-        3: storage.type.excel
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
       push: maybe-union-operator
 
   maybe-union-operator:
     - match: '[ ]{{before_reference}}'
-      scope: keyword.operator.set.excel
+      scope: keyword.operator.set.sheet
 
     - match: '[ ]{{before_name}}'
-      scope: keyword.operator.set.excel
-
-    # Bail if nothing matches
-    - include: immediately-pop
-
-  dynamic-reference:
-    # Zero-dimensional cell range w/ dynamics
-    # Verified as sregex compatible with \n but not with \k<n>
-    # A1#:A1#
-    # A1:A1#
-    # @A1#:A1#
-    # @A1:A1#
-    - match: (@?)({{cell}})(#?)(:)(\2)(#)
-      scope: meta.reference.excel
-      captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: keyword.operator.reference.excel
-        4: punctuation.separator.sequence.excel
-        5: storage.type.excel
-        6: keyword.operator.reference.excel
-      push: maybe-union-operator
-
-    # Cell range with dynamics
-    # A1#:B2
-    # A1#:B2#
-    # @A1#:B2
-    # @A1#:B2#
-    - match: (@?)({{cell}})(#)(:)({{cell}})(#?)
-      scope: meta.reference.excel
-      captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.excel
-        3: keyword.operator.reference.excel
-        4: punctuation.separator.sequence.excel
-        5: storage.type.excel
-        6: keyword.operator.reference.excel
-      push: maybe-union-operator
+      scope: keyword.operator.set.sheet
 
     # Bail if nothing matches
     - include: immediately-pop
@@ -502,35 +374,35 @@ contexts:
     # Matches table name references
     - match: ([\w.?\\]+)?(\[)
       captures:
-        1: entity.name.struct.excel
-        2: punctuation.section.brackets.begin.excel
+        1: entity.name.struct.sheet
+        2: punctuation.section.brackets.begin.sheet
       push: table-name-body
 
   table-name-body:
-    - meta_scope: meta.reference.excel
+    - meta_scope: meta.reference.sheet
 
     # The second group ensures commas and colons can still be used in column names
     # without mismatching them elsewhere
     - match: (\])([,:])?
       captures:
-        1: punctuation.section.brackets.end.excel
-        2: punctuation.separator.sequence.excel
+        1: punctuation.section.brackets.end.sheet
+        2: punctuation.separator.sequence.sheet
       pop: 1
 
     - match: ([,:]*'[\[\]@#][,:]*)
-      scope: storage.type.excel
+      scope: storage.type.sheet
 
     - match: '[#@]'
-      scope: keyword.operator.reference.excel
+      scope: keyword.operator.reference.sheet
 
     - match: \[
-      scope: punctuation.section.brackets.begin.excel
+      scope: punctuation.section.brackets.begin.sheet
       push: table-name-body
 
-    # Anything that should't match but could otherwise be within the body
+    # Anything that shouldn't match but could otherwise be within the body
     # Technically, we could do `.`, but that slows down tokenization
     - match: '[^#@\[\]]+'
-      scope: storage.type.excel
+      scope: storage.type.sheet
 
   references:
     # # These four were tricky when reworking the scopes to be in line with convention.
@@ -553,13 +425,13 @@ contexts:
 
   groups:
     - match: \(
-      scope: punctuation.section.group.begin.excel
+      scope: punctuation.section.group.begin.sheet
       push: group-body
 
   group-body:
-    - meta_scope: meta.group.excel
+    - meta_scope: meta.group.sheet
     - match: \)
-      scope: punctuation.section.group.end.excel
+      scope: punctuation.section.group.end.sheet
       pop: 1
     - include: expressions
 
@@ -567,38 +439,38 @@ contexts:
 
   arrays:
     - match: \{
-      scope: punctuation.section.braces.begin.excel
+      scope: punctuation.section.braces.begin.sheet
       push: array-body
 
   array-body:
-    - meta_scope: meta.array.excel
+    - meta_scope: meta.array.sheet
     - match: \}
-      scope: punctuation.section.braces.end.excel
+      scope: punctuation.section.braces.end.sheet
       pop: 1
     # The specification of row vs column should technically be locale dependent, but works fine otherwise.
     - match: \,
-      scope: punctuation.separator.sequence.column.excel
+      scope: punctuation.separator.sequence.column.sheet
     - match: ;
-      scope: punctuation.separator.sequence.row.excel
+      scope: punctuation.separator.sequence.row.sheet
     - include: expressions
 
 ###[ LITERALS ]################################################################
 
   constants:
     - match: '#NULL!'
-      scope: constant.language.null.excel
+      scope: constant.language.null.sheet
 
     - match: (#NUM!|#DIV/0!)
-      scope: constant.language.nan.excel
+      scope: constant.language.nan.sheet
 
     - match: (?:#VALUE!|#REF!|#NAME\?|#GETTING_DATA|#N/A)
-      scope: constant.language.excel
+      scope: constant.language.sheet
 
     - match: \b(?i)TRUE\b
-      scope: constant.language.boolean.true.excel
+      scope: constant.language.boolean.true.sheet
 
     - match: \b(?i)FALSE\b
-      scope: constant.language.boolean.false.excel
+      scope: constant.language.boolean.false.sheet
 
     - include: numbers
 
@@ -618,43 +490,43 @@ contexts:
   # Update: Revert previous change regarding commas as decimal separators. Makes unit tests too confusing.
   numbers:
     - match: -?\d+(\.)\d*|-?(\.)\d+
-      scope: meta.number.float.decimal.excel constant.numeric.value.excel
+      scope: meta.number.float.decimal.sheet constant.numeric.value.sheet
       captures:
-        1: punctuation.separator.decimal.excel
-        2: punctuation.separator.decimal.excel
+        1: punctuation.separator.decimal.sheet
+        2: punctuation.separator.decimal.sheet
     - match: -?\d+
-      scope: meta.number.integer.decimal.excel constant.numeric.value.excel
+      scope: meta.number.integer.decimal.sheet constant.numeric.value.sheet
 
   strings:
     - match: '"'
-      scope: punctuation.definition.string.begin.excel
+      scope: punctuation.definition.string.begin.sheet
       push: string-body
 
   string-body:
     - meta_include_prototype: false
-    - meta_scope: string.quoted.double.excel
+    - meta_scope: string.quoted.double.sheet
 
     - match: '""'
-      scope: constant.character.escape.excel
+      scope: constant.character.escape.sheet
     - match: '"'
-      scope: punctuation.definition.string.end.excel
+      scope: punctuation.definition.string.end.sheet
       pop: 1
 
   strings-with-wildcards:
     - match: '"'
-      scope: punctuation.definition.string.begin.excel
+      scope: punctuation.definition.string.begin.sheet
       push: string-body-with-wildcards
 
   string-body-with-wildcards:
     - meta_include_prototype: false
-    - meta_scope: string.quoted.double.excel
+    - meta_scope: string.quoted.double.sheet
 
     # Tilde escapes wildcards and itself, but can also be used by itself and
     # functions as a literal
     - match: ~(?:~|{{string_wildcard}})
-      scope: constant.character.escape.excel
+      scope: constant.character.escape.sheet
     - match: '{{string_wildcard}}'
-      scope: keyword.operator.wildcard.excel
+      scope: keyword.operator.wildcard.sheet
     - include: string-body
 
 ###[ PROTOTYPES ]##############################################################
@@ -662,8 +534,3 @@ contexts:
   immediately-pop:
     - match: ''
       pop: 1
-
-  # # Didn't turn out to need one of these
-  # else-pop:
-  #   - match: (?=\S)
-  #     pop: 1

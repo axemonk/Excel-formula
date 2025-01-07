@@ -1,0 +1,139 @@
+' SYNTAX TEST "Packages/Excel formula/Excel Formula.sublime-syntax"
+
+'''[ SHARED REFERENCES ]'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=A1
+'^^ meta.reference.cell.sheet storage.type.sheet
+=A1:B2
+'^^^^^ meta.reference.range.cell.sheet
+'^^ storage.type.sheet
+'  ^ punctuation.separator.sequence.sheet
+'   ^^ storage.type.sheet
+=A:B
+'^^^ meta.reference.range.column.sheet
+'^ storage.type.sheet
+' ^ punctuation.separator.sequence.sheet
+'  ^ storage.type.sheet
+=1:2
+'^^^ meta.reference.range.row.sheet
+'^ storage.type.sheet
+' ^ punctuation.separator.sequence.sheet
+'  ^ storage.type.sheet
+
+
+'''[ EXCEL REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=A1#
+'^^^ meta.reference.cell.excel
+'^^ storage.type.excel
+'  ^ keyword.operator.reference.excel
+=@A1
+'^^^ meta.reference.cell.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+=@A1#
+'^^^^ meta.reference.cell.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ keyword.operator.reference.excel
+=A1#:B2
+'^^^^^^ meta.reference.range.cell.excel
+'^^ storage.type.excel
+'  ^ keyword.operator.reference.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+=A1#:B2#
+'^^^^^^^ meta.reference.range.cell.excel
+'^^ storage.type.excel
+'  ^ keyword.operator.reference.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+'      ^ keyword.operator.reference.excel
+=@A1#:B2
+'^^^^^^^ meta.reference.range.cell.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ keyword.operator.reference.excel
+'    ^ punctuation.separator.sequence.excel
+'     ^^ storage.type.excel
+=@A1#:B2#
+'^^^^^^^^ meta.reference.range.cell.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ keyword.operator.reference.excel
+'    ^ punctuation.separator.sequence.excel
+'     ^^ storage.type.excel
+'       ^ keyword.operator.reference.excel
+=A1:A1#
+'^^^^^^ meta.reference.cell.excel
+'^^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^^ storage.type.excel
+'     ^ keyword.operator.reference.excel
+=@A1:A1#
+'^^^^^^^ meta.reference.cell.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+'      ^ keyword.operator.reference.excel
+=@A1:B2
+'^^^^^^ meta.reference.range.cell.excel
+'^ keyword.operator.reference.excel
+' ^^ storage.type.excel
+'   ^ punctuation.separator.sequence.excel
+'    ^^ storage.type.excel
+=@A:B
+'^^^^ meta.reference.range.column.excel
+'^ keyword.operator.reference.excel
+' ^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^ storage.type.excel
+=@1:2
+'^^^^ meta.reference.range.row.excel
+'^ keyword.operator.reference.excel
+' ^ storage.type.excel
+'  ^ punctuation.separator.sequence.excel
+'   ^ storage.type.excel
+
+'''[ BAD REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=@A1#:B
+'^^^^^^ - storage - keyword
+=@A1#:B#
+'^^^^^^^ - storage - keyword
+=@A1:B#
+'^ - keyword
+'     ^ - keyword
+=@A#:B
+'^^^^^ - storage - keyword
+=@A#:B#
+'^^^^^^ - storage - keyword
+=@A:B#
+'    ^ - storage - keyword
+=@A#:B2
+'^^^^ - storage - keyword
+=@A#:B2#
+'^^^^ - storage - keyword
+=@A:B2#
+'^^ - storage - keyword
+=@1#:2
+'^^^^^ - storage - keyword
+=@1#:2#
+'^^^^^^ - storage - keyword
+=@1:2#
+'    ^ - storage - keyword
+=@1#:B2
+'^^^^ - storage - keyword
+=@1#:B2#
+'^^^^ - storage - keyword
+=@1:B2#
+'^ - storage - keyword
+=@A1:B
+'^ - storage - keyword
+=@A1:2
+'^ - storage - keyword
+=A1:A2#
+'^ - storage - keyword
+=@A1:A2#
+'^ - storage - keyword
