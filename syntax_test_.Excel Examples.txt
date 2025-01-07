@@ -879,16 +879,19 @@ TEXTJOIN(";",FALSE,valmax)
 ='s''s'!N36
 ' <- keyword.operator.assignment
 '^^^^^^^^^^ meta.reference - meta meta
-'          ^ - meta.reference
-'^^^^^^ entity.name.struct
+' ^^^^ entity.name.struct
+'  ^ constant.character.escape.excel
 '      ^ punctuation.separator.sequence - entity
+'          ^ - meta.reference
 
 ='s''''s'!N36
 ' <- keyword.operator.assignment
 '^^^^^^^^^^^^ meta.reference - meta meta
-'            ^ - meta.reference
-'^^^^^^^^ entity.name.struct
+' ^^^^^^ entity.name.struct
+'  ^ constant.character.escape.excel
+'    ^ constant.character.escape.excel
 '        ^ punctuation.separator.sequence - entity
+'            ^ - meta.reference
 
 
 
