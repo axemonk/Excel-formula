@@ -1,0 +1,83 @@
+%YAML 1.2
+---
+name: Google Sheets Formula
+scope: source.sheet.google
+version: 2
+extends: Spreadsheet Formula (Basic).sublime-syntax
+file_extensions:
+  - gsheet.txt
+
+contexts:
+  function-builtins-extra:
+    - meta_append: true
+    - match: \b({{function_builtins_google}})(\()
+      captures:
+        1: meta.function-call.google support.function.google
+        2: meta.function-call.arguments.google punctuation.section.arguments.begin.google
+      push: function-call-body
+
+  cell-or-range-reference:
+    - meta_append: true
+
+    # Cell to column
+    # A1:B
+    - match: ({{cell}})(:)({{column}})
+      scope: meta.reference.range.column.google
+      captures:
+        1: storage.type.google
+        2: punctuation.separator.sequence.google
+        3: storage.type.google
+      push: maybe-union-operator
+
+    # Cell to row
+    # A1:2
+    - match: ({{cell}})(:)({{row}})
+      scope: meta.reference.range.row.google
+      captures:
+        1: storage.type.google
+        2: punctuation.separator.sequence.google
+        3: storage.type.google
+      push: maybe-union-operator
+
+    # Column to cell
+    # A:B2
+    - match: ({{column}})(:)({{cell}})
+      scope: meta.reference.column.google
+      captures:
+        1: storage.type.google
+        2: punctuation.separator.sequence.google
+        3: storage.type.google
+      push: maybe-union-operator
+
+    # Row to cell
+    # 1:B2
+    - match: ({{row}})(:)({{cell}})
+      scope: meta.reference.range.rowgoogle
+      captures:
+        1: storage.type.google
+        2: punctuation.separator.sequence.google
+        3: storage.type.google
+      push: maybe-union-operator
+
+variables:
+  # https://support.google.com/docs/table/25273
+  function_builtins_google: |-
+    \b(?xi:
+      ADD | ARRAY_CONSTRAIN | ARRAYFORMULA | AVERAGE\.WEIGHTED |
+      COUNTUNIQUE |
+      DETECTLANGUAGE | DIVIDE |
+      EPOCHTODATE | EQ |
+      FLATTEN |
+      GOOGLEFINANCE | GOOGLETRANSLATE | GT | GTE |
+      IMCOTH | IMLOG | IMPORTDATA | IMPORTFEED | IMPORTHTML | IMPORTRANGE | IMPORTXML | IMTANH | ISBETWEEN | ISDATE | ISEMAIL | ISURL |
+      JOIN |
+      LT | LTE |
+      MARGINOFERROR | MINUS | MULTIPLY |
+      NE |
+      POW |
+      QUERY |
+      REGEXEXTRACT | REGEXMATCH | REGEXREPLACE |
+      SORTN | SPARKLINE | SPLIT |
+      TO_DATE | TO_DOLLARS | TO_PERCENT | TO_PURE_NUMBER | TO_TEXT | TOCOL | TODAY | TOROW |
+      UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
+    )\b
