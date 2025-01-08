@@ -1,0 +1,548 @@
+%YAML 1.2
+---
+name: Spreadsheet Formula
+# Made by _alco and @michaelblyons. Thanks to acid_form for the first key bug reports we've received and for the updated builtin function list with Google Sheets functions added.
+# Repo: https://github.com/axemonk/Excel-formula
+# Please send any bug reports and suggestions to _alco via a direct message on Discord.
+# You can find me on the official Sublime Text Discord server.
+# v2.5.2 1/5/2025
+file_extensions: []
+scope: source.sheet.basic
+hidden: true
+version: 2
+
+# TODO: figure out a way to properly scope locale-specific usage of . and , in decimal numbers.
+#       Haven't found an example of this breaking anything outright, although.
+#       if there is a simple way to match stuff conditional to user locale,
+#       swapping ;/, in arrays as column/row separators depending on locale would probably be best practice.
+
+variables:
+  # Max col index:
+  # # Excel & Libre: XFD (16,384)
+  # # Google Sheets: ZZZ (18,278)
+  column: (?:\$?[A-Za-z]{1,3})
+  # Row numbers do not include international numbers
+  row: (?:\$?[1-9][0-9]{0,10})
+  cell: (?:{{column}}{{row}}(?!\w))
+
+  # Note to self: Underscore and 0-9 is included in \w
+  # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
+  #               (barring the possibility of UDF in VBA allowing '.', which they probably do)
+  # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
+
+  name_excel: |-
+    (?x:
+      [\w\\&&[^0-9]]+
+      [\w?\\]*
+    )
+  name_google: |-
+    (?x:
+      [\w&&[^0-9]]+
+      [\w.?]*
+    )
+  # Note: Negative lookahead prevents this pattern from chaining matches like in '@name' (i.e., only a single '@' is a valid name).
+  # TODO: Is there a better way to do this?
+  name_libre: |-
+    (?x:
+      [_.?@`\\]
+      (?![\w?$]+[\w.$]*) |
+      [\w?$]+
+      [\w.$]*
+    )
+  table_excel: |-
+    (?x:
+      [\w\\&&[^0-9]]+
+      [\w.?\\]*
+    )
+  # Note: Google supports an early analog to Excel tables as of 2024, but testing would be tedious and error prone as they don't have
+  #       any references for calling them in their Apps Script documentation. Interactions with table metadata like table names and
+  #       creation of tables is not captured by the macro recording procedure.
+  #
+  #       These tables are referenced like =Table[Column1], exactly like Excel tables, and support the `#` table operator and `,` table argument
+  #       separator, like in =Table1[[#HEADERS],[Column1]]. But do not (yet) support use of the `@` table operator for relative row referencing.
+  #
+  #       Something I discovered recently: Google Sheets has objects called "smart chips" which are a fancy way to embed things from the
+  #       Google Drive ecosystem, like calendar events and documents. These Smart Chips have attributes which can be referenced with `.`
+  #       e.g., =A2.url returns the url for a calendar event Smart Chip located in cell A2.
+  #
+  #       At time of writing (1/5/2025) cells containing multiple Smart Chips cannot be referenced.
+  #
+  #       Current syntax at time of writing captures the 'date' as variable.other.readwrite.excel, but does not apply anything to the `.`
+  #       Other than `source.excel`.
+  # TODO: buckle down and test a bunch of tables manually. Use desktop macros to speed up the process.
+  table_google: (?# WIP)
+  # Libre does not support tables
+
+  function_excel: (?# WIP)
+  function_google: (?# WIP)
+  function_libre: |-
+    (?x:
+      [A-Za-z]+
+      [\w]*
+    )
+
+  # TODO: Is there a cleaner more compact (and probably more efficient) way to do this? `'` are only legal in excel sheet names when padded on either
+  #       end with a legal character matched by [^*/?\[\]\\] and said `'` must come in pairs.
+  sheet_name_delimited_excel: (?:(?:'[^*/?\[\]\\]+('')*[^*/?\[\]\\]+')|(?:'[^*/?\[\]\\]+'))
+  sheet_name_delimited_google: (?:(?:'[^']'+)|(?:'[^']*(?:'')+[^']*'))
+
+  # Dummy patterns for that sweet YAML syntax highlighting
+  # # Not exhaustive. The fact that I'm not testing combinations of spec chars complicates this...
+  Pattern that Excel will auto escape/delimit with `'`: '^\d+\w*'
+  Pattern that Google Sheets will auto escape/delimit with `'`: '^[\d_.?$]+\w*'
+  # #                                                                      ^^^ ...for example, this is naive until tested.
+
+  sheet_name_normal_excel: '[\w&&[^0-9]]+\w*'
+  sheet_name_normal_google: '[\w]+[\w.?]*'
+  sheet: (?:(?:{{sheet_name_delimited_excel}}|{{sheet_name_delimited_google}}|{{sheet_name_normal_excel}}))
+
+  string_wildcard: '[*?]'
+
+  # Intersection Operator Variables
+  before_reference: |-
+    (?x:(?=
+      @?  # Reference operator
+      (?:
+        {{cell}}
+      | (?:{{column}}|{{row}}):
+        (?:{{column}}|{{row}}|{{cell}})
+      )
+    ))
+  before_name: |-
+    (?x:(?=
+      {{name_excel}} |
+      {{name_google}} |
+      {{name_libre}}
+    ))
+
+  # Update:
+  # MS Excel:
+  # - https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
+  # Google Sheets:
+  # - https://support.google.com/docs/table/25273
+  # As of 12/27/2024
+
+  function_builtins: |-
+    \b(?xi:
+      ABS | ACCRINT | ACCRINTM | ACOS | ACOSH | ACOT | ACOTH | ADDRESS | AMORLINC | AND | ARABIC | ASC | ASIN | ASINH | ATAN | ATAN2 | ATANH | AVEDEV | AVERAGE | AVERAGEA | AVERAGEIF | AVERAGEIFS |
+      BASE | BETA\.DIST | BETA\.INV | BETADIST | BETAINV | BIN2DEC | BIN2HEX | BIN2OCT | BINOM\.DIST | BINOM\.INV | BINOMDIST | BITAND | BITLSHIFT | BITOR | BITRSHIFT | BITXOR | BYCOL | BYROW |
+      CEILING | CEILING\.MATH | CEILING\.PRECISE | CELL | CHAR | CHIDIST | CHIINV | CHISQ\.DIST | CHISQ\.DIST\.RT | CHISQ\.INV | CHISQ\.INV\.RT | CHISQ\.TEST | CHITEST | CHOOSE | CHOOSECOLS | CHOOSEROWS |
+      CLEAN | CODE | COLUMN | COLUMNS | COMBIN | COMBINA | COMPLEX | CONCAT | CONCATENATE | CONFIDENCE | CONFIDENCE\.NORM | CONFIDENCE\.T | CONVERT | CORREL | COS | COSH | COT | COTH | COUNT | COUNTA |
+      COUNTBLANK | COUNTIF | COUNTIFS | COUPDAYBS | COUPDAYS | COUPDAYSNC | COUPNCD | COUPNUM | COUPPCD | COVAR | COVARIANCE\.P | COVARIANCE\.S | CRITBINOM | CSC | CSCH | CUMIPMT | CUMPRINC |
+      DATE | DATEDIF | DATEVALUE | DAVERAGE | DAY | DAYS | DAYS360 | DB | DCOUNT | DCOUNTA | DDB | DEC2BIN | DEC2HEX | DEC2OCT | DECIMAL | DEGREES | DELTA | DEVSQ | DGET | DISC | DMAX | DMIN |
+      DOLLAR | DOLLARDE | DOLLARFR | DPRODUCT | DSTDEV | DSTDEVP | DSUM | DURATION | DVAR | DVARP |
+      EDATE | EFFECT | ENCODEURL | EOMONTH | ERF | ERF\.PRECISE | ERFC | ERFC\.PRECISE | ERROR\.TYPE | EVEN | EXACT | EXP | EXPON\.DIST | EXPONDIST |
+      F\.DIST | F\.DIST\.RT | F\.INV | F\.INV\.RT | F\.TEST | FACT | FACTDOUBLE | FALSE | FDIST | FILTER | FIND | FINDB | FINV | FISHER | FISHERINV | FIXED | FLOOR | FLOOR\.MATH | FLOOR\.PRECISE |
+      FORECAST | FORECAST\.LINEAR | FORMULATEXT | FREQUENCY | FTEST | FV | FVSCHEDULE |
+      GAMMA | GAMMA\.DIST | GAMMA\.INV | GAMMADIST | GAMMAINV | GAMMALN | GAMMALN\.PRECISE | GAUSS | GCD | GEOMEAN | GESTEP | GETPIVOTDATA | GROWTH |
+      HARMEAN | HEX2BIN | HEX2DEC | HEX2OCT | HLOOKUP | HOUR | HSTACK | HYPERLINK | HYPGEOM\.DIST | HYPGEOMDIST |
+      IF | IFERROR | IFNA | IFS | IMABS | IMAGE | IMAGINARY | IMARGUMENT | IMCONJUGATE | IMCOS | IMCOSH | IMCOT | IMCSC | IMCSCH | IMDIV | IMEXP | IMLN | IMLOG10 | IMLOG2 | IMPOWER | IMPRODUCT | IMREAL |
+      IMSEC | IMSECH | IMSIN | IMSINH | IMSQRT | IMSUB | IMSUM | IMTAN | INDEX | INDIRECT | INT | INTERCEPT | INTRATE | IPMT | IRR | ISBLANK | ISERR | ISERROR | ISEVEN | ISFORMULA | ISLOGICAL | ISNA |
+      ISNONTEXT | ISNUMBER | ISO\.CEILING | ISODD | ISOWEEKNUM | ISPMT | ISREF | ISTEXT |
+      KURT |
+      LAMBDA | LARGE | LCM | LEFT | LEFTB | LEN | LENB | LET | LINEST | LN | LOG | LOG10 | LOGEST | LOGINV | LOGNORM\.DIST | LOGNORM\.INV | LOGNORMDIST | LOOKUP | LOWER |
+      MAKEARRAY | MAP | MATCH | MAX | MAXA | MAXIFS | MDETERM | MDURATION | MEDIAN | MID | MIDB | MIN | MINA | MINIFS | MINUTE | MINVERSE | MIRR | MMULT | MOD | MODE | MODE\.MULT | MODE\.SNGL |
+      MONTH | MROUND | MULTINOMIAL | MUNIT |
+      N | NA | NEGBINOM\.DIST | NEGBINOMDIST | NETWORKDAYS | NETWORKDAYS\.INTL | NOMINAL | NORM\.DIST | NORM\.INV | NORM\.S\.DIST | NORM\.S\.INV | NORMDIST | NORMINV | NORMSDIST | NORMSINV | NOT | NOW | NPER | NPV |
+      OCT2BIN | OCT2DEC | OCT2HEX | ODD | OFFSET | OR |
+      PDURATION | PEARSON | PERCENTILE | PERCENTILE\.EXC | PERCENTILE\.INC | PERCENTRANK | PERCENTRANK\.EXC | PERCENTRANK\.INC | PERMUT | PERMUTATIONA | PHI | PI | PMT | POISSON | POISSON\.DIST | POWER | PPMT |
+      PRICE | PRICEDISC | PRICEMAT | PROB | PRODUCT | PROPER | PV |
+      QUARTILE | QUARTILE\.EXC | QUARTILE\.INC | QUOTIENT |
+      RADIANS | RAND | RANDARRAY | RANDBETWEEN | RANK | RANK\.AVG | RANK\.EQ | RATE | RECEIVED | REDUCE | REPLACE | REPLACEB | REPT | RIGHT | RIGHTB | ROMAN | ROUND | ROUNDDOWN | ROUNDUP | ROW | ROWS | RRI | RSQ |
+      SCAN | SEARCH | SEARCHB | SEC | SECH | SECOND | SEQUENCE | SERIESSUM | SIGN | SIN | SINH | SKEW | SKEW\.P | SLN | SLOPE | SMALL | SORT | SQRT | SQRTPI |
+      STANDARDIZE | STDEV | STDEV\.P | STDEV\.S | STDEVA | STDEVP | STDEVPA | STEYX | SUBSTITUTE | SUBTOTAL | SUM | SUMIF | SUMIFS | SUMPRODUCT | SUMSQ | SUMX2MY2 | SUMX2PY2 | SUMXMY2 | SWITCH | SYD |
+      T | T\.DIST | T\.DIST\.2T | T\.DIST\.RT | T\.INV | T\.INV\.2T | T\.TEST | TAN | TANH | TBILLEQ | TBILLPRICE | TBILLYIELD | TDIST | TEXT | TEXTJOIN | TIME | TIMEVALUE | TINV | TRANSPOSE | TREND | TRIM | TRIMMEAN |
+      TRUE | TRUNC | TTEST | TYPE |
+      UNICHAR | UNICODE | UNIQUE | UPPER |
+      VALUE | VAR | VAR\.P | VAR\.S | VARA | VARP | VARPA | VDB | VLOOKUP | VSTACK |
+      WEEKDAY | WEEKNUM | WEIBULL | WEIBULL\.DIST | WORKDAY | WORKDAY\.INTL | WRAPCOLS | WRAPROWS |
+      XIRR | XLOOKUP | XNPV | XOR |
+      YEAR | YEARFRAC | YIELD | YIELDDISC | YIELDMAT |
+      Z\.TEST | ZTEST
+    )\b
+
+contexts:
+
+  main:
+    # Matches assignment operator '='
+    - match: ^=
+      scope: keyword.operator.assignment.sheet
+    - include: comments-text-marker
+    - include: expressions
+
+  comments-text-marker:
+    # Pretend that the weird plain-text marker Excel uses is a comment
+    - match: ^\'
+      scope: punctuation.definition.comment.begin.sheet
+      # scope: punctuation.definition.string.begin.sheet
+      push:
+        - meta_scope: comment.line.single-quote.sheet
+        # - meta_scope: string.unquoted.sheet
+        - match: $\n?
+        # - match: $
+          pop: 1
+
+  expressions:
+    - include: function-calls
+    - include: operators
+    - include: references
+    - include: constants
+    - include: arrays
+    - include: groups
+
+    # Sanity checks
+    - match: '[)}\]]'
+      scope: invalid.illegal.stray-bracket-end.sheet
+
+    # Capture names like those defined by LAMBDA and the various Name Managers found in these three applications.
+    # Follows the same rules as functions.
+    - match: '(?:{{name_excel}}|{{name_google}}|{{name_libre}})'
+      scope: variable.other.readwrite.sheet
+      push: maybe-union-operator
+
+    # Tabs are, for the most part, illegal characters in Excel, GSheets, and LibreCalc.
+    # The former errors out **except as part of a string**.
+    #
+    # Syntax tests do not support tab characters whatsoever.
+    # When used in strings, tab characters are formatted correctly.
+    #
+    # The latter two convert tabs to spaces immediately upon entry, with GSheets
+    # exhibiting strange behavior (inserting a bunch of spaces in front of the cursor
+    # and a single space behind it) in the process of doing so with CTRL+V in formula/cell edit mode.
+    - match: \t
+      scope: invalid.illegal.sheet
+
+  operators:
+    # three or more is wrong
+    - match: '[<>=]{3,}'
+      scope: invalid.illegal.sheet
+    # illegal two-character operator combinations
+    - match: (?:=[=<>]|>[><]|<<)
+      scope: invalid.illegal.sheet
+    # anything other combo
+    - match: '[<>=]+'
+      scope: keyword.operator.logical.sheet
+
+    # Matches mathematical operators
+    - match: '[+\-*/^%]'
+      scope: keyword.operator.arithmetic.sheet
+
+    - match: \&
+      scope: keyword.operator.concatenation.sheet
+
+###[ FUNCTIONS ]###############################################################
+
+  function-calls:
+
+    # Update: Give logical comparator functions an extra scope.
+    # Note:   Should the scope be specific to each of these?
+    #         conditional.ifs, conditional.switch etc.
+    #         or just conditional.switch and conditional.if for everything else?
+    - match: \b((?i:IF|IFS|IFERROR|IFNA|SWITCH))(\()
+      captures:
+        1: meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+        2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
+      push: function-call-body
+
+    # Update: Give logical comparator functions an extra scope.
+    # Note:   What about ISERROR ISNUMBER ISTEXT? (there are like a dozen IS... functions)
+    #         My gut tells me to leave them as functions. They are very different in behavior.
+    #         AND/OR/NOT/XOR convert one or more TRUE/FALSE values to a single TRUE/FALSE value
+    #         IS... functions convert one or more values into one or more TRUE/FALSE values
+    - match: \b((?i:AND|OR|NOT|XOR))(\()
+      captures:
+        1: meta.function-call.sheet support.function.sheet keyword.operator.logical.sheet
+        2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
+      push: function-call-body
+
+    # # TODO: LAMBDA's *last* argument is a calc. Previous args are parameters.
+    # #   I don't imagine there's a good way to identify that without branching.
+    # # https://support.microsoft.com/en-us/office/lambda-function-bd212d27-1cd1-4321-a34a-ccbf254b8b67
+
+    # # TODO: LET's *last* argument is a calc. Previous args are pairs of variable/assignment.
+    # #   I don't imagine there's a good way to identify that without branching.
+    # # https://support.microsoft.com/en-us/office/let-function-34842dd8-b92b-4d3f-b325-b8b8f9908999
+    # - match: \b((?:LET))(\()
+    #   captures:
+    #     1: meta.function-call.sheet keyword.declaration.sheet
+    #     2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
+    #   push: [let-declarations-body, function-call-body]
+
+    # Builtins
+    - match: \b({{function_builtins}})(\()
+      captures:
+        1: meta.function-call.sheet support.function.sheet
+        2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
+      push: function-call-body
+
+    - include: function-builtins-extra
+
+    # Update: remove \b in favor of wrapping '' to allow single special-character functions to match through
+    #         name_libre. The idea is for functions and names to follow the same rules, at least for now
+    #         until quirks of UDF are more thoroughly tested, and since a single '@' is a valid
+    #         name in libre, @() should be a valid function (again, for now).
+    - match: '({{name_excel}}|{{name_google}}|{{name_libre}})(\()'
+      captures:
+        1: meta.function-call.sheet variable.function.sheet
+        2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
+      push: function-call-body
+
+  # Update: allow for ; to be a separator in functions (for locale support).
+  function-call-body:
+    - meta_content_scope: meta.function-call.arguments.sheet
+    - match: \)
+      scope: meta.function-call.arguments.sheet punctuation.section.arguments.end.sheet
+      pop: 1
+    - match: '[\,;]'
+      scope: punctuation.separator.sequence.sheet
+    - include: expressions
+
+  # let-declarations-body:
+  #   # If you see a function call, pop to normal function call from declaration
+  #   # BUG: That's not how LET works.
+  #   - match: (?={{function_name}}\()
+  #     pop: 1
+  #   - include: references
+  #   - match: \w+
+  #     scope: variable.other.readwrite.sheet
+
+  function-builtins-extra: []
+
+###[ REFERENCES ]##############################################################
+
+  sheet-reference:
+    - match: (?={{sheet}}!)
+      push: sheet-reference-body
+
+  sheet-reference-body:
+    - meta_scope: meta.reference.sheet
+    - match: \!
+      scope: punctuation.separator.sequence.sheet
+      pop: 1
+    - match: \'
+      scope: punctuation.definition.annotation.begin.sheet
+      push:
+        - meta_content_scope: entity.name.struct.sheet
+        - match: \'\'
+          scope: constant.character.escape.sheet
+        - match: \'(?=!)
+          scope: punctuation.definition.annotation.end.sheet
+          pop: 1
+    - match: '{{sheet_name_normal_excel}}'
+      scope: entity.name.struct.sheet
+    - include: immediately-pop
+
+  cell-or-range-reference:
+
+    # Cell range
+    # A1:B2
+    - match: ({{cell}})(:)({{cell}})(?!#)
+      scope: meta.reference.range.cell.sheet
+      captures:
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
+      push: maybe-union-operator
+
+    # Naked cell reference
+    # A1
+    - match: ({{cell}})(?![:#])
+      scope: meta.reference.cell.sheet storage.type.sheet
+      push: maybe-union-operator
+
+    # Column to column
+    # A:B
+    - match: ({{column}})(:)({{column}})(?![0-9])
+      scope: meta.reference.range.column.sheet
+      captures:
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
+      push: maybe-union-operator
+
+    # Row to row
+    # 1:2
+    - match: ({{row}})(:)({{row}})
+      scope: meta.reference.range.row.sheet
+      captures:
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
+      push: maybe-union-operator
+
+  maybe-union-operator:
+    - match: '[ ]{{before_reference}}'
+      scope: keyword.operator.set.sheet
+
+    - match: '[ ]{{before_name}}'
+      scope: keyword.operator.set.sheet
+
+    # Bail if nothing matches
+    - include: immediately-pop
+
+  table-name:
+    # Matches table name references
+    - match: ([\w.?\\]+)?(\[)
+      captures:
+        1: entity.name.struct.sheet
+        2: punctuation.section.brackets.begin.sheet
+      push: table-name-body
+
+  table-name-body:
+    - meta_scope: meta.reference.sheet
+
+    # The second group ensures commas and colons can still be used in column names
+    # without mismatching them elsewhere
+    - match: (\])([,:])?
+      captures:
+        1: punctuation.section.brackets.end.sheet
+        2: punctuation.separator.sequence.sheet
+      pop: 1
+
+    - match: (?:[,:]*)('[\[\]@#])(?:[,:]*)
+      scope: storage.type.sheet
+      captures:
+        1: constant.character.escape.sheet
+
+    - match: '[#@]'
+      scope: keyword.operator.reference.sheet
+
+    - match: \[
+      scope: punctuation.section.brackets.begin.sheet
+      push: table-name-body
+
+    # Anything that shouldn't match but could otherwise be within the body
+    # Technically, we could do `.`, but that slows down tokenization
+    - match: '[^#@\[\]]+'
+      scope: storage.type.sheet
+
+  references:
+    # # These four were tricky when reworking the scopes to be in line with convention.
+    # #
+    # # I tried to balance actually having them colored differently in the default sublime color scheme,
+    # # as is helpful to have in a tightly-packed Excel formula, while at the same time
+    # # having the scope names align with what these various references represent from a code perspective.
+    # #
+    # # This proved to be *very* difficult for cell and column references (see cop-out: storage.type.excel),
+    # # but for sheet and table name references, .struct. seems to fit well under the definition:
+    # #
+    # # # struct: "a composite data type (or record) declaration that defines a physically grouped list of variables
+    # # #          under one name in a block of memory"
+
+    - include: table-name
+    - include: sheet-reference
+    - include: cell-or-range-reference
+
+###[ GROUPS ]##################################################################
+
+  groups:
+    - match: \(
+      scope: punctuation.section.group.begin.sheet
+      push: group-body
+
+  group-body:
+    - meta_scope: meta.group.sheet
+    - match: \)
+      scope: punctuation.section.group.end.sheet
+      pop: 1
+    - include: expressions
+
+###[ ARRAYS ]##################################################################
+
+  arrays:
+    - match: \{
+      scope: punctuation.section.braces.begin.sheet
+      push: array-body
+
+  array-body:
+    - meta_scope: meta.array.sheet
+    - match: \}
+      scope: punctuation.section.braces.end.sheet
+      pop: 1
+    # The specification of row vs column should technically be locale dependent, but works fine otherwise.
+    - match: \,
+      scope: punctuation.separator.sequence.column.sheet
+    - match: ;
+      scope: punctuation.separator.sequence.row.sheet
+    - include: expressions
+
+###[ LITERALS ]################################################################
+
+  constants:
+    - match: '#NULL!'
+      scope: constant.language.null.sheet
+
+    - match: (#NUM!|#DIV/0!)
+      scope: constant.language.nan.sheet
+
+    - match: (?:#VALUE!|#REF!|#NAME\?|#GETTING_DATA|#N/A)
+      scope: constant.language.sheet
+
+    - match: \b(?i)TRUE\b
+      scope: constant.language.boolean.true.sheet
+
+    - match: \b(?i)FALSE\b
+      scope: constant.language.boolean.false.sheet
+
+    - include: numbers
+
+    # TODO: only include wildcards where appropriate
+    - include: strings-with-wildcards
+
+    # Here is a list of the most common functions that allow wildcards:
+    # AVERAGEIF, AVERAGEIFS
+    # COUNTIF, COUNTIFS
+    # MAXIFS, MINIFS
+    # SUMIF, SUMIFS
+    # VLOOKUP, HLOOKUP
+    # MATCH
+    # SEARCH
+
+
+  # Update: Revert previous change regarding commas as decimal separators. Makes unit tests too confusing.
+  numbers:
+    - match: -?\d+(\.)\d*|-?(\.)\d+
+      scope: meta.number.float.decimal.sheet constant.numeric.value.sheet
+      captures:
+        1: punctuation.separator.decimal.sheet
+        2: punctuation.separator.decimal.sheet
+    - match: -?\d+
+      scope: meta.number.integer.decimal.sheet constant.numeric.value.sheet
+
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.sheet
+      push: string-body
+
+  string-body:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.sheet
+
+    - match: '""'
+      scope: constant.character.escape.sheet
+    - match: '"'
+      scope: punctuation.definition.string.end.sheet
+      pop: 1
+
+  strings-with-wildcards:
+    - match: '"'
+      scope: punctuation.definition.string.begin.sheet
+      push: string-body-with-wildcards
+
+  string-body-with-wildcards:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.sheet
+
+    # Tilde escapes wildcards and itself, but can also be used by itself and
+    # functions as a literal
+    - match: ~(?:~|{{string_wildcard}})
+      scope: constant.character.escape.sheet
+    - match: '{{string_wildcard}}'
+      scope: keyword.operator.wildcard.sheet
+    - include: string-body
+
+###[ PROTOTYPES ]##############################################################
+
+  immediately-pop:
+    - match: ''
+      pop: 1

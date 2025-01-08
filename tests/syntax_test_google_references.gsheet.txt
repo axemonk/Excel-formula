@@ -1,0 +1,112 @@
+' SYNTAX TEST "Packages/Excel formula/Google Sheets Formula.sublime-syntax"
+
+'''[ SHARED REFERENCES ]'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=A1
+'^^ meta.reference.cell.sheet storage.type.sheet
+=A1:B2
+'^^^^^ meta.reference.range.cell.sheet
+'^^ storage.type.sheet
+'  ^ punctuation.separator.sequence.sheet
+'   ^^ storage.type.sheet
+=A:B
+'^^^ meta.reference.range.column.sheet
+'^ storage.type.sheet
+' ^ punctuation.separator.sequence.sheet
+'  ^ storage.type.sheet
+=1:2
+'^^^ meta.reference.range.row.sheet
+'^ storage.type.sheet
+' ^ punctuation.separator.sequence.sheet
+'  ^ storage.type.sheet
+
+'''[ GOOGLE SHEETS REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''
+
+=A1:B
+'^^^^ meta.reference.range.column.google
+'^^ storage.type.google
+'  ^ punctuation.separator.sequence.google
+'   ^ storage.type.google
+=A1:2
+'^^^^ meta.reference.range.row.google
+'^^ storage.type.google
+'  ^ punctuation.separator.sequence.google
+'   ^ storage.type.google
+=A:B2
+'^^^^ meta.reference.column.google
+'^ storage.type.google
+' ^ punctuation.separator.sequence.google
+'  ^^ storage.type.google
+=1:B2
+'^^^^ meta.reference.range.rowgoogle
+'^ storage.type.google
+' ^ punctuation.separator.sequence.google
+'  ^^ storage.type.google
+
+'''[ BAD REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=@A1#:B
+'^^^^^^ - storage - keyword
+=@A1#:B#
+'^^^^^^^ - storage - keyword
+=@A1:B#
+'^ - keyword
+'     ^ - keyword
+=@A#:B
+'^^^^^ - storage - keyword
+=@A#:B#
+'^^^^^^ - storage - keyword
+=@A:B#
+'    ^ - storage - keyword
+=@A#:B2
+'^^^^ - storage - keyword
+=@A#:B2#
+'^^^^ - storage - keyword
+=@A:B2#
+'     ^ - storage - keyword
+=@1#:2
+'^^^^^ - storage - keyword
+=@1#:2#
+'^^^^^^ - storage - keyword
+=@1:2#
+'    ^ - storage - keyword
+=@1#:B2
+'^^^^ - storage - keyword
+=@1#:B2#
+'^^^^ - storage - keyword
+=@1:B2#
+'^ - storage - keyword
+'     ^ - storage - keyword
+=@A1:B
+'^ - storage - keyword
+=@A1:2
+'^ - storage - keyword
+=A1:A2#
+'     ^ - storage - keyword
+=@A1:A2#
+'      ^ - storage - keyword
+=@A1#:B2
+'^ - storage - keyword
+=@A1#:B2#
+'^ - storage - keyword
+=@A1:A1#
+'^ - storage - keyword
+'      ^ - storage - keyword
+=@A1:B2
+'^ - storage - keyword
+=@1:2
+'^ - storage - keyword
+=@A:B
+'^ - storage - keyword
+=@A1
+'^ - storage - keyword
+=@A1#
+'^ - storage - keyword
+=A1#
+'^ - storage - keyword
+=A1#:B2
+'^ - storage - keyword
+=A1#:B2#
+'^ - storage - keyword
+=A1:A1#
+'     ^ - storage - keyword

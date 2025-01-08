@@ -1,0 +1,954 @@
+' SYNTAX TEST "Packages/Excel formula/Excel Formula.sublime-syntax"
+
+=LET(
+return,INDIRECT(ARRAYTOTEXT("Data["&INDEX(TEXTSPLIT(UniquePts2[[#Headers],[ORDER_INST.Earliest]],"."),,1)&"]")),
+minOrMax,INDEX(TEXTSPLIT(UniquePts2[[#Headers],[ORDER_INST.Earliest]],"."),,2),
+cd,Data[[CONTACT_DATE]:[CONTACT_DATE]],
+cdlen,N(LEN(cd)>0),
+mrneq,N(Data[[PAT_MRN_ID]:[PAT_MRN_ID]]=UniquePts2[@[MRN]:[MRN]]),
+valr,FILTER(cd,mrneq*cdlen,""),
+IF(
+minOrMax = "Earliest",
+LET(
+ismin,cd=MIN(valr),
+valmin,TEXT(MIN(UNIQUE(FILTER(return,ismin*cdlen*mrneq,""))),"MM/DD/YYYY"),
+TEXTJOIN(";",FALSE,valmin)
+),
+IF(
+minOrMax = "Latest",
+LET(
+ismax,cd=MAX(valr),
+valmax,TEXT(MAX(UNIQUE(FILTER(return,ismax*cdlen*mrneq,""))),"MM/DD/YYYY"),
+TEXTJOIN(";",FALSE,valmax)
+)
+)
+)
+)
+
+=LET(にほんご,1,にほんご)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'               ^ punctuation.section.arguments.end.sheet
+'    ^^^^ variable.other.readwrite.sheet
+'           ^^^^ variable.other.readwrite.sheet
+'        ^ punctuation.separator.sequence.sheet
+'          ^ punctuation.separator.sequence.sheet
+'         ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+=LET(hel4lo,4,hel4lo)
+'<- keyword.operator.assignment.sheet
+'^^^^^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'                   ^ punctuation.section.arguments.end.sheet
+'    ^^^^^^ variable.other.readwrite.sheet
+'             ^^^^^^ variable.other.readwrite.sheet
+'          ^ punctuation.separator.sequence.sheet
+'            ^ punctuation.separator.sequence.sheet
+'           ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+
+'Avoid breaking or inadvertently changing Google Sheets Smart Chip references if possible/practical.
+=A2.date
+'^^ meta.reference.cell.sheet storage.type.sheet
+'  ^^^^^ - meta
+'  ^ - variable - storage
+'   ^^^^ variable.other.readwrite.sheet
+=LET(hello,H3.summary,LOWER(hello))
+'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'          ^^ meta.reference.cell.sheet storage.type.sheet
+'            ^^^^^^^^ - meta.reference.sheet
+'            ^ - variable - storage
+'             ^^^^^^^ variable.other.readwrite.sheet
+'         ^ punctuation.separator.sequence.sheet
+'                    ^ punctuation.separator.sequence.sheet
+
+
+={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
+
+=-1
+
+=-1=-1
+
+=Table1[Col]-2.5
+
+=SUM(A1 A2)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^^ meta.reference.cell.sheet storage.type.sheet
+'      ^ keyword.operator.set.sheet - meta.reference
+'       ^^ meta.reference.cell.sheet storage.type.sheet
+=(A1 A2)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^ meta.group.sheet
+'^ punctuation.section.group.begin.sheet
+'      ^ punctuation.section.group.end.sheet
+' ^^ meta.reference.cell.sheet storage.type.sheet
+'   ^ keyword.operator.set.sheet - meta.reference
+'    ^^ meta.reference.cell.sheet storage.type.sheet
+=LET(test1, A2:C2, test2, B1:B3, test1 test2)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'                                           ^ punctuation.section.arguments.end.sheet
+'    ^^^^^ variable.other.readwrite.sheet
+'                  ^^^^^ variable.other.readwrite.sheet
+'                                ^^^^^ variable.other.readwrite.sheet
+'                                      ^^^^^ variable.other.readwrite.sheet
+'           ^^^^^ meta.reference.range.cell.sheet
+'           ^^ storage.type.sheet
+'              ^^ storage.type.sheet
+'             ^ punctuation.separator.sequence.sheet
+'                         ^^^^^ meta.reference.range.cell.sheet
+'                         ^^ storage.type.sheet
+'                            ^^ storage.type.sheet
+'                           ^ punctuation.separator.sequence.sheet
+'         ^ punctuation.separator.sequence.sheet
+'                ^ punctuation.separator.sequence.sheet
+'                       ^ punctuation.separator.sequence.sheet
+'                              ^ punctuation.separator.sequence.sheet
+=test1 test2
+' <- keyword.operator.assignment.sheet
+'^^^^^ variable.other.readwrite.sheet
+'      ^^^^^ variable.other.readwrite.sheet
+'     ^ keyword.operator.set.sheet
+=tst1 tst2
+' <- keyword.operator.assignment.sheet
+'^^^^ meta.reference.cell.sheet
+'     ^^^^ meta.reference.cell.sheet
+'^^^^ storage.type.sheet
+'     ^^^^ storage.type.sheet
+'    ^ keyword.operator.set.sheet - meta.reference
+=tst1 test1 tst2
+'<- keyword.operator.assignment.sheet
+'^^^^ meta.reference.cell.sheet storage.type.sheet
+'    ^ keyword.operator.set.sheet - meta.reference
+'     ^^^^^ variable.other.readwrite.sheet
+'          ^ keyword.operator.set.sheet - meta.reference
+'           ^^^^ meta.reference.cell.sheet storage.type.sheet
+=test1 tst2 test2
+'^^^^^ variable.other.readwrite.sheet
+'     ^ keyword.operator.set.sheet - meta.reference
+'      ^^^^ meta.reference.cell.sheet storage.type.sheet
+'          ^ keyword.operator.set.sheet - meta.reference
+'           ^^^^^ variable.other.readwrite.sheet
+
+' Single-char functions through libre (to be revisited after VBA-like UDF testing)
+=@()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call
+'^ variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+=_()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call
+'^ variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+=.()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call
+'^ variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+=?()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call
+'^ variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+
+' Trying out new style of scope categorization here.
+' Makes annotating much faster with use of duplicate line since
+' you don't need to manually remove duplicate scopes every line.
+
+' Single-char names through libre
+=LET(@,1,@)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(.,1,.)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(_,1,_)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(_,1,_)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(?,1,?)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(`,1,`)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(\,1,\)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+
+
+
+' Note: Due to how LET arumgents work, this is an invalid formula.
+'       I've provided it here since it is dead obvious what I'm
+'       getting at when compared with the following test,
+'       which is actually a valid formula.
+=LET(tst1, 1, tst2, 2, tst1+tst2)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'                               ^ punctuation.section.arguments.end.sheet
+'    ^^^^ storage.type.sheet
+'             ^^^^ storage.type.sheet
+'                      ^^^^ storage.type.sheet
+'                           ^^^^ storage.type.sheet
+'          ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'                   ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'        ^ punctuation.separator.sequence.sheet
+'           ^ punctuation.separator.sequence.sheet
+'                 ^ punctuation.separator.sequence.sheet
+'                    ^ punctuation.separator.sequence.sheet
+'                          ^ keyword.operator.arithmetic.sheet 
+
+=LET(test1, 1, test2, 2, test1+test2)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'                                   ^ punctuation.section.arguments.end.sheet
+'    ^^^^^ variable.other.readwrite.sheet
+'              ^^^^^ variable.other.readwrite.sheet
+'                        ^^^^^ variable.other.readwrite.sheet
+'                              ^^^^^ variable.other.readwrite.sheet
+'         ^ punctuation.separator.sequence.sheet
+'            ^ punctuation.separator.sequence.sheet
+'                   ^ punctuation.separator.sequence.sheet
+'                      ^ punctuation.separator.sequence.sheet
+'                             ^ keyword.operator.arithmetic.sheet 
+
+=a_\?a()
+' <- keyword.operator.assignment.sheet
+'^^^^^ meta.function-call.sheet variable.function.sheet
+'     ^^ meta.function-call.arguments.sheet
+'     ^ punctuation.section.arguments.begin.sheet
+'      ^ punctuation.section.arguments.end.sheet
+
+
+=a()
+' <- keyword.operator.assignment.sheet
+'^ meta.function-call.sheet variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+
+=IF()
+' <- keyword.operator.assignment.sheet
+'^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'  ^^ meta.function-call.arguments.sheet
+'  ^ punctuation.section.arguments.begin.sheet
+'   ^ punctuation.section.arguments.end.sheet
+=IFS()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'   ^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'    ^ punctuation.section.arguments.end.sheet
+=IFERROR()
+' <- keyword.operator.assignment.sheet
+'^^^^^^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'       ^^ meta.function-call.arguments.sheet
+'       ^ punctuation.section.arguments.begin.sheet
+'        ^ punctuation.section.arguments.end.sheet
+=IFNA()
+' <- keyword.operator.assignment.sheet
+'^^^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'    ^^ meta.function-call.arguments.sheet
+'    ^ punctuation.section.arguments.begin.sheet
+'     ^ punctuation.section.arguments.end.sheet
+=SWITCH()
+' <- keyword.operator.assignment.sheet
+'^^^^^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'      ^^ meta.function-call.arguments.sheet
+'      ^ punctuation.section.arguments.begin.sheet
+'       ^ punctuation.section.arguments.end.sheet
+
+=AND()
+' <- keyword.operator.assignment
+'^^^ meta.function-call.sheet support.function.sheet keyword.operator.logical.sheet
+'   ^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'    ^ punctuation.section.arguments.end.sheet
+=OR()
+' <- keyword.operator.assignment
+'^^ meta.function-call.sheet support.function.sheet keyword.operator.logical.sheet
+'  ^^ meta.function-call.arguments.sheet
+'  ^ punctuation.section.arguments.begin.sheet
+'   ^ punctuation.section.arguments.end.sheet
+=XOR()
+' <- keyword.operator.assignment
+'^^^ meta.function-call.sheet support.function.sheet keyword.operator.logical.sheet
+'   ^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'    ^ punctuation.section.arguments.end.sheet
+=NOT()
+' <- keyword.operator.assignment
+'^^^ meta.function-call.sheet support.function.sheet keyword.operator.logical.sheet
+'   ^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'    ^ punctuation.section.arguments.end.sheet
+
+=1>0
+' <- keyword.operator.assignment
+' ^ keyword.operator.logical
+'^ constant.numeric.value
+'  ^ constant.numeric.value
+=A1>=A2
+' <- keyword.operator.assignment
+'  ^^ keyword.operator.logical
+=A1<=A2
+' <- keyword.operator.assignment
+'  ^^ keyword.operator.logical
+=A1<>A2
+' <- keyword.operator.assignment
+'  ^^ keyword.operator.logical
+=A1=A2
+' <- keyword.operator.assignment
+'  ^ keyword.operator.logical
+
+=A1>>A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+=A1<<A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+=A1==A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+=A1><A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+=A1=<A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+=A1=>A2
+' <- keyword.operator.assignment
+'  ^^ invalid.illegal
+
+=#NULL!
+' <- keyword.operator.assignment
+'^^^^^^ constant.language.null - constant.language.nan.sheet - constant.language.sheet
+=#NUM!
+' <- keyword.operator.assignment
+'^^^^^ constant.language.nan - constant.language.sheet - constant.language.null
+=#DIV/0!
+' <- keyword.operator.assignment
+'^^^^^^^ constant.language.nan - constant.language.sheet - constant.language.null
+=#N/A
+' <- keyword.operator.assignment
+'^^^^ constant.language.sheet - constant.language.nan - constant.language.null
+=#VALUE!
+' <- keyword.operator.assignment
+'^^^^^^^ constant.language.sheet - constant.language.nan - constant.language.null
+=#REF!
+' <- keyword.operator.assignment
+'^^^^^ constant.language.sheet - constant.language.nan - constant.language.null
+=#NAME?
+' <- keyword.operator.assignment
+'^^^^^^ constant.language.sheet - constant.language.nan - constant.language.null
+=#GETTING_DATA
+' <- keyword.operator.assignment
+'^^^^^^^^^^^^^ constant.language.sheet - constant.language.nan - constant.language.null
+=TRUE
+'^^^^ constant.language.boolean.true.sheet
+=FALSE
+'^^^^^ constant.language.boolean.false.sheet
+
+=SUM(B7:D7 C6:C8)
+'         ^ keyword.operator.set
+'          ^^^^^ - keyword
+
+
+=IF(골드_강화_효율!D12=골드_강화_효율!F25,"MAX",(Z17-100%)/골드_강화_효율!E12)
+'^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'  ^ punctuation.section.arguments.begin.sheet
+'   ^^^^^^^^^ meta.reference.sheet
+'   ^^^^^^^^ entity.name.struct.sheet
+'           ^ punctuation.separator.sequence.sheet
+'            ^^^ meta.reference.cell.sheet storage.type.sheet
+'               ^ keyword.operator.logical.sheet
+'                ^^^^^^^^^ meta.reference.sheet
+'                ^^^^^^^^ entity.name.struct.sheet
+'                        ^ punctuation.separator.sequence.sheet
+'                         ^^^ meta.reference.cell.sheet storage.type.sheet
+'                            ^ punctuation.separator.sequence.sheet
+'                             ^^^^^ string.quoted.double.sheet
+'                             ^ punctuation.definition.string.begin.sheet
+'                                 ^ punctuation.definition.string.end.sheet
+'                                  ^ punctuation.separator.sequence.sheet
+'                                   ^^^^^^^^^^ meta.group.sheet
+'                                   ^ punctuation.section.group.begin.sheet
+'                                    ^^^ meta.reference.cell.sheet storage.type.sheet
+'                                       ^ keyword.operator.arithmetic.sheet
+'                                        ^^^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'                                           ^ keyword.operator.arithmetic.sheet
+'                                            ^ punctuation.section.group.end.sheet
+'                                             ^ keyword.operator.arithmetic.sheet
+'                                              ^^^^^^^^^ meta.reference.sheet
+'                                              ^^^^^^^^ entity.name.struct.sheet
+'                                                      ^ punctuation.separator.sequence.sheet
+'                                                       ^^^ meta.reference.cell.sheet storage.type.sheet
+'                                                          ^ punctuation.section.arguments.end.sheet
+
+=TEXT(골드_강화_효율!E15/(10^3),"#,##0.#0")&"천"
+'^^^^ meta.function-call.sheet support.function.sheet
+'    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'    ^ punctuation.section.arguments.begin.sheet
+'     ^^^^^^^^^ meta.reference.sheet
+'     ^^^^^^^^ entity.name.struct.sheet
+'             ^ punctuation.separator.sequence.sheet
+'              ^^^ meta.reference.cell.sheet storage.type.sheet
+'                 ^ keyword.operator.arithmetic.sheet
+'                  ^^^^^^ meta.group.sheet
+'                  ^ punctuation.section.group.begin.sheet
+'                   ^^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'                     ^ keyword.operator.arithmetic.sheet
+'                      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'                       ^ punctuation.section.group.end.sheet
+'                        ^ punctuation.separator.sequence.sheet
+'                         ^^^^^^^^^^ string.quoted.double.sheet
+'                         ^ punctuation.definition.string.begin.sheet
+'                                  ^ punctuation.definition.string.end.sheet
+'                                   ^ punctuation.section.arguments.end.sheet
+'                                    ^ keyword.operator.concatenation.sheet
+'                                     ^^^ string.quoted.double.sheet
+'                                     ^ punctuation.definition.string.begin.sheet
+'                                       ^ punctuation.definition.string.end.sheet
+
+=INT((AH37-INT(AH37))*60)&"분"
+'^^^ meta.function-call.sheet support.function.sheet
+'   ^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'    ^^^^^^^^^^^^^^^^ meta.group.sheet
+'    ^ punctuation.section.group.begin.sheet
+'     ^^^^ meta.reference.cell.sheet storage.type.sheet
+'         ^ keyword.operator.arithmetic.sheet
+'          ^^^ meta.function-call.sheet support.function.sheet
+'             ^^^^^^ meta.function-call.arguments.sheet
+'             ^ punctuation.section.arguments.begin.sheet
+'              ^^^^ meta.reference.cell.sheet storage.type.sheet
+'                  ^ punctuation.section.arguments.end.sheet
+'                   ^ punctuation.section.group.end.sheet
+'                    ^ keyword.operator.arithmetic.sheet
+'                     ^^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'                       ^ punctuation.section.arguments.end.sheet
+'                        ^ keyword.operator.concatenation.sheet
+'                         ^^^ string.quoted.double.sheet
+'                         ^ punctuation.definition.string.begin.sheet
+'                           ^ punctuation.definition.string.end.sheet
+
+=IF(C23="1차","",IF(C23="2차","(x 1.5)",IF(C23="3차","(x 2)")))
+'^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'  ^ punctuation.section.arguments.begin.sheet
+'   ^^^ meta.reference.cell.sheet storage.type.sheet
+'      ^ keyword.operator.logical.sheet
+'       ^^^^ string.quoted.double.sheet
+'       ^ punctuation.definition.string.begin.sheet
+'          ^ punctuation.definition.string.end.sheet
+'           ^ punctuation.separator.sequence.sheet
+'            ^^ string.quoted.double.sheet
+'            ^ punctuation.definition.string.begin.sheet
+'             ^ punctuation.definition.string.end.sheet
+'              ^ punctuation.separator.sequence.sheet
+'               ^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'                 ^ punctuation.section.arguments.begin.sheet
+'                  ^^^ meta.reference.cell.sheet storage.type.sheet
+'                     ^ keyword.operator.logical.sheet
+'                      ^^^^ string.quoted.double.sheet
+'                      ^ punctuation.definition.string.begin.sheet
+'                         ^ punctuation.definition.string.end.sheet
+'                          ^ punctuation.separator.sequence.sheet
+'                           ^^^^^^^^^ string.quoted.double.sheet
+'                           ^ punctuation.definition.string.begin.sheet
+'                                   ^ punctuation.definition.string.end.sheet
+'                                    ^ punctuation.separator.sequence.sheet
+'                                     ^^ meta.function-call.sheet support.function.sheet keyword.control.conditional.if.sheet
+'                                       ^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'                                       ^ punctuation.section.arguments.begin.sheet
+'                                        ^^^ meta.reference.cell.sheet storage.type.sheet
+'                                           ^ keyword.operator.logical.sheet
+'                                            ^^^^ string.quoted.double.sheet
+'                                            ^ punctuation.definition.string.begin.sheet
+'                                               ^ punctuation.definition.string.end.sheet
+'                                                ^ punctuation.separator.sequence.sheet
+'                                                 ^^^^^^^ string.quoted.double.sheet
+'                                                 ^ punctuation.definition.string.begin.sheet
+'                                                       ^ punctuation.definition.string.end.sheet
+'                                                        ^ punctuation.section.arguments.end.sheet
+'                                                         ^ punctuation.section.arguments.end.sheet
+'                                                          ^ punctuation.section.arguments.end.sheet
+
+=MyCustomFunction("foo")
+'^^^^^^^^^^^^^^^^ meta.function-call.sheet variable.function.sheet
+'                ^^^^^^^ meta.function-call.arguments.sheet
+'                ^ punctuation.section.arguments.begin.sheet
+'                 ^^^^^ string.quoted.double.sheet
+'                 ^ punctuation.definition.string.begin.sheet
+'                     ^ punctuation.definition.string.end.sheet
+'                      ^ punctuation.section.arguments.end.sheet
+
+="~*"
+' <- keyword.operator.assignment
+'^^^^ string.quoted.double
+' ^^ constant.character.escape
+'  ^ - keyword.operator.wildcard
+'^ punctuation.definition.string.begin
+'   ^ punctuation.definition.string.end
+
+="*"
+' <- keyword.operator.assignment
+'^^^ string.quoted.double
+' ^ keyword.operator.wildcard
+'^ punctuation.definition.string.begin
+'  ^ punctuation.definition.string.end
+
+="~"
+' <- keyword.operator.assignment
+'^^^ string.quoted.double
+' ^ - keyword.operator.wildcard - constant.character.escape
+'^ punctuation.definition.string.begin
+'  ^ punctuation.definition.string.end
+
+' does: - x - y fail only if BOTH/EITHER scope x AND/OR y is applied?
+' does: - x y fail only if BOTH scope x AND y is applied?
+' The second seems to be the case, not sure about the first.
+
+="'"
+' <- keyword.operator.assignment
+'^^^ string.quoted.double
+' ^ - punctuation.definition.annotation.begin
+'^ punctuation.definition.string.begin
+'  ^ punctuation.definition.string.end
+
+=""""
+' <- keyword.operator.assignment
+'^^^^ string.quoted.double - string string
+' ^^ constant.character.escape
+' ^ - punctuation.definition.string.begin - punctuation.definition.string.end
+'  ^ - punctuation.definition.string.begin - punctuation.definition.string.end
+'^ punctuation.definition.string.begin
+'   ^ punctuation.definition.string.end
+
+='""
+' Excel error
+
+=''""
+' Excel error
+
+'="""
+' Excel error
+
+="''"
+' <- keyword.operator.assignment
+'^^^^ string.quoted.double
+' ^ - punctuation.definition.annotation.begin
+'  ^ - punctuation.definition.annotation.end
+'^ punctuation.definition.string.begin
+'   ^ punctuation.definition.string.end
+
+="?~*~?~~"
+' <- keyword.operator.assignment
+'^^^^^^^^^ string.quoted.double
+' ^ keyword.operator.wildcard
+'  ^^^^^^ constant.character.escape
+'   ^ - keyword.operator.wildcard
+'     ^ - keyword.operator.wildcard
+'^ punctuation.definition.string.begin
+'        ^ punctuation.definition.string.end
+
+=Table36['@]
+' <- keyword.operator.assignment
+'^^^^^^^^^^^ meta.reference - meta meta
+'           ^ - meta.reference
+'        ^^ storage.type - keyword
+'^^^^^^^ entity.name.struct.sheet
+'       ^ punctuation.section.brackets.begin.sheet - entity
+'          ^ punctuation.section.brackets.end.sheet - storage
+
+=Table36['#]
+' <- keyword.operator.assignment
+'^^^^^^^^^^^ meta.reference - meta meta
+'           ^ - meta.reference
+'        ^^ storage.type
+'^^^^^^^ entity.name.struct.sheet - keyword
+'       ^ punctuation.section.brackets.begin.sheet - entity
+'          ^ punctuation.section.brackets.end.sheet - storage
+
+=Table36[:]
+' <- keyword.operator.assignment
+'^^^^^^^^^^ meta.reference - meta meta
+'          ^ - meta.reference
+'        ^ storage.type
+'^^^^^^^ entity.name.struct.sheet - keyword
+'       ^ punctuation.section.brackets.begin.sheet - entity
+'         ^ punctuation.section.brackets.end.sheet - storage
+
+=Table36[,]
+' <- keyword.operator.assignment
+'^^^^^^^^^^ meta.reference - meta meta
+'          ^ - meta.reference
+'        ^ storage.type - keyword
+'^^^^^^^ entity.name.struct.sheet
+'       ^ punctuation.section.brackets.begin.sheet - entity
+'         ^ punctuation.section.brackets.end.sheet - storage
+
+=Table36[']]
+' <- keyword.operator.assignment
+'^^^^^^^^^^^ meta.reference - meta meta
+'           ^ - meta.reference
+'^^^^^^^ entity.name.struct - keyword
+'       ^ punctuation.section.brackets.begin - entity
+'        ^^ storage.type - keyword
+'          ^ punctuation.section.brackets.end - storage
+
+=Table36['[]
+' <- keyword.operator.assignment
+'^^^^^^^^^^^ meta.reference - meta meta
+'           ^ - meta.reference
+'^^^^^^^ entity.name.struct - keyword
+'       ^ punctuation.section.brackets.begin - entity
+'        ^^ storage.type - keyword
+'          ^ punctuation.section.brackets.end - storage
+
+='s''s'!N36
+'^^^^^^^ meta.reference.sheet
+'^ punctuation.definition.annotation.begin.sheet - entity
+' ^^^^ entity.name.struct.sheet
+'  ^^ constant.character.escape.sheet
+'     ^ punctuation.definition.annotation.end.sheet - entity
+'      ^ punctuation.separator.sequence.sheet
+'       ^^^ meta.reference.cell.sheet storage.type.sheet
+
+='s''''s'!N36
+'^^^^^^^^^ meta.reference.sheet
+'^ punctuation.definition.annotation.begin.sheet - entity
+' ^^^^^^ entity.name.struct.sheet
+'  ^^^^ constant.character.escape.sheet
+'       ^ punctuation.definition.annotation.end.sheet - entity
+'        ^ punctuation.separator.sequence.sheet
+'         ^^^ meta.reference.cell.sheet storage.type.sheet
+
+
+
+=Table36[[#All],[ほあうぃふぉあうぃ]]
+' <- keyword.operator.assignment
+'^^^^^^^ entity.name.struct - keyword
+'         ^ keyword.operator.reference
+'          ^^^ storage.type
+'                ^^^^^^^^^ storage.type
+'       ^ punctuation.section.brackets.begin - entity
+'        ^ punctuation.section.brackets.begin
+'             ^ punctuation.section.brackets.end
+'              ^ punctuation.separator.sequence
+'               ^ punctuation.section.brackets.begin
+'                         ^ punctuation.section.brackets.end
+'                          ^ punctuation.section.brackets.end   
+
+=Table36[[#Headers],[한국어]]
+' <- keyword.operator.assignment
+'^^^^^^^ entity.name.struct - keyword
+'         ^ keyword.operator.reference
+'          ^^^^^^^ storage.type
+'                    ^^^ storage.type
+'       ^ punctuation.section.brackets.begin - entity
+'        ^ punctuation.section.brackets.begin
+'                 ^ punctuation.section.brackets.end
+'                  ^ punctuation.separator.sequence
+'                   ^ punctuation.section.brackets.begin
+'                       ^ punctuation.section.brackets.end
+'                        ^ punctuation.section.brackets.end   
+
+=한국어!L11
+' <- keyword.operator.assignment
+'^^^^^^^ meta.reference - meta meta
+'       ^ - meta.reference
+'^^^ entity.name.struct
+'   ^ punctuation.separator.sequence
+'    ^^^ storage.type
+
+
+=う[[#Headers],[>]]
+' <- keyword.operator.assignment
+'^ entity.name.struct
+'   ^ keyword.operator.reference
+'    ^^^^^^^ storage.type
+'              ^ storage.type.sheet
+' ^ punctuation.section.brackets.begin - entity
+'  ^ punctuation.section.brackets.begin
+'           ^ punctuation.section.brackets.end
+'            ^ punctuation.separator.sequence
+'             ^ punctuation.section.brackets.begin
+'               ^ punctuation.section.brackets.end
+'                ^ punctuation.section.brackets.end   
+
+=_hello_2world!N36
+' <- keyword.operator.assignment
+'^^^^^^^^^^^^^^^^^ meta.reference - meta meta
+'                 ^ - meta.reference
+'^^^^^^^^^^^^^ entity.name.struct
+'             ^ punctuation.separator.sequence - entity
+
+=_Table1?\[Row1]
+' <- keyword.operator.assignment
+'^^^^^^^^^^^^^^^ meta.reference - meta meta
+'               ^ - meta.reference
+'^^^^^^^^^ entity.name.struct
+'         ^ punctuation.section.brackets.begin - entity
+'          ^^^^ storage.type
+'              ^ punctuation.section.brackets.end
+
+
+
+
+
+' Changes to Sheet Naming Demo:
+' 1. Single quotes are no longer given the entity.name.struct.excel scope by default
+' 2. Single quotes are no longer given punctuation scopes by default
+='This''sASheetWithAnEscapedSingleQuote'!A1
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.sheet - meta meta
+'^ punctuation.definition.annotation.begin.sheet - entity
+' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ entity.name.struct.sheet
+'     ^^ constant.character.escape.sheet
+'                                      ^ punctuation.definition.annotation.end.sheet - entity
+'                                       ^ punctuation.separator.sequence.sheet
+'                                        ^^ meta.reference.cell.sheet storage.type.sheet
+' <- keyword.operator.assignment.sheet
+
+=''''!A1
+'^^^^^ meta.reference.sheet
+'^ punctuation.definition.annotation.begin.sheet
+' ^^ entity.name.struct.sheet constant.character.escape.sheet - punctuation
+'   ^ punctuation.definition.annotation.end.sheet
+'    ^ punctuation.separator.sequence.sheet
+'     ^^ meta.reference.cell.sheet storage.type.sheet
+' <- keyword.operator.assignment.sheet
+
+='^'!A1
+'^^^^ meta.reference.sheet
+'^ punctuation.definition.annotation.begin.sheet
+' ^ entity.name.struct.sheet
+'  ^ punctuation.definition.annotation.end.sheet
+'   ^ punctuation.separator.sequence.sheet
+'    ^^ meta.reference.cell.sheet storage.type.sheet
+
+
+=-1
+'^ keyword.operator.arithmetic
+' ^ constant.numeric
+
+=A1)
+'  ^ invalid.illegal.stray-bracket-end
+
+=2}
+' ^ invalid.illegal.stray-bracket-end
+
+=2]
+' ^ invalid.illegal.stray-bracket-end
+
+=((R21-R19)/($Q$39+100)+(R22-R20)/$O$39)/R18
+' <- keyword.operator.assignment
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.group
+'                                       ^^^^^^^ - meta.group
+' ^^^^^^^^ meta.group meta.group
+'^^ punctuation.section.group.begin
+'  ^^^ meta.reference
+'     ^ keyword.operator.arithmetic
+'      ^^^ meta.reference
+'            ^^^^^ meta.reference
+'                 ^ keyword.operator.arithmetic
+'                  ^^^ constant.numeric
+
+=FILTER(StageData[Mob/Wave],StageData[Stage Num]=$C13)*10+1
+' <- keyword.operator.assignment
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call
+'                                                     ^^^^^^ - meta.function-call
+'^^^^^^ support.function
+'      ^ punctuation
+'       ^^^^^^^^^^^^^^^^^^^ meta.reference - meta.reference meta.reference
+'                ^ punctuation.section.brackets.begin
+'                 ^^^^^^^^ storage.type
+'                         ^ punctuation.section.brackets.end
+'                          ^ punctuation.separator.sequence
+'                           ^^^^^^^^^^^^^^^^^^^^ meta.reference - meta.reference meta.reference
+'                                               ^ keyword.operator.logical - keyword.operator.assignment
+
+=ISNUMBER(FIND({"Office 365 button","Excel 2013","Excel 2010"},A630))
+
+="hello"&"world"
+'^^^^^^^ string.quoted.double
+'^ punctuation.definition.string.begin
+'      ^ punctuation.definition.string.end
+'       ^ keyword.operator.concatenation
+'        ^^^^^^^ string.quoted.double
+'        ^ punctuation.definition.string.begin
+'              ^ punctuation.definition.string.end
+
+=N("hello"="hello")
+' <- keyword.operator.assignment
+
+
+=LET(
+cost,StageEffDmg!$C$78,
+efSoValr,IF(StageEffDmg!$C$77={"green";"blue";"red"},SoulWeps!$G$31:$G$33,""),
+effSouls,FILTER(efSoValr,LEN(efSoValr)),
+sOneSouls,StageEffDmg!$C$66*StageEffDmg!$C$64,
+sOne,StageEffDmg!C85*0.01/StageEffDmg!$C$66*StageEffDmg!$C$64*StageEffDmg!$C$79,
+sTwoSouls,StageEffDmg!$C$72*StageEffDmg!$C$70,
+sTwo,StageEffDmg!C86*0.01/StageEffDmg!$C$72*StageEffDmg!$C$70*StageEffDmg!$C$79,
+wknd,(sTwo*(2/24)+sOne*(22/24))*(2/7),
+wkndSouls,(sTwoSouls*(2/24)+sOneSouls*(22/24))*(2/7),
+wkdy,sOne*(5/7),
+wkdySouls,sOneSouls*(5/7),
+(wknd+wkdy)*24*((cost-effSouls)/((wkndSouls+wkdySouls)*24))
+)+I12
+
+
+=LET(
+lab,[[#Headers],[GISO_1]],
+rcidd,RCIndex[[ddCol]:[ddCol]],
+rcirc,RCIndex[[rcCol]:[rcCol]],
+
+val,
+INDEX(
+XLOOKUP(
+XLOOKUP(lab,rcidd,rcirc),
+REDCap[[#Headers],[giso_1]:[apgar_complete]],
+REDCap[[giso_1]:[apgar_complete]]
+),
+MATCH(
+CONCAT(
+SPARC[@[RedCap_ID]:[RedCap_ID]],
+XLOOKUP(lab,rcidd,RCIndex[[ArmEvent]:[ArmEvent]])
+),
+REDCap[[IDArm]:[IDArm]],0)
+),)
+
+
+=BYROW(array, LAMBDA(row, MAX(row))
+
+
+IF(LEN(val),val,""))
+
+C78%
+
+A5:A6
+
+A$5:A6
+
+$A5:$A6
+
+=LET(
+this,RCCalc[[#Headers],[giso_timestamp]],
+return,XLOOKUP(this,RCIndex[[rcCol]:[rcCol]],RCIndex[[Recalc Formula]:[Recalc Formula]],,0,1),
+cell,FILTER(FILTER(REDCap,REDCap[#Headers]=this),RCCalc[@[IDArm]:[IDArm]]=REDCap[[IDArm]:[IDArm]]),
+IF(LEN(return),return,
+IF(LEN(cell),cell,""))
+)
+
+=LET(txt,[@Action],out,
+IF(
+ISNUMBER(FIND("(Auto calculation)",txt)),MID(txt,FIND("n) ",txt)+3,3),
+IF(
+ISNUMBER(FIND("(import)",txt)),MID(txt,FIND("t) ",txt)+3,3),
+IF(
+ISNUMBER(FIND("(Data Quality)",txt)),MID(txt,FIND("y) ",txt)+3,3),
+IF(
+ISNUMBER(FIND("Record",txt)),MID(txt,FIND("Record ",txt)+7,3),
+IF(
+ISNUMBER(FIND("Response",txt)),MID(txt,FIND("Response ",txt)+9,3),
+""))))),
+IF(LEN(out),VALUE(SUBSTITUTE(out," (","")),"")
+)
+
+' illegal in Excel. Legal in Sheets.
+' TODO: figure out a clean way to test this specific to each program after extensions are made since it breaks the assertions themselves.
+'='['!A1

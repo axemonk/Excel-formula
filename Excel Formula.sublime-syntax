@@ -1,0 +1,131 @@
+%YAML 1.2
+---
+name: Excel Formula
+scope: source.sheet.excel
+version: 2
+extends: Spreadsheet Formula (Basic).sublime-syntax
+file_extensions:
+  - xls.txt
+
+contexts:
+  function-builtins-extra:
+    - meta_append: true
+    - match: \b({{function_builtins_excel}})(\()
+      captures:
+        1: meta.function-call.excel support.function.excel
+        2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
+      push: function-call-body
+
+  cell-or-range-reference:
+    - meta_append: true
+
+    # Push to dynamic context to isolate forced anonymity to just dynamic refs
+    - match: |-
+        (?x:(?=  # next find a...
+          (?:@?{{cell}})  # cell followed by...
+          (?:
+            [#]?:{{cell}}[#]  # maybe a # and second cell with #, OR
+          | [#]:{{cell}}[#]?  # definitely a # and second cell maybe with #
+          )
+        ))
+      push: dynamic-reference
+
+    # Cell range without dynamics
+    # @A1:B2
+    - match: (@)({{cell}})(:)({{cell}})
+      scope: meta.reference.range.cell.excel
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      push: maybe-union-operator
+
+    # Naked cell reference
+    # @A1
+    # @A1#
+    - match: (@?)({{cell}})(#?)(?![:#])
+      scope: meta.reference.cell.excel
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: keyword.operator.reference.excel
+      push: maybe-union-operator
+
+    # Column to column
+    # @A:B
+    - match: (@?)({{column}})(:)({{column}})(?![0-9])
+      scope: meta.reference.range.column.excel
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      push: maybe-union-operator
+
+    # Row to row
+    # @1:2
+    - match: (@)({{row}})(:)({{row}})
+      scope: meta.reference.range.row.excel
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: punctuation.separator.sequence.excel
+        4: storage.type.excel
+      push: maybe-union-operator
+
+  dynamic-reference:
+    - meta_prepend: true
+    # Zero-dimensional cell range w/ dynamics
+    # @A1#:A1#
+    # @A1:A1#
+    - match: (@?)({{cell}})(#?)(:)(\2)(#)
+      scope: meta.reference.cell.excel
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: keyword.operator.reference.excel
+        4: punctuation.separator.sequence.excel
+        5: storage.type.excel
+        6: keyword.operator.reference.excel
+      push: maybe-union-operator
+
+    # Cell range with dynamics
+    # @A1#:B2
+    # @A1#:B2#
+    - match: (@?)({{cell}})(#)(:)({{cell}})(#?)
+      scope: meta.reference.range.cell.excel
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.excel
+        3: keyword.operator.reference.excel
+        4: punctuation.separator.sequence.excel
+        5: storage.type.excel
+        6: keyword.operator.reference.excel
+      push: maybe-union-operator
+
+    # Bail if nothing matches
+    - include: immediately-pop
+
+variables:
+  # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
+  function_builtins_excel: |-
+    \b(?xi:
+      AGGREGATE | AMORDEGRC | AREAS | ARRAYTOTEXT |
+      BAHTTEXT | BESSELI | BESSELJ | BESSELK | BESSELY | BINOM\.DIST\.RANGE |
+      CALL | CUBEKPIMEMBER | CUBEMEMBER | CUBEMEMBERPROPERTY | CUBERANKEDMEMBER | CUBESET | CUBESETCOUNT | CUBEVALUE |
+      DBCS | DROP |
+      EUROCONVERT | EXPAND |
+      FILTERXML | FORECAST\.ETS | FORECAST\.ETS\.CONFINT | FORECAST\.ETS\.SEASONALITY | FORECAST\.ETS\.STAT |
+      INFO | ISOMITTED |
+      JIS |
+      NUMBERVALUE |
+      ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD |
+      PHONETIC |
+      REGISTER\.ID | RTD |
+      SHEET | SHEETS | SORTBY | STOCKHISTORY |
+      TAKE | TEXTAFTER | TEXTBEFORE | TEXTSPLIT | TOCOL | TODAY | TOROW |
+      VALUETOTEXT |
+      WEBSERVICE |
+      XMATCH
+    )\b
