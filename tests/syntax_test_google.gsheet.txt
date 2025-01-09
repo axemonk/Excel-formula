@@ -719,7 +719,7 @@ TEXTJOIN(";",FALSE,valmax)
 =Table36[[#All],[ほあうぃふぉあうぃ]]
 ' <- keyword.operator.assignment
 '^^^^^^^ entity.name.struct - keyword
-'         ^ keyword.operator.reference
+'         ^ - keyword
 '          ^^^ storage.type
 '                ^^^^^^^^^ storage.type
 '       ^ punctuation.section.brackets.begin - entity
@@ -733,7 +733,7 @@ TEXTJOIN(";",FALSE,valmax)
 =Table36[[#Headers],[한국어]]
 ' <- keyword.operator.assignment
 '^^^^^^^ entity.name.struct - keyword
-'         ^ keyword.operator.reference
+'         ^ - keyword
 '          ^^^^^^^ storage.type
 '                    ^^^ storage.type
 '       ^ punctuation.section.brackets.begin - entity
@@ -756,7 +756,7 @@ TEXTJOIN(";",FALSE,valmax)
 =う[[#Headers],[>]]
 ' <- keyword.operator.assignment
 '^ entity.name.struct
-'   ^ keyword.operator.reference
+'   ^ - keyword
 '    ^^^^^^^ storage.type
 '              ^ storage.type.sheet
 ' ^ punctuation.section.brackets.begin - entity

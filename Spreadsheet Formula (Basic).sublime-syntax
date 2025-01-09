@@ -404,9 +404,6 @@ contexts:
       captures:
         1: constant.character.escape.sheet
 
-    - match: '[#@]'
-      scope: keyword.operator.reference.sheet
-
     - match: \[
       scope: punctuation.section.brackets.begin.sheet
       push: table-name-body

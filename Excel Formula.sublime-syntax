@@ -107,6 +107,11 @@ contexts:
     # Bail if nothing matches
     - include: immediately-pop
 
+  table-name-body:
+    - meta_prepend: true
+    - match: '[#@]'
+      scope: keyword.operator.reference.excel
+
 variables:
   # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
   function_builtins_excel: |-
