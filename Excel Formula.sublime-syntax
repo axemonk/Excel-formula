@@ -107,6 +107,15 @@ contexts:
     # Bail if nothing matches
     - include: immediately-pop
 
+  maybe-union-operator:
+    - meta_prepend: true
+
+    # Prepend Excel's union operator
+    - match: '[ ]{{before_reference}}'
+      scope: keyword.operator.set.excel
+    - match: '[ ]{{before_name}}'
+      scope: keyword.operator.set.excel
+
   table-name-body:
     - meta_prepend: true
     - match: '[#@]'

@@ -79,14 +79,14 @@ TEXTJOIN(";",FALSE,valmax)
 '   ^^^^^^^ meta.function-call.arguments.sheet
 '   ^ punctuation.section.arguments.begin.sheet
 '    ^^ meta.reference.cell.sheet storage.type.sheet
-'      ^ keyword.operator.set.sheet - meta.reference
+'      ^ - keyword - meta.reference
 '       ^^ meta.reference.cell.sheet storage.type.sheet
 '         ^ punctuation.section.arguments.end.sheet
 =(A1 A2)
 '^^^^^^^ meta.group.sheet
 '^ punctuation.section.group.begin.sheet
 ' ^^ meta.reference.cell.sheet storage.type.sheet
-'   ^ keyword.operator.set.sheet - meta.reference
+'   ^ - keyword - meta.reference
 '    ^^ meta.reference.cell.sheet storage.type.sheet
 '      ^ punctuation.section.group.end.sheet
 =LET(test1, A2:C2, test2, B1:B3, test1 test2)
@@ -116,26 +116,26 @@ TEXTJOIN(";",FALSE,valmax)
 ' <- keyword.operator.assignment.sheet
 '^^^^^ variable.other.readwrite.sheet
 '      ^^^^^ variable.other.readwrite.sheet
-'     ^ keyword.operator.set.sheet
+'     ^ - keyword
 =tst1 tst2
 ' <- keyword.operator.assignment.sheet
 '^^^^ meta.reference.cell.sheet
 '     ^^^^ meta.reference.cell.sheet
 '^^^^ storage.type.sheet
 '     ^^^^ storage.type.sheet
-'    ^ keyword.operator.set.sheet - meta.reference
+'    ^ - keyword - meta.reference
 =tst1 test1 tst2
 '<- keyword.operator.assignment.sheet
 '^^^^ meta.reference.cell.sheet storage.type.sheet
-'    ^ keyword.operator.set.sheet - meta.reference
+'    ^ - keyword - meta.reference
 '     ^^^^^ variable.other.readwrite.sheet
-'          ^ keyword.operator.set.sheet - meta.reference
+'          ^ - keyword - meta.reference
 '           ^^^^ meta.reference.cell.sheet storage.type.sheet
 =test1 tst2 test2
 '^^^^^ variable.other.readwrite.sheet
-'     ^ keyword.operator.set.sheet - meta.reference
+'     ^ - keyword - meta.reference
 '      ^^^^ meta.reference.cell.sheet storage.type.sheet
-'          ^ keyword.operator.set.sheet - meta.reference
+'          ^ - keyword - meta.reference
 '           ^^^^^ variable.other.readwrite.sheet
 
 ' Single-char functions through libre (to be revisited after VBA-like UDF testing)
@@ -438,7 +438,7 @@ TEXTJOIN(";",FALSE,valmax)
 '^^^^^ constant.language.boolean.false.sheet
 
 =SUM(B7:D7 C6:C8)
-'         ^ keyword.operator.set
+'         ^ - keyword
 '          ^^^^^ - keyword
 
 
