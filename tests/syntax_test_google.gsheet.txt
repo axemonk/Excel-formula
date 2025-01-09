@@ -584,7 +584,7 @@ TEXTJOIN(";",FALSE,valmax)
 ="*"
 ' <- keyword.operator.assignment
 '^^^ string.quoted.double
-' ^ keyword.operator.wildcard
+' ^ constant.other.wildcard.asterisk.sheet
 '^ punctuation.definition.string.begin
 '  ^ punctuation.definition.string.end
 
@@ -635,7 +635,7 @@ TEXTJOIN(";",FALSE,valmax)
 ="?~*~?~~"
 ' <- keyword.operator.assignment
 '^^^^^^^^^ string.quoted.double
-' ^ keyword.operator.wildcard
+' ^ constant.other.wildcard.questionmark.sheet
 '  ^^^^^^ constant.character.escape
 '   ^ - keyword.operator.wildcard
 '     ^ - keyword.operator.wildcard
