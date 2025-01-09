@@ -96,8 +96,6 @@ variables:
   sheet_name_normal_google: '[\w]+[\w.?]*'
   sheet: (?:(?:{{sheet_name_delimited_excel}}|{{sheet_name_delimited_google}}|{{sheet_name_normal_excel}}))
 
-  string_wildcard: '[*?]'
-
   # Intersection Operator Variables
   before_reference: |-
     (?x:(?=
@@ -526,10 +524,12 @@ contexts:
 
     # Tilde escapes wildcards and itself, but can also be used by itself and
     # functions as a literal
-    - match: ~(?:~|{{string_wildcard}})
+    - match: ~[~?*]
       scope: constant.character.escape.sheet
-    - match: '{{string_wildcard}}'
-      scope: keyword.operator.wildcard.sheet
+    - match: \*
+      scope: constant.other.wildcard.asterisk.sheet
+    - match: \?
+      scope: constant.other.wildcard.questionmark.sheet
     - include: string-body
 
 ###[ PROTOTYPES ]##############################################################
