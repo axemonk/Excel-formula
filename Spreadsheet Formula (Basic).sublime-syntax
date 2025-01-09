@@ -371,13 +371,7 @@ contexts:
       push: maybe-union-operator
 
   maybe-union-operator:
-    - match: '[ ]{{before_reference}}'
-      scope: keyword.operator.set.sheet
-
-    - match: '[ ]{{before_name}}'
-      scope: keyword.operator.set.sheet
-
-    # Bail if nothing matches
+    # Bail immediately
     - include: immediately-pop
 
   table-name:
