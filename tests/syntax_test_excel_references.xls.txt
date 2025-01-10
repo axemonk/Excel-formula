@@ -95,6 +95,34 @@
 ' ^ storage.type.excel
 '  ^ punctuation.separator.sequence.excel
 '   ^ storage.type.excel
+=UniquePts2[@[MRN]:[MRN]]
+'^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.sheet
+'^^^^^^^^^^ entity.name.struct.sheet
+'          ^ punctuation.section.brackets.begin.sheet
+'           ^ keyword.operator.reference.excel
+'            ^^^^^^^^^^^ meta.reference.sheet
+'            ^ punctuation.section.brackets.begin.sheet
+'             ^^^ storage.type.sheet
+'                ^ punctuation.section.brackets.end.sheet
+'                 ^ punctuation.separator.sequence.sheet
+'                  ^ punctuation.section.brackets.begin.sheet
+'                   ^^^ storage.type.sheet
+'                      ^ punctuation.section.brackets.end.sheet
+'                       ^ punctuation.section.brackets.end.sheet
+=UniquePts2[[#Headers],[ORDER_INST.Earliest]]
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.sheet
+'^^^^^^^^^^ entity.name.struct.sheet
+'          ^ punctuation.section.brackets.begin.sheet
+'           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.sheet
+'           ^ punctuation.section.brackets.begin.sheet
+'            ^ keyword.operator.reference.excel
+'             ^^^^^^^ storage.type.sheet
+'                    ^ punctuation.section.brackets.end.sheet
+'                     ^ punctuation.separator.sequence.sheet
+'                      ^ punctuation.section.brackets.begin.sheet
+'                       ^^^^^^^^^^^^^^^^^^^ storage.type.sheet
+'                                          ^ punctuation.section.brackets.end.sheet
+'                                           ^ punctuation.section.brackets.end.sheet
 
 '''[ BAD REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 

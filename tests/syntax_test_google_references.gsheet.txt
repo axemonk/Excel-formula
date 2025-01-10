@@ -110,3 +110,7 @@
 '^ - storage - keyword
 =A1:A1#
 '     ^ - storage - keyword
+=UniquePts2[@[MRN]:[MRN]]
+'           ^ - keyword
+=UniquePts2[[#Headers],[ORDER_INST.Earliest]]
+'            ^ - keyword
