@@ -2,3 +2,7 @@
 
 *.sublime-syntax text
 *.txt text
+
+/.git* export-ignore
+/tests/ export-ignore
+/README.md export-ignore
