@@ -103,8 +103,6 @@ variables:
   sheet_name_normal_google: '[\w]+[\w.?]*'
   sheet: (?:(?:{{sheet_name_delimited_excel}}|{{sheet_name_delimited_google}}|{{sheet_name_normal_excel}}))
 
-  string_wildcard: '[*?]'
-
   # Intersection Operator Variables
   before_reference: |-
     (?x:(?=
@@ -377,13 +375,7 @@ contexts:
       push: maybe-union-operator
 
   maybe-union-operator:
-    - match: '[ ]{{before_reference}}'
-      scope: keyword.operator.set.sheet
-
-    - match: '[ ]{{before_name}}'
-      scope: keyword.operator.set.sheet
-
-    # Bail if nothing matches
+    # Bail immediately
     - include: immediately-pop
 
   table-name:
@@ -411,9 +403,6 @@ contexts:
       scope: storage.type.sheet
       captures:
         1: constant.character.escape.sheet
-
-    - match: '[#@]'
-      scope: keyword.operator.reference.sheet
 
     - match: \[
       scope: punctuation.section.brackets.begin.sheet
@@ -542,10 +531,12 @@ contexts:
 
     # Tilde escapes wildcards and itself, but can also be used by itself and
     # functions as a literal
-    - match: ~(?:~|{{string_wildcard}})
+    - match: ~[~?*]
       scope: constant.character.escape.sheet
-    - match: '{{string_wildcard}}'
-      scope: keyword.operator.wildcard.sheet
+    - match: \*
+      scope: constant.other.wildcard.asterisk.sheet
+    - match: \?
+      scope: constant.other.wildcard.questionmark.sheet
     - include: string-body
 
 ###[ PROTOTYPES ]##############################################################
