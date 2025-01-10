@@ -1,0 +1,4 @@
+* text=auto
+
+*.sublime-syntax text
+*.txt text
