@@ -30,6 +30,8 @@ variables:
       UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
     )\b
 
+  sheet: (?:{{sheet_name_delimited_google}}|{{sheet_name_normal_google}})
+
 contexts:
   function-builtins-extra:
     - meta_append: true

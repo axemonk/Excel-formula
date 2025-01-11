@@ -30,6 +30,8 @@ variables:
       XMATCH
     )\b
 
+  sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
+
 contexts:
   function-builtins-extra:
     - meta_append: true
