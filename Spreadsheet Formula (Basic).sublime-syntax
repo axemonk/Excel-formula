@@ -94,7 +94,7 @@ variables:
 
   sheet_name_normal_excel: '[\w&&[^0-9]]+\w*'
   sheet_name_normal_google: '[\w]+[\w.?]*'
-  sheet: (?:(?:{{sheet_name_delimited_excel}}|{{sheet_name_delimited_google}}|{{sheet_name_normal_excel}}))
+  sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_delimited_google}}|{{sheet_name_normal_excel}})
 
   # Intersection Operator Variables
   before_reference: |-
