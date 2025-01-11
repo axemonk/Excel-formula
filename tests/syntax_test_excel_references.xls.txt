@@ -123,6 +123,7 @@
 '                       ^^^^^^^^^^^^^^^^^^^ storage.type.sheet
 '                                          ^ punctuation.section.brackets.end.sheet
 '                                           ^ punctuation.section.brackets.end.sheet
+'=hel|lo!'R1C1:R2C2'
 
 '''[ BAD REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
