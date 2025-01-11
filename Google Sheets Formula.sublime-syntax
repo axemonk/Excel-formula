@@ -7,6 +7,29 @@ extends: Spreadsheet Formula (Basic).sublime-syntax
 file_extensions:
   - gsheet.txt
 
+variables:
+  # https://support.google.com/docs/table/25273
+  function_builtins_google: |-
+    \b(?xi:
+      ADD | ARRAY_CONSTRAIN | ARRAYFORMULA | AVERAGE\.WEIGHTED |
+      COUNTUNIQUE |
+      DETECTLANGUAGE | DIVIDE |
+      EPOCHTODATE | EQ |
+      FLATTEN |
+      GOOGLEFINANCE | GOOGLETRANSLATE | GT | GTE |
+      IMCOTH | IMLOG | IMPORTDATA | IMPORTFEED | IMPORTHTML | IMPORTRANGE | IMPORTXML | IMTANH | ISBETWEEN | ISDATE | ISEMAIL | ISURL |
+      JOIN |
+      LT | LTE |
+      MARGINOFERROR | MINUS | MULTIPLY |
+      NE |
+      POW |
+      QUERY |
+      REGEXEXTRACT | REGEXMATCH | REGEXREPLACE |
+      SORTN | SPARKLINE | SPLIT |
+      TO_DATE | TO_DOLLARS | TO_PERCENT | TO_PURE_NUMBER | TO_TEXT | TOCOL | TODAY | TOROW |
+      UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
+    )\b
+
 contexts:
   function-builtins-extra:
     - meta_append: true
@@ -58,26 +81,3 @@ contexts:
         2: punctuation.separator.sequence.google
         3: storage.type.google
       push: maybe-union-operator
-
-variables:
-  # https://support.google.com/docs/table/25273
-  function_builtins_google: |-
-    \b(?xi:
-      ADD | ARRAY_CONSTRAIN | ARRAYFORMULA | AVERAGE\.WEIGHTED |
-      COUNTUNIQUE |
-      DETECTLANGUAGE | DIVIDE |
-      EPOCHTODATE | EQ |
-      FLATTEN |
-      GOOGLEFINANCE | GOOGLETRANSLATE | GT | GTE |
-      IMCOTH | IMLOG | IMPORTDATA | IMPORTFEED | IMPORTHTML | IMPORTRANGE | IMPORTXML | IMTANH | ISBETWEEN | ISDATE | ISEMAIL | ISURL |
-      JOIN |
-      LT | LTE |
-      MARGINOFERROR | MINUS | MULTIPLY |
-      NE |
-      POW |
-      QUERY |
-      REGEXEXTRACT | REGEXMATCH | REGEXREPLACE |
-      SORTN | SPARKLINE | SPLIT |
-      TO_DATE | TO_DOLLARS | TO_PERCENT | TO_PURE_NUMBER | TO_TEXT | TOCOL | TODAY | TOROW |
-      UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
-    )\b
