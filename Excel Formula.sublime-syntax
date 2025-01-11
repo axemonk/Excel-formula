@@ -41,6 +41,35 @@ contexts:
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
+  sheet-reference:
+    - match: (?={{sheet}}!)
+    # - match: (?={{sheet}}[!|])
+      push: sheet-reference-body
+
+  sheet-reference-body:
+    - meta_scope: meta.reference.sheet
+    - match: \!
+      scope: punctuation.separator.sequence.sheet
+      pop: 1
+    # - match: \|
+    #   scope: punctuation.separator.sequence.sheet
+    #   push: sheet-reference-body
+    - match: \'
+      scope: punctuation.definition.annotation.begin.sheet
+      push:
+        - meta_content_scope: entity.name.struct.sheet
+        - match: \'\'
+          scope: constant.character.escape.sheet
+        # - match: \'(?=\|)
+        #   scope: punctuation.definition.annotation.end.sheet
+          # push: sheet-reference-body
+        - match: \'(?=!)
+          scope: punctuation.definition.annotation.end.sheet
+          pop: 1
+    - match: '{{sheet_name_normal_excel}}'
+      scope: entity.name.struct.sheet
+    - include: immediately-pop
+
   cell-or-range-reference:
     - meta_append: true
 
