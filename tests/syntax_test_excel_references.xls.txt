@@ -31,6 +31,26 @@
 
 =RC[1]:R[1]C[2] R[1]C:R[1]C
 
+=LET(r1chello,test)
+
+=LET(4hello, 1, 4hello)
+
+=R10000000
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^ meta.reference.cell.sheet storage.type.sheet
+' R & 13 9s is a legal name in Excel LET()
+=LET(R9999999999999,1,R9999999999999)
+' <- keyword.operator.assignment.sheet
+'    ^^^^^^^^^^^^^^ variable.other.readwrite.sheet
+'                     ^^^^^^^^^^^^^^ variable.other.readwrite.sheet
+' Without something to match all numbers greater than the max row index,
+' this otherwise valid formula will highlight like it was invalid.
+' This test would fail if it was highlighted correctly.
+=LET(R9999999,1,R9999999)
+' <- keyword.operator.assignment.sheet
+'    ^^^^^^^^ - variable.other.readwrite.sheet
+'               ^^^^^^^^ - variable.other.readwrite.sheet
+
 '''[ SHARED REFERENCES ]'''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 =A1

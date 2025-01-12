@@ -22,14 +22,25 @@ variables:
   # # Google Sheets: ZZZ (18,278)
   column: (?:\$?[A-Za-z]{1,3})
   # Row numbers do not include international numbers
-  row: (?:\$?[1-9][0-9]{0,10})
+  # Max row index:
+  # # Excel & Libre:  1,048,576
+  # # Google Sheets: 10,000,000
+  row: (?:\$?[1-9][0-9]{0,7})
   # Negative lookahead prevents matching names with numbers in them.
   cell: (?:{{column}}{{row}}(?!{{name_user}}))
-  # Heavy handed approach as a proof of concept.
-  r_: (?i:R\[[-\+]?\d\])
-  c_: (?i:C\[[-\+]?\d\])
-  # Not sure what the correct order should be or if more lines/neg lkahead are needed
-  # to prevent partial matches before a more suitable pattern is reached.
+  r_: |-
+    (?xi:
+      R
+      (?:
+        \[[-\+]?[1-9][0-9]{0,6}\] |
+                [1-9][0-9]{0,6}
+      )
+      (?:
+          (?={{c_}})
+        | (?=C?(?!{{name_user}}))
+      )
+    )
+  c_: (?i:C(?:\[[-\+]?[1-9][0-9]{0,4}\]|[1-9][0-9]{0,4})(?!{{name_user}}))
   rc: |-
     (?xi:
       {{r_}}{{c_}}|
@@ -44,7 +55,11 @@ variables:
 
   name_excel: |-
     (?x:
-      [\w\\&&[^0-9]]+
+      (?# my gut tells me this first class should be '[\w\\&&[^0-9]]+',
+          but that breaks R1C1 edge cases, and it's currently redundant.
+          It's supposed to prevent e.g. `4hello` from matching as a valid name,
+          but `4hello` doesn't match as a name regardless.)
+      [\w\\]+
       [\w?\\]*
     )
   name_google: |-
