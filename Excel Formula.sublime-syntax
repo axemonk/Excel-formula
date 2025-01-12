@@ -96,7 +96,7 @@ contexts:
         2: storage.type.sheet
         3: punctuation.separator.sequence.sheet
         4: storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # R1C1 cell without dynamics
     - match: (@?)({{rc}})(?![:#])
@@ -104,7 +104,7 @@ contexts:
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Cell range without dynamics
     # @A1:B2
