@@ -45,9 +45,9 @@ variables:
     (?xi:
       {{r_}}{{c_}}|
       {{r_}}C|
-      {{r_}}{{c_}}?|
+      {{r_}}|
       R{{c_}}|
-      {{r_}}?{{c_}}
+      {{c_}}
     )
 
   # Note to self: Underscore and 0-9 is included in \w
