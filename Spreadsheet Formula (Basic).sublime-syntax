@@ -24,7 +24,7 @@ variables:
   # Row numbers do not include international numbers
   row: (?:\$?[1-9][0-9]{0,10})
   # Negative lookahead prevents matching names with numbers in them.
-  cell: (?:{{column}}{{row}}(?!\w))
+  cell: (?:{{column}}{{row}}(?!{{name_excel}}|{{name_google}}|{{name_libre}}))
 
   # Note to self: Underscore and 0-9 is included in \w
   # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
