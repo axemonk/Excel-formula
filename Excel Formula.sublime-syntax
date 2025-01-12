@@ -85,42 +85,37 @@ contexts:
         ))
       push: dynamic-reference
 
-    # R1C1 range without dynamics
+    # Cell range without dynamics (R1C1)
     # See semi-shared references section in excel ref tests
     # for full list of matches.
     # (@?)R([1]?)C([1]?):R([1]?)C([1]?)
-    - match: (@?)({{rc}})(:)({{rc}})
+    - match: ({{rc}})(:)({{rc}})(?!#)
       scope: meta.reference.range.cell.sheet
       captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.sheet
-        3: punctuation.separator.sequence.sheet
-        4: storage.type.sheet
-      push: after-reference
-
-    # R1C1 cell without dynamics
-    - match: (@?)({{rc}})(?![:#])
-      scope: meta.reference.cell.cell.sheet
-      captures:
-        1: keyword.operator.reference.excel
-        2: storage.type.sheet
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
       push: after-reference
 
     # Cell range without dynamics
     # @A1:B2
-    - match: (@)({{cell}})(:)({{cell}})
+    - match: (@)(?:({{cell}})(:)({{cell}})|({{rc}})(:)({{rc}}))
       scope: meta.reference.range.cell.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
+        5: storage.type.excel
+        6: punctuation.separator.sequence.excel
+        7: storage.type.excel
       push: after-reference
 
     # Naked cell reference
+    # A1#
     # @A1
     # @A1#
-    - match: (@?)({{cell}})(#?)(?![:#])
+    - match: (@?)({{cell}}|{{rc}})(#?)(?![:#])
       scope: meta.reference.cell.excel
       captures:
         1: keyword.operator.reference.excel
@@ -130,24 +125,30 @@ contexts:
 
     # Column to column
     # @A:B
-    - match: (@?)({{column}})(:)({{column}})(?![0-9])
+    - match: (@?)(?:({{column}})(:)({{column}})|({{c_}})(:)({{c_}}))(?![0-9])
       scope: meta.reference.range.column.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
+        5: storage.type.excel
+        6: punctuation.separator.sequence.excel
+        7: storage.type.excel
       push: after-reference
 
     # Row to row
     # @1:2
-    - match: (@)({{row}})(:)({{row}})
+    - match: (@)(?:({{row}})(:)({{row}})|({{r_}})(:)({{r_}}))
       scope: meta.reference.range.row.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
+        5: storage.type.excel
+        6: punctuation.separator.sequence.excel
+        7: storage.type.excel
       push: after-reference
 
   dynamic-reference:
@@ -155,7 +156,7 @@ contexts:
     # Zero-dimensional cell range w/ dynamics
     # @A1#:A1#
     # @A1:A1#
-    - match: (@?)({{cell}})(#?)(:)(\2)(#)
+    - match: (@?)({{cell}}|{{rc}})(#?)(:)(\2)(#)
       scope: meta.reference.cell.excel
       captures:
         1: keyword.operator.reference.excel
@@ -169,7 +170,7 @@ contexts:
     # Cell range with dynamics
     # @A1#:B2
     # @A1#:B2#
-    - match: (@?)({{cell}})(#)(:)({{cell}})(#?)
+    - match: (@?)(?:({{cell}})(#)(:)({{cell}})|({{rc}})(#)(:)({{rc}}))(#?)
       scope: meta.reference.range.cell.excel
       captures:
         1: keyword.operator.reference.excel
@@ -177,7 +178,11 @@ contexts:
         3: keyword.operator.reference.excel
         4: punctuation.separator.sequence.excel
         5: storage.type.excel
-        6: keyword.operator.reference.excel
+        6: storage.type.excel
+        7: keyword.operator.reference.excel
+        8: punctuation.separator.sequence.excel
+        9: storage.type.excel
+        10: keyword.operator.reference.excel
       push: after-reference
 
     # Bail if nothing matches
