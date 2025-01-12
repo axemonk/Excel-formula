@@ -32,5 +32,5 @@ variables:
     )\b
   name_user: (?:{{name_libre}})
   function_user: (?:{{function_libre}})
-  # TODO: Update with Libre alternate sheet format references in addition.
+  # TODO: Update with Libre alternate-format sheet references in addition.
   sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
