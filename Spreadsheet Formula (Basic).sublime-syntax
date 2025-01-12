@@ -77,7 +77,18 @@ variables:
       [\w\\&&[^0-9]]+
       [\w?.\\]*
     )
-  function_google: (?# WIP)
+  # Functions in gsheets are either:
+  # 1. Defined in LET() and follow name_google rules.
+  # 2. Defined in Apps Script and follow Javascript rules for functions (which from
+  #    what I've read on a w3schools page means `\w` + `$`.
+  # 3. Predefined builtins
+  function_google: |-
+    (?x:
+      {{name_google}}|
+      [\w$]+
+    )
+  # Libre does not have LAMBDA() and cannot define functions in LET().
+  # These rules stem from testing in LO's VBA analog: LibreOffice Basic
   function_libre: |-
     (?x:
       [A-Za-z]+
@@ -279,11 +290,7 @@ contexts:
 
     - include: function-builtins-extra
 
-    # Update: remove \b in favor of wrapping '' to allow single special-character functions to match through
-    #         name_libre. The idea is for functions and names to follow the same rules, at least for now
-    #         until quirks of UDF are more thoroughly tested, and since a single '@' is a valid
-    #         name in libre, @() should be a valid function (again, for now).
-    - match: '({{function_excel}}|{{name_google}}|{{name_libre}})(\()'
+    - match: '({{function_excel}}|{{function_google}}|{{function_libre}})(\()'
       captures:
         1: meta.function-call.sheet variable.function.sheet
         2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
