@@ -72,7 +72,7 @@ contexts:
         1: storage.type.google
         2: punctuation.separator.sequence.google
         3: storage.type.google
-      push: maybe-union-operator
+      push: after-reference
 
     # Cell to row
     # A1:2
@@ -82,7 +82,7 @@ contexts:
         1: storage.type.google
         2: punctuation.separator.sequence.google
         3: storage.type.google
-      push: maybe-union-operator
+      push: after-reference
 
     # Column to cell
     # A:B2
@@ -92,7 +92,7 @@ contexts:
         1: storage.type.google
         2: punctuation.separator.sequence.google
         3: storage.type.google
-      push: maybe-union-operator
+      push: after-reference
 
     # Row to cell
     # 1:B2
@@ -102,4 +102,4 @@ contexts:
         1: storage.type.google
         2: punctuation.separator.sequence.google
         3: storage.type.google
-      push: maybe-union-operator
+      push: after-reference
