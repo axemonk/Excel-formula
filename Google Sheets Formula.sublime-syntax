@@ -30,6 +30,8 @@ variables:
       UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
     )\b
 
+  name_user: (?:{{name_google}})
+  function_user: (?:{{function_google}})
   sheet: (?:{{sheet_name_delimited_google}}|{{sheet_name_normal_google}})
 
 contexts:
