@@ -77,13 +77,34 @@ contexts:
     # Push to dynamic context to isolate forced anonymity to just dynamic refs
     - match: |-
         (?x:(?=  # next find a...
-          (?:@?{{cell}})  # cell followed by...
+          (?:@?(?:{{cell}}|{{rc}}))  # cell followed by...
           (?:
-            [#]?:{{cell}}[#]  # maybe a # and second cell with #, OR
-          | [#]:{{cell}}[#]?  # definitely a # and second cell maybe with #
+            [#]?:(?:{{cell}}|{{rc}})[#]  # maybe a # and second cell with #, OR
+          | [#]:(?:{{cell}}|{{rc}})[#]?  # definitely a # and second cell maybe with #
           )
         ))
       push: dynamic-reference
+
+    # R1C1 range without dynamics
+    # See semi-shared references section in excel ref tests
+    # for full list of matches.
+    # (@?)R([1]?)C([1]?):R([1]?)C([1]?)
+    - match: (@?)({{rc}})(:)({{rc}})
+      scope: meta.reference.range.cell.sheet
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.sheet
+        3: punctuation.separator.sequence.sheet
+        4: storage.type.sheet
+      push: maybe-union-operator
+
+    # R1C1 cell without dynamics
+    - match: (@?)({{rc}})(?![:#])
+      scope: meta.reference.cell.cell.sheet
+      captures:
+        1: keyword.operator.reference.excel
+        2: storage.type.sheet
+      push: maybe-union-operator
 
     # Cell range without dynamics
     # @A1:B2
