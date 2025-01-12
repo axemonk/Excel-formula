@@ -1,0 +1,121 @@
+' SYNTAX TEST "Packages/Excel formula/LibreOffice Calc Formula.sublime-syntax"
+
+' Single-char functions through libre (to be revisited after VBA-like UDF testing)
+=@()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call
+'^ variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+=_()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call
+'^ variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+=.()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call
+'^ variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+=?()
+' <- keyword.operator.assignment.sheet
+'^^^ meta.function-call
+'^ variable.function.sheet
+' ^^ meta.function-call.arguments.sheet
+' ^ punctuation.section.arguments.begin.sheet
+'  ^ punctuation.section.arguments.end.sheet
+
+' Trying out new style of scope categorization here.
+' Makes annotating much faster with use of duplicate line since
+' you don't need to manually remove duplicate scopes every line.
+
+' Single-char names through libre
+=LET(@,1,@)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(.,1,.)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(_,1,_)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(_,1,_)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(?,1,?)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(`,1,`)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
+=LET(\,1,\)
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^ meta.function-call
+'^^^ support.function.sheet
+'   ^^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'         ^ punctuation.section.arguments.end.sheet
+'    ^ variable.other.readwrite.sheet
+'        ^ variable.other.readwrite.sheet
+'      ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ punctuation.separator.sequence.sheet
