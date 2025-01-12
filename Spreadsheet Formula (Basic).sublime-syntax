@@ -27,8 +27,6 @@ variables:
   cell: (?:{{column}}{{row}}(?!{{name_excel}}|{{name_google}}|{{name_libre}}))
 
   # Note to self: Underscore and 0-9 is included in \w
-  # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
-  #               (barring the possibility of UDF in VBA allowing '.', which they probably do)
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
 
   name_excel: |-
@@ -74,7 +72,11 @@ variables:
   table_google: (?# WIP)
   # Libre does not support tables
 
-  function_excel: (?# WIP)
+  function_excel: |-
+    (?x:
+      [\w\\&&[^0-9]]+
+      [\w?.\\]*
+    )
   function_google: (?# WIP)
   function_libre: |-
     (?x:
@@ -280,7 +282,7 @@ contexts:
     #         name_libre. The idea is for functions and names to follow the same rules, at least for now
     #         until quirks of UDF are more thoroughly tested, and since a single '@' is a valid
     #         name in libre, @() should be a valid function (again, for now).
-    - match: '({{name_excel}}|{{name_google}}|{{name_libre}})(\()'
+    - match: '({{function_excel}}|{{name_google}}|{{name_libre}})(\()'
       captures:
         1: meta.function-call.sheet variable.function.sheet
         2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
