@@ -1,5 +1,36 @@
 ' SYNTAX TEST "Packages/Excel formula/Excel Formula.sublime-syntax"
 
+'''[ SEMI-SHARED REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=C[2]
+
+=R[4]
+
+=RC[2]
+
+=R[2]C
+
+'R1C1 range without dynamics
+=R[1]C[1]:R[1]C[2]
+
+=RC[2]:R[1]C[2]
+
+=R[1]C:R[1]C[2]
+
+=R[1]C[1]:RC[2]
+
+=R[1]C[1]:R[1]C
+
+=R[1]C:R[1]C
+
+=R[1]C:RC[1]
+
+=RC[1]:R[1]C
+
+=RC[1]:RC[2]
+
+=RC[1]:R[1]C[2] R[1]C:R[1]C
+
 '''[ SHARED REFERENCES ]'''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 =A1

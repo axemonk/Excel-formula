@@ -25,6 +25,19 @@ variables:
   row: (?:\$?[1-9][0-9]{0,10})
   # Negative lookahead prevents matching names with numbers in them.
   cell: (?:{{column}}{{row}}(?!{{name_user}}))
+  # Heavy handed approach as a proof of concept.
+  r_: (?i:R\[[-\+]?\d\])
+  c_: (?i:C\[[-\+]?\d\])
+  # Not sure what the correct order should be or if more lines/neg lkahead are needed
+  # to prevent partial matches before a more suitable pattern is reached.
+  rc: |-
+    (?xi:
+      {{r_}}{{c_}}|
+      {{r_}}C|
+      {{r_}}{{c_}}?|
+      R{{c_}}|
+      {{r_}}?{{c_}}
+    )
 
   # Note to self: Underscore and 0-9 is included in \w
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
@@ -121,9 +134,12 @@ variables:
     (?x:(?=
       @?  # Reference operator
       (?:
-        {{cell}}
+           {{cell}}
       | (?:{{column}}|{{row}}):
         (?:{{column}}|{{row}}|{{cell}})
+      |    {{rc}}:
+           {{rc}}
+      |    {{rc}}
       )
     ))
   before_name: |-
@@ -431,9 +447,10 @@ contexts:
     # # # struct: "a composite data type (or record) declaration that defines a physically grouped list of variables
     # # #          under one name in a block of memory"
 
+    # Cell must come before table for R1C1 references to match
+    - include: cell-or-range-reference
     - include: table-name
     - include: sheet-reference
-    - include: cell-or-range-reference
 
 ###[ GROUPS ]##################################################################
 
