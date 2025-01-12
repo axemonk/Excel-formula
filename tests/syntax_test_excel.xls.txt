@@ -64,7 +64,13 @@ TEXTJOIN(";",FALSE,valmax)
 '             ^^^^^^^ variable.other.readwrite.sheet
 '         ^ punctuation.separator.sequence.sheet
 '                    ^ punctuation.separator.sequence.sheet
-
+=hello.world()
+' <- keyword.operator.assignment.sheet
+'^^^^^^^^^^^^^ meta.function-call
+'^^^^^^^^^^^ variable.function.sheet
+'           ^^ meta.function-call.arguments.sheet
+'           ^ punctuation.section.arguments.begin.sheet
+'            ^ punctuation.section.arguments.end.sheet
 
 ={-1,1,2*-1,-1;-1/-2,4,5-5,-6.5}
 
