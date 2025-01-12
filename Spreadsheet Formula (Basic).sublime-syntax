@@ -213,7 +213,7 @@ contexts:
     # Capture names like those defined by LET and the various Name Managers found in Excel/GSheets/Libre.
     - match: '(?:{{name_user}})'
       scope: variable.other.readwrite.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Tabs are, for the most part, illegal characters in Excel, GSheets, and LibreCalc.
     # The former errors out **except as part of a string**.
@@ -353,13 +353,13 @@ contexts:
         1: storage.type.sheet
         2: punctuation.separator.sequence.sheet
         3: storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Naked cell reference
     # A1
     - match: ({{cell}})(?![:#])
       scope: meta.reference.cell.sheet storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Column to column
     # A:B
@@ -369,7 +369,7 @@ contexts:
         1: storage.type.sheet
         2: punctuation.separator.sequence.sheet
         3: storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Row to row
     # 1:2
@@ -379,9 +379,9 @@ contexts:
         1: storage.type.sheet
         2: punctuation.separator.sequence.sheet
         3: storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
-  maybe-union-operator:
+  after-reference:
     # Bail immediately
     - include: immediately-pop
 
