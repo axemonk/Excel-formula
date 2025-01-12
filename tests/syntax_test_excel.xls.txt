@@ -264,9 +264,8 @@ TEXTJOIN(";",FALSE,valmax)
 
 
 ' Note: Due to how LET arumgents work, this is an invalid formula.
-'       I've provided it here since it is dead obvious what I'm
-'       getting at when compared with the following test,
-'       which is actually a valid formula.
+'       Should be valid so long as cell references are checked before
+'       names.
 =LET(tst1, 1, tst2, 2, tst1+tst2)
 ' <- keyword.operator.assignment.sheet
 '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call
