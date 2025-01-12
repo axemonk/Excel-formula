@@ -24,7 +24,7 @@ variables:
   # Row numbers do not include international numbers
   row: (?:\$?[1-9][0-9]{0,10})
   # Negative lookahead prevents matching names with numbers in them.
-  cell: (?:{{column}}{{row}}(?!{{name_excel}}|{{name_google}}|{{name_libre}}))
+  cell: (?:{{column}}{{row}}(?!{{name_user}}))
 
   # Note to self: Underscore and 0-9 is included in \w
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
@@ -128,9 +128,7 @@ variables:
     ))
   before_name: |-
     (?x:(?=
-      {{name_excel}} |
-      {{name_google}} |
-      {{name_libre}}
+      {{name_user}}
     ))
 
   # Update:
