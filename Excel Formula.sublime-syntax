@@ -231,3 +231,41 @@ variables:
   # Dummy patterns for that sweet YAML syntax highlighting
   # # Not exhaustive. The fact that I'm not testing combinations of spec chars complicates this...
   Pattern that Excel will auto escape/delimit with `'`: '^\d+{{sheet_normal}}?'
+
+  # RC row/column offset format
+  r_: |-
+    (?xi:
+      R
+      (?:
+        \[[-\+]?[1-9][0-9]{0,6}\] |
+                [1-9][0-9]{0,6}
+      )
+      (?:
+          (?={{c_}})
+        | (?=C?(?!{{name}}))
+      )
+    )
+  c_: (?i:C(?:\[[-\+]?[1-9][0-9]{0,4}\]|[1-9][0-9]{0,4})(?!{{name}}))
+  rc: |-
+    (?xi:
+      {{r_}}{{c_}}|
+      {{r_}}C|
+      {{r_}}|
+      R{{c_}}|
+      {{c_}}
+    )
+
+  # Intersection Operator Variables
+  before_name: (?={{name}})
+  before_reference: |-
+    (?x:(?=
+      @?  # Reference operator
+      (?:
+           {{cell}}
+      | (?:{{column}}|{{row}}):
+        (?:{{column}}|{{row}}|{{cell}})
+      |    {{rc}}:
+           {{rc}}
+      |    {{rc}}
+      )
+    ))

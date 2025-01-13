@@ -405,27 +405,6 @@ variables:
   row: (?:\$?[1-9][0-9]{0,7})
   # Negative lookahead prevents matching names with numbers in them.
   cell: (?:{{column}}{{row}}(?!{{name}}))
-  r_: |-
-    (?xi:
-      R
-      (?:
-        \[[-\+]?[1-9][0-9]{0,6}\] |
-                [1-9][0-9]{0,6}
-      )
-      (?:
-          (?={{c_}})
-        | (?=C?(?!{{name}}))
-      )
-    )
-  c_: (?i:C(?:\[[-\+]?[1-9][0-9]{0,4}\]|[1-9][0-9]{0,4})(?!{{name}}))
-  rc: |-
-    (?xi:
-      {{r_}}{{c_}}|
-      {{r_}}C|
-      {{r_}}|
-      R{{c_}}|
-      {{c_}}
-    )
 
   # Note to self: Underscore and 0-9 is included in \w
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
@@ -433,21 +412,6 @@ variables:
   function: (?:{{name}})
   table: (?:{{name}})
   sheet: (?:{{name}})
-
-  # Intersection Operator Variables
-  before_name: (?={{name}})
-  before_reference: |-
-    (?x:(?=
-      @?  # Reference operator
-      (?:
-           {{cell}}
-      | (?:{{column}}|{{row}}):
-        (?:{{column}}|{{row}}|{{cell}})
-      |    {{rc}}:
-           {{rc}}
-      |    {{rc}}
-      )
-    ))
 
   # Update:
   # MS Excel:
