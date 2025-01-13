@@ -394,6 +394,11 @@ contexts:
 ###############################################################################
 
 variables:
+  array_column_separator: ;
+  array_row_separator: \,
+  number_radix: \.
+  argument_separator: \,
+
   # Max col index:
   # # Excel & Libre: XFD (16,384)
   # # Google Sheets: ZZZ (18,278)
