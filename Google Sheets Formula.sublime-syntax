@@ -107,5 +107,15 @@ variables:
       [\w&&[^0-9]]+
       [\w.?]*
     )
-  function_user: (?:{{function_google}})
+  js_id_start: '[$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}]'
+  js_id_continue: (?:{{js_id_start}}|\w)
+  # Functions in gsheets are either:
+  # 1. Defined in LET() and follow name rules.
+  # 2. Defined in Apps Script and follow Javascript rules for functions.
+  # 3. Predefined builtins
+  function: |-
+    (?x:
+      {{name}}
+    | {{js_id_start}}{{js_id_continue}}*
+    )
   sheet: (?:{{sheet_name_delimited_google}}|{{sheet_name_normal_google}})

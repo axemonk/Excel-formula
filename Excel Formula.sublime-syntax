@@ -209,5 +209,9 @@ variables:
       [\w\\]+
       [\w?\\]*
     )
-  function_user: (?:{{function_excel}})
+  function: |-
+    (?x:
+      [\w\\&&[^0-9]]+
+      [\w?.\\]*
+    )
   sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
