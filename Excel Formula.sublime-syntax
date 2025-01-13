@@ -7,32 +7,6 @@ extends: Spreadsheet Formula (Basic).sublime-syntax
 file_extensions:
   - xls.txt
 
-variables:
-  # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
-  function_builtins_excel: |-
-    \b(?xi:
-      AGGREGATE | AMORDEGRC | AREAS | ARRAYTOTEXT |
-      BAHTTEXT | BESSELI | BESSELJ | BESSELK | BESSELY | BINOM\.DIST\.RANGE |
-      CALL | CUBEKPIMEMBER | CUBEMEMBER | CUBEMEMBERPROPERTY | CUBERANKEDMEMBER | CUBESET | CUBESETCOUNT | CUBEVALUE |
-      DBCS | DROP |
-      EUROCONVERT | EXPAND |
-      FILTERXML | FORECAST\.ETS | FORECAST\.ETS\.CONFINT | FORECAST\.ETS\.SEASONALITY | FORECAST\.ETS\.STAT |
-      INFO | ISOMITTED |
-      JIS |
-      NUMBERVALUE |
-      ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD |
-      PHONETIC |
-      REGISTER\.ID | RTD |
-      SHEET | SHEETS | SORTBY | STOCKHISTORY |
-      TAKE | TEXTAFTER | TEXTBEFORE | TEXTSPLIT | TOCOL | TODAY | TOROW |
-      VALUETOTEXT |
-      WEBSERVICE |
-      XMATCH
-    )\b
-  name_user: (?:{{name_excel}})
-  function_user: (?:{{function_excel}})
-  sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
-
 contexts:
   function-builtins-extra:
     - meta_append: true
@@ -201,3 +175,31 @@ contexts:
     - meta_prepend: true
     - match: '[#@]'
       scope: keyword.operator.reference.excel
+
+###############################################################################
+
+variables:
+  # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
+  function_builtins_excel: |-
+    \b(?xi:
+      AGGREGATE | AMORDEGRC | AREAS | ARRAYTOTEXT |
+      BAHTTEXT | BESSELI | BESSELJ | BESSELK | BESSELY | BINOM\.DIST\.RANGE |
+      CALL | CUBEKPIMEMBER | CUBEMEMBER | CUBEMEMBERPROPERTY | CUBERANKEDMEMBER | CUBESET | CUBESETCOUNT | CUBEVALUE |
+      DBCS | DROP |
+      EUROCONVERT | EXPAND |
+      FILTERXML | FORECAST\.ETS | FORECAST\.ETS\.CONFINT | FORECAST\.ETS\.SEASONALITY | FORECAST\.ETS\.STAT |
+      INFO | ISOMITTED |
+      JIS |
+      NUMBERVALUE |
+      ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD |
+      PHONETIC |
+      REGISTER\.ID | RTD |
+      SHEET | SHEETS | SORTBY | STOCKHISTORY |
+      TAKE | TEXTAFTER | TEXTBEFORE | TEXTSPLIT | TOCOL | TODAY | TOROW |
+      VALUETOTEXT |
+      WEBSERVICE |
+      XMATCH
+    )\b
+  name_user: (?:{{name_excel}})
+  function_user: (?:{{function_excel}})
+  sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
