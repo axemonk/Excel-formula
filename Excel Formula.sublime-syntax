@@ -41,7 +41,7 @@ contexts:
         - match: \'(?=!)
           scope: punctuation.definition.annotation.end.sheet
           pop: 1
-    - match: '{{sheet_name_normal_excel}}'
+    - match: '{{sheet}}'
       scope: entity.name.struct.sheet
     - include: immediately-pop
 
@@ -211,12 +211,23 @@ variables:
     )
   function: |-
     (?x:
-      [\w\\&&[^0-9]]+
+      [\w\\&&[^0-9]]
       [\w?.\\]*
     )
   table: |-
     (?x:
-      [\w\\&&[^0-9]]+
+      [\w\\&&[^0-9]]
       [\w.?\\]*
     )
-  sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
+
+  # TODO: Is there a cleaner more compact (and probably more efficient) way to
+  #       do this? `'` are only legal in excel sheet names when padded on
+  #       either end with a legal character matched by [^*/?\[\]\\] and said
+  #       `'` must come in pairs.
+  sheet_delimited: (?:(?:'[^*/?\[\]\\]+('')*[^*/?\[\]\\]+')|(?:'[^*/?\[\]\\]+'))
+  sheet_normal: '[\w&&[^0-9]]\w*'
+  sheet: (?:{{sheet_delimited}}|{{sheet_normal}})
+
+  # Dummy patterns for that sweet YAML syntax highlighting
+  # # Not exhaustive. The fact that I'm not testing combinations of spec chars complicates this...
+  Pattern that Excel will auto escape/delimit with `'`: '^\d+{{sheet_normal}}?'

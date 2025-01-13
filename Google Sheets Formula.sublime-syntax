@@ -30,7 +30,7 @@ contexts:
         - match: \'(?=!)
           scope: punctuation.definition.annotation.end.sheet
           pop: 1
-    - match: '{{sheet_name_normal_google}}'
+    - match: '{{sheet}}'
       scope: entity.name.struct.sheet
     - include: immediately-pop
 
@@ -102,11 +102,7 @@ variables:
       UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
     )\b
 
-  name: |-
-    (?x:
-      [\w&&[^0-9]]+
-      [\w.?]*
-    )
+  name: (?:[\w&&[^0-9]][\w.?]*)
   js_id_start: '[$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}]'
   js_id_continue: (?:{{js_id_start}}|\w)
   # Functions in gsheets are either:
@@ -135,4 +131,12 @@ variables:
   # #       Other than `source.excel`.
   # # TODO: buckle down and test a bunch of tables manually. Use desktop macros to speed up the process.
   # table: (?# WIP)
-  sheet: (?:{{sheet_name_delimited_google}}|{{sheet_name_normal_google}})
+
+  sheet: (?:{{sheet_delimited}}|{{sheet_normal}})
+  sheet_delimited: (?:(?:'[^']'+)|(?:'[^']*(?:'')+[^']*'))
+  sheet_normal: '\w+[\w.?]*'
+
+  # Dummy patterns for that sweet YAML syntax highlighting
+  # # Not exhaustive. The fact that I'm not testing combinations of spec chars complicates this...
+  Pattern that Google Sheets will auto escape/delimit with `'`: '^[\d_.?$]+{{sheet_normal}}?'
+  # #                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ...for example, this is naive until tested.

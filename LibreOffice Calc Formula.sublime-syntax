@@ -44,5 +44,5 @@ variables:
   function: (?i:[a-z]\w*)
   # LibreOffice does not support tables
   table: (?!.)
-  # TODO: Update with LibreOffice alternate-format sheet references in addition.
-  sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
+  # # TODO: Update with LibreOffice alternate-format sheet references in addition.
+  # sheet: (?#WIP)
