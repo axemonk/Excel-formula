@@ -1,0 +1,420 @@
+%YAML 1.2
+---
+# https://developers.google.com/chart/interactive/docs/querylanguage
+name: Google Sheets Formula
+scope: source.sql.google
+version: 2
+file_extensions:
+  - google.sql
+
+contexts:
+  main:
+    - include: clauses
+
+  prototype:
+    - include: comments
+
+  comments:
+    # These are not real. Be warned
+    - match: ^--
+      scope: punctuation.definition.comment.begin.google
+      push:
+        - meta_scope: comment.line.double-dash.google
+        - match: \n|$
+          pop: 1
+
+###[ MAIN CLAUSES ]############################################################
+
+  clauses:
+    - include: select
+    - include: where
+    - include: group-by
+    - include: pivot
+    - include: order-by
+    - include: limit
+    - include: offset
+    - include: label
+    - include: format
+    - include: options
+
+  select:
+    - match: \b(?i)select\b
+      scope: keyword.other.dml.google
+      push: select-body
+
+  select-body:
+    - include: pop-next-clause
+    - match: \*
+      scope: constant.other.wildcard.asterisk.google
+    - include: comma-separators
+    - include: aggregation-nestables
+
+  where:
+    - match: \b(?i)where\b
+      scope: keyword.other.dml.google
+      push: where-body
+
+  where-body:
+    - include: pop-next-clause
+    - include: where-expressions
+    - match: \(
+      scope: punctuation.section.group.begin.google
+      push:
+        - meta_scope: meta.group.google
+        - match: \)
+          scope: punctuation.section.group.end.google
+          pop: 1
+        - include: where-expressions
+
+  where-expressions:
+    - include: operators-comparison
+    - include: functions-scalar
+    - match: \b(?i:and|or|not|is)\b
+      scope: keyword.operator.logical.google
+    - include: literals
+    - match: \b(?i)null\b
+      scope: constant.language.null.google
+    - match: \b(?i:contains|starts\s+with|ends\s+with|matches|like)\b
+      scope: keyword.operator.logical.google
+    - include: identifiers
+
+  group-by:
+    - match: \b(?i)group\s+by\b
+      scope: keyword.other.dml.google
+      push: group-by-body
+
+  group-by-body:
+    - include: pop-next-clause
+    - include: comma-separators
+    - include: identifiers
+
+  pivot:
+    - match: \b(?i)pivot\b
+      scope: keyword.other.dml.google
+      push: group-by-body
+
+  order-by:
+    - match: \b(?i)order\s+by\b
+      scope: keyword.other.dml.google
+      push: order-by-body
+
+  order-by-body:
+    - include: pop-next-clause
+    - include: comma-separators
+    - include: operators-arithmetic
+    - match: \b(?i:asc|desc)\b
+      scope: keyword.other.google
+    - include: functions
+    - include: identifiers
+
+  limit:
+    - match: \b(?i)limit\b
+      scope: keyword.other.dml.google
+      push:
+        - include: pop-next-clause
+        - include: numbers
+        - include: operators-arithmetic
+
+  offset:
+    - match: \b(?i)offset\b
+      scope: keyword.other.dml.google
+      push:
+        - include: pop-next-clause
+        - include: numbers
+        - include: operators-arithmetic
+
+  label:
+    - match: \b(?i)label\b
+      scope: keyword.other.dml.google
+      push:
+        - include: pop-next-clause
+        - include: comma-separators
+        - include: strings
+        - include: identifiers
+
+  format:
+    - match: \b(?i)format\b
+      scope: keyword.other.dml.google
+      push:
+        - include: pop-next-clause
+        - include: comma-separators
+        - include: strings
+        - include: identifiers
+
+  options:
+    - match: \b(?i)options\b
+      scope: keyword.other.dml.google
+      push:
+        - include: pop-next-clause
+        - match: \bno_(?:format|values)\b
+          scope: storage.modifier.google
+
+###[ OPERATORS ]###############################################################
+
+  operators-arithmetic:
+    - match: '[*/+-]'
+      scope: keyword.operator.arithmetic.google
+
+  operators-comparison:
+    - match: (?:!=|<=|<>|<|>|>=|=)
+      scope: keyword.operator.comparison.google
+
+###[ FUNCTIONS ]###############################################################
+
+  functions:
+    - include: functions-aggregation
+    - match: \b({{scalar_functions}})(\()
+      captures:
+        1: meta.function-call.google support.function.scalar.google
+        2: meta.function-call.arguments.google punctuation.section.arguments.begin.google
+      push: function-body-aggregation
+
+  functions-aggregation:
+    - match: \b({{aggregation_functions}})(\()
+      captures:
+        1: meta.function-call.google support.function.aggregate.google
+        2: meta.function-call.arguments.google punctuation.section.arguments.begin.google
+      push: function-body-aggregation
+
+  function-body-aggregation:
+    - meta_content_scope: meta.function-call.arguments.google
+    - match: \)
+      scope: meta.function-call.arguments.google punctuation.section.arguments.end.google
+      pop: 1
+    - include: aggregation-nestables
+
+  aggregation-nestables:
+    - include: groups-aggregation
+    - include: operators-arithmetic
+    - include: functions
+    - include: identifiers
+    - include: literals
+
+  groups-aggregation:
+    - match: \(
+      scope: punctuation.section.group.begin.google
+      push: group-body-aggregation
+
+  group-body-aggregation:
+    - meta_scope: meta.group.google
+    - match: \)
+      scope: punctuation.section.group.end.google
+      pop: 1
+    - include: aggregation-nestables
+
+  functions-scalar:
+    - match: \b({{scalar_functions}})(\()
+      captures:
+        1: meta.function-call.google support.function.scalar.google
+        2: meta.function-call.arguments.google punctuation.section.arguments.begin.google
+      push: function-body-scalar-only
+
+  function-body-scalar-only:
+    - meta_content_scope: meta.function-call.arguments.google
+    - match: \)
+      scope: meta.function-call.arguments.google punctuation.section.arguments.end.google
+      pop: 1
+    - include: scalar-nestables
+
+  scalar-nestables:
+    - include: groups-scalar
+    - include: operators-arithmetic
+    - include: functions-scalar
+    - include: identifiers
+    - include: literals
+
+  groups-scalar:
+    - match: \(
+      scope: punctuation.section.group.begin.google
+      push: group-body-scalar
+
+  group-body-scalar:
+    - meta_scope: meta.group.google
+    - match: \)
+      scope: punctuation.section.group.end.google
+      pop: 1
+    - include: scalar-nestables
+
+###[ LITERALS ]################################################################
+
+  literals:
+    # https://developers.google.com/chart/interactive/docs/querylanguage#literals
+    - include: strings
+    - include: numbers
+    - include: booleans
+    - include: dates
+    - include: times-of-day
+    - include: datetimes
+
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.google
+      push:
+      - meta_include_prototype: false
+      - meta_scope: meta.string.google string.quoted.double.google
+      - match: '"'
+        scope: punctuation.definition.string.end.google
+        pop: 1
+    - match: \'
+      scope: punctuation.definition.string.begin.google
+      push:
+      - meta_include_prototype: false
+      - meta_scope: meta.string.google string.quoted.single.google
+      - match: \'
+        scope: punctuation.definition.string.end.google
+        pop: 1
+
+  numbers:
+    - match: -?\d+(\.)\d*|-?(\.)\d+
+      scope: meta.number.float.decimal.google constant.numeric.value.google
+      captures:
+        1: punctuation.separator.decimal.google
+        2: punctuation.separator.decimal.google
+    - match: -?\d+
+      scope: meta.number.integer.decimal.google constant.numeric.value.google
+
+  booleans:
+    - match: \b(?i)true\b
+      scope: constant.language.boolean.true.google
+    - match: \b(?i)false\b
+      scope: constant.language.boolean.false.google
+
+  dates:
+    - match: \b(?i)(date)\s+((")({{date}})("))
+      captures:
+        1: storage.type.google
+        2: meta.string.google string.quoted.double.google
+        3: punctuation.definition.string.begin.google
+        4: constant.other.date.google
+        5: punctuation.definition.string.end.google
+    - match: \b(?i)(date)\s+((')({{date}})('))
+      captures:
+        1: storage.type.google
+        2: meta.string.google string.quoted.single.google
+        3: punctuation.definition.string.begin.google
+        4: constant.other.date.google
+        5: punctuation.definition.string.end.google
+    - match: \b(?i)date\b
+      scope: storage.type.google
+
+  times-of-day:
+    - match: \b(?i)(timeofday)\s+((")({{time_of_day}})("))
+      captures:
+        1: storage.type.google
+        2: meta.string.google string.quoted.double.google
+        3: punctuation.definition.string.begin.google
+        4: constant.other.date.google
+        5: punctuation.definition.string.end.google
+    - match: \b(?i)(timeofday)\s+((')({{time_of_day}})('))
+      captures:
+        1: storage.type.google
+        2: meta.string.google string.quoted.single.google
+        3: punctuation.definition.string.begin.google
+        4: constant.other.date.google
+        5: punctuation.definition.string.end.google
+    - match: \b(?i)timeofday\b
+      scope: storage.type.google
+
+  datetimes:
+    - match: \b(?i)(datetime|timestamp)\s+((")({{datetime}})("))
+      captures:
+        1: storage.type.google
+        2: meta.string.google string.quoted.double.google
+        3: punctuation.definition.string.begin.google
+        4: constant.other.date.google
+        5: punctuation.definition.string.end.google
+    - match: \b(?i)(datetime|timestamp)\s+((')({{datetime}})('))
+      captures:
+        1: storage.type.google
+        2: meta.string.google string.quoted.single.google
+        3: punctuation.definition.string.begin.google
+        4: constant.other.date.google
+        5: punctuation.definition.string.end.google
+    - match: \b(?i)(?:datetime|timestamp)\b
+      scope: storage.type.google
+
+###[ IDENTIFIERS ]#############################################################
+
+  identifiers:
+    - match: \b{{reserved_words}}\b
+      scope: invalid.illegal.google
+    - match: Col[1-9][0-9]*
+      scope: meta.column-name.google variable.language.google
+    - match: '`'
+      scope: punctuation.definition.string.begin.google
+      push:
+      - meta_scope: meta.string.google string.quoted.backtick.google
+      - meta_content_scope: meta.column-name.google
+      - match: '`'
+        scope: punctuation.definition.string.end.google
+        pop: 1
+    - match: (?i)[a-z_][a-z0-9_]*
+      scope: meta.column-name.google
+
+###[ PROTOTYPE ]###############################################################
+
+  comma-separators:
+    - match: \,
+      scope: punctuation.separator.sequence.google
+
+  pop-next-clause:
+    - match: (?i)(?=select|where|group|pivot|order|limit|offset|label|format|options)
+      pop: 1
+
+###############################################################################
+
+variables:
+  date: (?:\d{4}-\d\d-\d\d)
+  time_of_day: (?:\d\d:\d\d:\d\d(?:\.\d\d\d)?)
+  datetime: (?:{{date}} {{time_of_day}})
+
+  reserved_words: |-
+    (?xi:
+      and
+    | asc
+    | by
+    | date
+    | datetime
+    | desc
+    | false
+    | format
+    | group
+    | label
+    | limit
+    | not
+    | offset
+    | options
+    | or
+    | order
+    | pivot
+    | select
+    | timeofday
+    | timestamp
+    | true
+    | where
+    )
+  scalar_functions: |-
+    (?xi:
+      year
+    | month
+    | day
+    | hour
+    | minute
+    | second
+    | millisecond
+    | quarter
+    | dayOfWeek
+    | now
+    | dateDiff
+    | toDate
+    | upper
+    | lower
+    )
+  aggregation_functions: |-
+    (?xi:
+      avg
+    | count
+    | max
+    | min
+    | sum
+    )
