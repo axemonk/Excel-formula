@@ -39,6 +39,8 @@ variables:
       [\w?$]+
       [\w.$]*
     )
-  function_user: (?:{{function_libre}})
+  # Libre does not have LAMBDA() and cannot define functions in LET().
+  # These rules stem from testing in LO's VBA analog: LibreOffice Basic
+  function: (?i:[a-z]\w*)
   # TODO: Update with Libre alternate-format sheet references in addition.
   sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
