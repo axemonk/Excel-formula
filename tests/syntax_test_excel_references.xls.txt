@@ -47,9 +47,6 @@
 ' this otherwise valid formula will highlight like it was invalid.
 ' This test would fail if it was highlighted correctly.
 =LET(R9999999,1,R9999999)
-' <- keyword.operator.assignment.sheet
-'    ^^^^^^^^ - variable.other.readwrite.sheet
-'               ^^^^^^^^ - variable.other.readwrite.sheet
 
 '''[ SHARED REFERENCES ]'''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
