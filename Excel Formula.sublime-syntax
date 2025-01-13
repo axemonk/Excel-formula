@@ -200,6 +200,14 @@ variables:
       WEBSERVICE |
       XMATCH
     )\b
-  name_user: (?:{{name_excel}})
+  name: |-
+    (?x:
+      (?# my gut tells me this first class should be '[\w\\&&[^0-9]]+',
+          but that breaks R1C1 edge cases, and it's currently redundant.
+          It's supposed to prevent e.g. `4hello` from matching as a valid name,
+          but `4hello` doesn't match as a name regardless.)
+      [\w\\]+
+      [\w?\\]*
+    )
   function_user: (?:{{function_excel}})
   sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})

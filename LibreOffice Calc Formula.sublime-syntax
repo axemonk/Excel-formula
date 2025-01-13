@@ -30,7 +30,15 @@ variables:
       WEBSERVICE |
       XMATCH
     )\b
-  name_user: (?:{{name_libre}})
+  # Note: Negative lookahead prevents this pattern from chaining matches like in '@name' (i.e., only a single '@' is a valid name).
+  # TODO: Is there a better way to do this?
+  name: |-
+    (?x:
+      [_.?@`\\]
+      (?![\w?$]+[\w.$]*) |
+      [\w?$]+
+      [\w.$]*
+    )
   function_user: (?:{{function_libre}})
   # TODO: Update with Libre alternate-format sheet references in addition.
   sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})

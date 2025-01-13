@@ -50,7 +50,7 @@ contexts:
       scope: invalid.illegal.stray-bracket-end.sheet
 
     # Capture names like those defined by LET and the various Name Managers found in Excel/GSheets/Libre.
-    - match: '(?:{{name_user}})'
+    - match: '{{name}}'
       scope: variable.other.readwrite.sheet
       push: after-reference
 
@@ -405,7 +405,7 @@ variables:
   # # Google Sheets: 10,000,000
   row: (?:\$?[1-9][0-9]{0,7})
   # Negative lookahead prevents matching names with numbers in them.
-  cell: (?:{{column}}{{row}}(?!{{name_user}}))
+  cell: (?:{{column}}{{row}}(?!{{name}}))
   r_: |-
     (?xi:
       R
@@ -415,10 +415,10 @@ variables:
       )
       (?:
           (?={{c_}})
-        | (?=C?(?!{{name_user}}))
+        | (?=C?(?!{{name}}))
       )
     )
-  c_: (?i:C(?:\[[-\+]?[1-9][0-9]{0,4}\]|[1-9][0-9]{0,4})(?!{{name_user}}))
+  c_: (?i:C(?:\[[-\+]?[1-9][0-9]{0,4}\]|[1-9][0-9]{0,4})(?!{{name}}))
   rc: |-
     (?xi:
       {{r_}}{{c_}}|
@@ -430,32 +430,7 @@ variables:
 
   # Note to self: Underscore and 0-9 is included in \w
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
-
-  name_excel: |-
-    (?x:
-      (?# my gut tells me this first class should be '[\w\\&&[^0-9]]+',
-          but that breaks R1C1 edge cases, and it's currently redundant.
-          It's supposed to prevent e.g. `4hello` from matching as a valid name,
-          but `4hello` doesn't match as a name regardless.)
-      [\w\\]+
-      [\w?\\]*
-    )
-  name_google: |-
-    (?x:
-      [\w&&[^0-9]]+
-      [\w.?]*
-    )
-  # Note: Negative lookahead prevents this pattern from chaining matches like in '@name' (i.e., only a single '@' is a valid name).
-  # TODO: Is there a better way to do this?
-  name_libre: |-
-    (?x:
-      [_.?@`\\]
-      (?![\w?$]+[\w.$]*) |
-      [\w?$]+
-      [\w.$]*
-    )
-
-  name_user: (?:{{name_excel}}|{{name_google}}|{{name_libre}})
+  name: (?i:[a-z_][a-z0-9_]*)
 
   table_excel: |-
     (?x:
@@ -493,7 +468,7 @@ variables:
   # 3. Predefined builtins
   function_google: |-
     (?x:
-      {{name_google}}|
+      {{name}}|
       [\w$]+
     )
   # Libre does not have LAMBDA() and cannot define functions in LET().
@@ -535,10 +510,7 @@ variables:
       |    {{rc}}
       )
     ))
-  before_name: |-
-    (?x:(?=
-      {{name_user}}
-    ))
+  before_name: (?={{name}})
 
   # Update:
   # MS Excel:
