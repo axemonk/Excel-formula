@@ -1,5 +1,30 @@
 ' SYNTAX TEST "Packages/Excel formula/Google Sheets Formula.sublime-syntax"
 
+=QUERY(A:H, "select Col2, A, * where salary > 700")
+'^^^^^ meta.function-call.google support.function.google
+'     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.google
+'     ^ punctuation.section.arguments.begin.google
+'      ^^^ meta.reference.range.column.sheet
+'      ^ storage.type.sheet
+'       ^ punctuation.separator.sequence.sheet
+'        ^ storage.type.sheet
+'         ^ punctuation.separator.sequence.google
+'           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.string.google string.quoted.double.google
+'           ^ punctuation.definition.string.begin.google
+'            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.sql.google.embedded
+'            ^^^^^^ keyword.other.dml.google
+'                   ^^^^ meta.column-name.google variable.language.google
+'                       ^ punctuation.separator.sequence.google
+'                         ^ meta.column-name.google
+'                          ^ punctuation.separator.sequence.google
+'                            ^ constant.other.wildcard.asterisk.google
+'                              ^^^^^ keyword.other.dml.google
+'                                    ^^^^^^ meta.column-name.google
+'                                           ^ keyword.operator.comparison.google
+'                                             ^^^ meta.number.integer.decimal.google constant.numeric.value.google
+'                                                ^ punctuation.definition.string.end.google
+'                                                 ^ punctuation.section.arguments.end.google
+
 =LET(
 return,INDIRECT(ARRAYTOTEXT("Data["&INDEX(TEXTSPLIT(UniquePts2[[#Headers],[ORDER_INST.Earliest]],"."),,1)&"]")),
 minOrMax,INDEX(TEXTSPLIT(UniquePts2[[#Headers],[ORDER_INST.Earliest]],"."),,2),
