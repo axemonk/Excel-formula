@@ -11,11 +11,6 @@ scope: source.sheet.basic
 hidden: true
 version: 2
 
-# TODO: figure out a way to properly scope locale-specific usage of . and , in decimal numbers.
-#       Haven't found an example of this breaking anything outright, although.
-#       if there is a simple way to match stuff conditional to user locale,
-#       swapping ;/, in arrays as column/row separators depending on locale would probably be best practice.
-
 variables:
   # Max col index:
   # # Excel & Libre: XFD (16,384)
