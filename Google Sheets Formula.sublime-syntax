@@ -7,33 +7,6 @@ extends: Spreadsheet Formula (Basic).sublime-syntax
 file_extensions:
   - gsheet.txt
 
-variables:
-  # https://support.google.com/docs/table/25273
-  function_builtins_google: |-
-    \b(?xi:
-      ADD | ARRAY_CONSTRAIN | ARRAYFORMULA | AVERAGE\.WEIGHTED |
-      COUNTUNIQUE |
-      DETECTLANGUAGE | DIVIDE |
-      EPOCHTODATE | EQ |
-      FLATTEN |
-      GOOGLEFINANCE | GOOGLETRANSLATE | GT | GTE |
-      IMCOTH | IMLOG | IMPORTDATA | IMPORTFEED | IMPORTHTML | IMPORTRANGE | IMPORTXML | IMTANH | ISBETWEEN | ISDATE | ISEMAIL | ISURL |
-      JOIN |
-      LT | LTE |
-      MARGINOFERROR | MINUS | MULTIPLY |
-      NE |
-      POW |
-      QUERY |
-      REGEXEXTRACT | REGEXMATCH | REGEXREPLACE |
-      SORTN | SPARKLINE | SPLIT |
-      TO_DATE | TO_DOLLARS | TO_PERCENT | TO_PURE_NUMBER | TO_TEXT | TOCOL | TODAY | TOROW |
-      UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
-    )\b
-
-  name_user: (?:{{name_google}})
-  function_user: (?:{{function_google}})
-  sheet: (?:{{sheet_name_delimited_google}}|{{sheet_name_normal_google}})
-
 contexts:
   function-calls:
     - meta_prepend: true
@@ -82,7 +55,7 @@ contexts:
         - match: \'(?=!)
           scope: punctuation.definition.annotation.end.sheet
           pop: 1
-    - match: '{{sheet_name_normal_google}}'
+    - match: '{{sheet}}'
       scope: entity.name.struct.sheet
     - include: immediately-pop
 
@@ -128,3 +101,67 @@ contexts:
         2: punctuation.separator.sequence.google
         3: storage.type.google
       push: after-reference
+
+###############################################################################
+
+variables:
+  # https://support.google.com/docs/table/25273
+  function_builtins_google: |-
+    \b(?xi:
+      ADD | ARRAY_CONSTRAIN | ARRAYFORMULA | AVERAGE\.WEIGHTED |
+      COUNTUNIQUE |
+      DETECTLANGUAGE | DIVIDE |
+      EPOCHTODATE | EQ |
+      FLATTEN |
+      GOOGLEFINANCE | GOOGLETRANSLATE | GT | GTE |
+      IMCOTH | IMLOG | IMPORTDATA | IMPORTFEED | IMPORTHTML | IMPORTRANGE | IMPORTXML | IMTANH | ISBETWEEN | ISDATE | ISEMAIL | ISURL |
+      JOIN |
+      LT | LTE |
+      MARGINOFERROR | MINUS | MULTIPLY |
+      NE |
+      POW |
+      QUERY |
+      REGEXEXTRACT | REGEXMATCH | REGEXREPLACE |
+      SORTN | SPARKLINE | SPLIT |
+      TO_DATE | TO_DOLLARS | TO_PERCENT | TO_PURE_NUMBER | TO_TEXT | TOCOL | TODAY | TOROW |
+      UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
+    )\b
+
+  name: (?:[\w&&[^0-9]][\w.?]*)
+  js_id_start: '[$_\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}]'
+  js_id_continue: (?:{{js_id_start}}|\w)
+  # Functions in gsheets are either:
+  # 1. Defined in LET() and follow name rules.
+  # 2. Defined in Apps Script and follow Javascript rules for functions.
+  # 3. Predefined builtins
+  function: |-
+    (?x:
+      {{name}}
+    | {{js_id_start}}{{js_id_continue}}*
+    )
+  # # Note: Google supports an early analog to Excel tables as of 2024, but testing would be tedious and error prone as they don't have
+  # #       any references for calling them in their Apps Script documentation. Interactions with table metadata like table names and
+  # #       creation of tables is not captured by the macro recording procedure.
+  # #
+  # #       These tables are referenced like =Table[Column1], exactly like Excel tables, and support the `#` table operator and `,` table argument
+  # #       separator, like in =Table1[[#HEADERS],[Column1]], but do not (yet) support use of the `@` table operator for relative row referencing.
+  # #
+  # #       Something I discovered recently: Google Sheets has objects called "smart chips" which are a fancy way to embed things from the
+  # #       Google Drive ecosystem, like calendar events and documents. These Smart Chips have attributes which can be referenced with `.`
+  # #       e.g., =A2.url returns the url for a calendar event Smart Chip located in cell A2.
+  # #
+  # #       At time of writing (1/5/2025) Smart Chip attributes in cells containing multiple Smart Chips cannot be referenced directly.
+  # #
+  # #       Current syntax at time of writing captures the 'date' as variable.other.readwrite.excel, but does not apply anything to the `.`
+  # #       Other than `source.excel`.
+  # # TODO: buckle down and test a bunch of tables manually. Use desktop macros to speed up the process.
+  # table: (?# WIP)
+
+  sheet: (?:{{sheet_delimited}}|{{sheet_normal}})
+  sheet_delimited: (?:(?:'[^']'+)|(?:'[^']*(?:'')+[^']*'))
+  sheet_normal: '\w+[\w.?]*'
+
+  # Dummy patterns for that sweet YAML syntax highlighting
+  # # Not exhaustive. The fact that I'm not testing combinations of spec chars complicates this...
+  Pattern that Google Sheets will auto escape/delimit with `'`: '^[\d_.?$]+{{sheet_normal}}?'
+  # #                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ...for example, this is naive until tested.
