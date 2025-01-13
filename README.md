@@ -9,9 +9,6 @@ on demand through the command palette.
 Using this syntax with formulae written for those programs should be more or less
 functional, although differences in things like naming rules and legal cell reference
 formats may break formatting in places.
-Explicit support for locales/users that use a decimal separator other than `.`, row
-and column separators in arrays other than `,` and `;`, and argument separators in functions
-other than `,` is planned in a similar manner.
 
 ## Installation
 
@@ -27,6 +24,33 @@ formulae you wish to be highlighted (or create a new file with `CTRL+N`).
    - Alternatively, open the Command Palette and type "Excel formula". Select
    the top option ("Set Syntax: Excel formula").
 3. Enjoy!
+
+### Localization
+
+Some locales use different characters for decimal numbers, function argument
+separators, and array separators. If your locale differs from the characters
+chosen by this package, you can make small extension syntax files to enable
+your local preferences.
+
+In your `Packages/User` folder, add a file like this for Excel, Google Sheets,
+etc.
+
+```yaml
+%YAML 1.2
+---
+name: Excel Formula (FR)
+scope: source.sheet.excel.fr
+version: 2
+extends: Excel Formula.sublime-syntax
+file_extensions:
+  - fr.xls.txt
+
+variables:
+  array_column_separator: ;
+  array_row_separator: \\
+  number_radix: \,
+  argument_separator: ;
+```
 
 ## Issues
 

@@ -1,0 +1,15 @@
+%YAML 1.2
+---
+name: Excel Formula (XX)
+scope: source.sheet.excel.xx
+version: 2
+extends: Excel Formula.sublime-syntax
+hidden: true
+file_extensions:
+  - xx.xls.txt
+
+variables:
+  array_column_separator: ;
+  array_row_separator: \\
+  number_radix: \,
+  argument_separator: ;
