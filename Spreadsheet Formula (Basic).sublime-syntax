@@ -45,26 +45,13 @@ contexts:
     - include: arrays
     - include: groups
 
-    # Sanity checks
+    # Check for stray brackets
     - match: '[)}\]]'
       scope: invalid.illegal.stray-bracket-end.sheet
-
-    # Capture names like those defined by LET and the various Name Managers found in Excel/GSheets/Libre.
+    # Match user-defined names
     - match: '{{name}}'
       scope: variable.other.readwrite.sheet
       push: after-reference
-
-    # Tabs are, for the most part, illegal characters in Excel, GSheets, and LibreCalc.
-    # The former errors out **except as part of a string**.
-    #
-    # Syntax tests do not support tab characters whatsoever.
-    # When used in strings, tab characters are formatted correctly.
-    #
-    # The latter two convert tabs to spaces immediately upon entry, with GSheets
-    # exhibiting strange behavior (inserting a bunch of spaces in front of the cursor
-    # and a single space behind it) in the process of doing so with CTRL+V in formula/cell edit mode.
-    - match: \t
-      scope: invalid.illegal.sheet
 
   operators:
     # three or more is wrong
