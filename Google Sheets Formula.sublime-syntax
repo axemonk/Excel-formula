@@ -35,6 +35,31 @@ variables:
   sheet: (?:{{sheet_name_delimited_google}}|{{sheet_name_normal_google}})
 
 contexts:
+  function-calls:
+    - meta_prepend: true
+    - match: \b(QUERY)(\()
+      captures:
+        1: meta.function-call.google support.function.google
+        2: meta.function-call.arguments.google punctuation.section.arguments.begin.google
+      push: function-call-body-query
+
+  function-call-body-query:
+    - meta_content_scope: meta.function-call.arguments.google
+    - match: \)
+      scope: meta.function-call.arguments.google punctuation.section.arguments.end.google
+      pop: 1
+    - match: '[\,;]'
+      scope: punctuation.separator.sequence.google
+    - match: (?i)"(?=select)
+      scope: meta.string.google string.quoted.double.google punctuation.definition.string.begin.google
+      embed: scope:source.sql.google
+      escape: \"
+      embed_scope: meta.string.google string.quoted.double.google source.sql.google.embedded
+      escape_captures:
+        0: meta.string.google string.quoted.double.google punctuation.definition.string.end.google
+    - include: expressions
+
+
   function-builtins-extra:
     - meta_append: true
     - match: \b({{function_builtins_google}})(\()
