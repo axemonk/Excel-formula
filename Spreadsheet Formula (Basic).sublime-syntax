@@ -22,8 +22,33 @@ variables:
   # # Google Sheets: ZZZ (18,278)
   column: (?:\$?[A-Za-z]{1,3})
   # Row numbers do not include international numbers
-  row: (?:\$?[1-9][0-9]{0,10})
-  cell: (?:{{column}}{{row}}(?!\w))
+  # Max row index:
+  # # Excel & Libre:  1,048,576
+  # # Google Sheets: 10,000,000
+  row: (?:\$?[1-9][0-9]{0,7})
+  # Negative lookahead prevents matching names with numbers in them.
+  cell: (?:{{column}}{{row}}(?!{{name_user}}))
+  r_: |-
+    (?xi:
+      R
+      (?:
+        \[[-\+]?[1-9][0-9]{0,6}\] |
+                [1-9][0-9]{0,6}
+      )
+      (?:
+          (?={{c_}})
+        | (?=C?(?!{{name_user}}))
+      )
+    )
+  c_: (?i:C(?:\[[-\+]?[1-9][0-9]{0,4}\]|[1-9][0-9]{0,4})(?!{{name_user}}))
+  rc: |-
+    (?xi:
+      {{r_}}{{c_}}|
+      {{r_}}C|
+      {{r_}}|
+      R{{c_}}|
+      {{c_}}
+    )
 
   # Internationalization options
   array_column_separator: \,
@@ -33,13 +58,15 @@ variables:
   argument_separator: '[,;]'
 
   # Note to self: Underscore and 0-9 is included in \w
-  # Note:         Excel has builtin functions containing a '.', but does not allow names with '.' otherwise
-  #               (barring the possibility of UDF in VBA allowing '.', which they probably do)
   # TODO:         Check exceptions to these in the VBA-like systems of Sheets and Libre, then check exceptions in VBA.
 
   name_excel: |-
     (?x:
-      [\w\\&&[^0-9]]+
+      (?# my gut tells me this first class should be '[\w\\&&[^0-9]]+',
+          but that breaks R1C1 edge cases, and it's currently redundant.
+          It's supposed to prevent e.g. `4hello` from matching as a valid name,
+          but `4hello` doesn't match as a name regardless.)
+      [\w\\]+
       [\w?\\]*
     )
   name_google: |-
@@ -56,6 +83,9 @@ variables:
       [\w?$]+
       [\w.$]*
     )
+
+  name_user: (?:{{name_excel}}|{{name_google}}|{{name_libre}})
+
   table_excel: |-
     (?x:
       [\w\\&&[^0-9]]+
@@ -80,44 +110,63 @@ variables:
   table_google: (?# WIP)
   # Libre does not support tables
 
-  function_excel: (?# WIP)
-  function_google: (?# WIP)
+  function_excel: |-
+    (?x:
+      [\w\\&&[^0-9]]+
+      [\w?.\\]*
+    )
+  # Functions in gsheets are either:
+  # 1. Defined in LET() and follow name_google rules.
+  # 2. Defined in Apps Script and follow Javascript rules for functions (which from
+  #    what I've read on a w3schools page means `\w` + `$`.
+  # 3. Predefined builtins
+  function_google: |-
+    (?x:
+      {{name_google}}|
+      [\w$]+
+    )
+  # Libre does not have LAMBDA() and cannot define functions in LET().
+  # These rules stem from testing in LO's VBA analog: LibreOffice Basic
   function_libre: |-
     (?x:
       [A-Za-z]+
       [\w]*
     )
 
+  function_user: (?:{{function_excel}}|{{function_google}}|{{function_libre}})
+
   # TODO: Is there a cleaner more compact (and probably more efficient) way to do this? `'` are only legal in excel sheet names when padded on either
   #       end with a legal character matched by [^*/?\[\]\\] and said `'` must come in pairs.
   sheet_name_delimited_excel: (?:(?:'[^*/?\[\]\\]+('')*[^*/?\[\]\\]+')|(?:'[^*/?\[\]\\]+'))
   sheet_name_delimited_google: (?:(?:'[^']'+)|(?:'[^']*(?:'')+[^']*'))
 
-  # Dummy patterns for that sweet YAML syntax highlighting
-  # # Not exhaustive. The fact that I'm not testing combinations of spec chars complicates this...
-  Pattern that Excel will auto escape/delimit with `'`: '^\d+\w*'
-  Pattern that Google Sheets will auto escape/delimit with `'`: '^[\d_.?$]+\w*'
-  # #                                                                      ^^^ ...for example, this is naive until tested.
-
   sheet_name_normal_excel: '[\w&&[^0-9]]+\w*'
   sheet_name_normal_google: '[\w]+[\w.?]*'
+
   sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_delimited_google}}|{{sheet_name_normal_excel}})
+
+  # Dummy patterns for that sweet YAML syntax highlighting
+  # # Not exhaustive. The fact that I'm not testing combinations of spec chars complicates this...
+  Pattern that Excel will auto escape/delimit with `'`: '^\d+{{sheet_name_normal_excel}}?'
+  Pattern that Google Sheets will auto escape/delimit with `'`: '^[\d_.?$]+{{sheet_name_normal_google}}?'
+  # #                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ...for example, this is naive until tested.
 
   # Intersection Operator Variables
   before_reference: |-
     (?x:(?=
       @?  # Reference operator
       (?:
-        {{cell}}
+           {{cell}}
       | (?:{{column}}|{{row}}):
         (?:{{column}}|{{row}}|{{cell}})
+      |    {{rc}}:
+           {{rc}}
+      |    {{rc}}
       )
     ))
   before_name: |-
     (?x:(?=
-      {{name_excel}} |
-      {{name_google}} |
-      {{name_libre}}
+      {{name_user}}
     ))
 
   # Update:
@@ -199,11 +248,10 @@ contexts:
     - match: '[)}\]]'
       scope: invalid.illegal.stray-bracket-end.sheet
 
-    # Capture names like those defined by LAMBDA and the various Name Managers found in these three applications.
-    # Follows the same rules as functions.
-    - match: '(?:{{name_excel}}|{{name_google}}|{{name_libre}})'
+    # Capture names like those defined by LET and the various Name Managers found in Excel/GSheets/Libre.
+    - match: '(?:{{name_user}})'
       scope: variable.other.readwrite.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Tabs are, for the most part, illegal characters in Excel, GSheets, and LibreCalc.
     # The former errors out **except as part of a string**.
@@ -282,11 +330,7 @@ contexts:
 
     - include: function-builtins-extra
 
-    # Update: remove \b in favor of wrapping '' to allow single special-character functions to match through
-    #         name_libre. The idea is for functions and names to follow the same rules, at least for now
-    #         until quirks of UDF are more thoroughly tested, and since a single '@' is a valid
-    #         name in libre, @() should be a valid function (again, for now).
-    - match: '({{name_excel}}|{{name_google}}|{{name_libre}})(\()'
+    - match: '({{function_user}})(\()'
       captures:
         1: meta.function-call.sheet variable.function.sheet
         2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
@@ -346,13 +390,13 @@ contexts:
         1: storage.type.sheet
         2: punctuation.separator.sequence.sheet
         3: storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Naked cell reference
     # A1
     - match: ({{cell}})(?![:#])
       scope: meta.reference.cell.sheet storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Column to column
     # A:B
@@ -362,7 +406,7 @@ contexts:
         1: storage.type.sheet
         2: punctuation.separator.sequence.sheet
         3: storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
     # Row to row
     # 1:2
@@ -372,9 +416,9 @@ contexts:
         1: storage.type.sheet
         2: punctuation.separator.sequence.sheet
         3: storage.type.sheet
-      push: maybe-union-operator
+      push: after-reference
 
-  maybe-union-operator:
+  after-reference:
     # Bail immediately
     - include: immediately-pop
 
@@ -426,9 +470,10 @@ contexts:
     # # # struct: "a composite data type (or record) declaration that defines a physically grouped list of variables
     # # #          under one name in a block of memory"
 
+    # Cell must come before table for R1C1 references to match
+    - include: cell-or-range-reference
     - include: table-name
     - include: sheet-reference
-    - include: cell-or-range-reference
 
 ###[ GROUPS ]##################################################################
 

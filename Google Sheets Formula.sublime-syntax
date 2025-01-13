@@ -30,6 +30,10 @@ variables:
       UMINUS | UNARY_PERCENT | UNIQUE | UPLUS
     )\b
 
+  name_user: (?:{{name_google}})
+  function_user: (?:{{function_google}})
+  sheet: (?:{{sheet_name_delimited_google}}|{{sheet_name_normal_google}})
+
 contexts:
   function-builtins-extra:
     - meta_append: true
@@ -38,6 +42,24 @@ contexts:
         1: meta.function-call.google support.function.google
         2: meta.function-call.arguments.google punctuation.section.arguments.begin.google
       push: function-call-body
+
+  sheet-reference-body:
+    - meta_scope: meta.reference.sheet
+    - match: \!
+      scope: punctuation.separator.sequence.sheet
+      pop: 1
+    - match: \'
+      scope: punctuation.definition.annotation.begin.sheet
+      push:
+        - meta_content_scope: entity.name.struct.sheet
+        - match: \'\'
+          scope: constant.character.escape.sheet
+        - match: \'(?=!)
+          scope: punctuation.definition.annotation.end.sheet
+          pop: 1
+    - match: '{{sheet_name_normal_google}}'
+      scope: entity.name.struct.sheet
+    - include: immediately-pop
 
   cell-or-range-reference:
     - meta_append: true
@@ -50,7 +72,7 @@ contexts:
         1: storage.type.google
         2: punctuation.separator.sequence.google
         3: storage.type.google
-      push: maybe-union-operator
+      push: after-reference
 
     # Cell to row
     # A1:2
@@ -60,7 +82,7 @@ contexts:
         1: storage.type.google
         2: punctuation.separator.sequence.google
         3: storage.type.google
-      push: maybe-union-operator
+      push: after-reference
 
     # Column to cell
     # A:B2
@@ -70,7 +92,7 @@ contexts:
         1: storage.type.google
         2: punctuation.separator.sequence.google
         3: storage.type.google
-      push: maybe-union-operator
+      push: after-reference
 
     # Row to cell
     # 1:B2
@@ -80,4 +102,4 @@ contexts:
         1: storage.type.google
         2: punctuation.separator.sequence.google
         3: storage.type.google
-      push: maybe-union-operator
+      push: after-reference
