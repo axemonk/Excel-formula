@@ -137,13 +137,12 @@ contexts:
         2: meta.function-call.arguments.sheet punctuation.section.arguments.begin.sheet
       push: function-call-body
 
-  # Update: allow for ; to be a separator in functions (for locale support).
   function-call-body:
     - meta_content_scope: meta.function-call.arguments.sheet
     - match: \)
       scope: meta.function-call.arguments.sheet punctuation.section.arguments.end.sheet
       pop: 1
-    - match: '[\,;]'
+    - match: '{{argument_separator}}'
       scope: punctuation.separator.sequence.sheet
     - include: expressions
 
@@ -237,12 +236,14 @@ contexts:
 
     # The second group ensures commas and colons can still be used in column names
     # without mismatching them elsewhere
+    # TODO: Do any of these need to include {{argument_separators}}?
     - match: (\])([,:])?
       captures:
         1: punctuation.section.brackets.end.sheet
         2: punctuation.separator.sequence.sheet
       pop: 1
 
+    # TODO: Do any of these need to include {{argument_separators}}?
     - match: (?:[,:]*)('[\[\]@#])(?:[,:]*)
       scope: storage.type.sheet
       captures:
@@ -301,10 +302,9 @@ contexts:
     - match: \}
       scope: punctuation.section.braces.end.sheet
       pop: 1
-    # The specification of row vs column should technically be locale dependent, but works fine otherwise.
-    - match: \,
+    - match: '{{array_column_separator}}'
       scope: punctuation.separator.sequence.column.sheet
-    - match: ;
+    - match: '{{array_row_separator}}'
       scope: punctuation.separator.sequence.row.sheet
     - include: expressions
 
@@ -314,7 +314,7 @@ contexts:
     - match: '#NULL!'
       scope: constant.language.null.sheet
 
-    - match: (#NUM!|#DIV/0!)
+    - match: (?:#NUM!|#DIV/0!)
       scope: constant.language.nan.sheet
 
     - match: (?:#VALUE!|#REF!|#NAME\?|#GETTING_DATA|#N/A)
@@ -343,7 +343,7 @@ contexts:
 
   # Update: Revert previous change regarding commas as decimal separators. Makes unit tests too confusing.
   numbers:
-    - match: -?\d+(\.)\d*|-?(\.)\d+
+    - match: -?\d+({{number_radix}})\d*|-?({{number_radix}})\d+
       scope: meta.number.float.decimal.sheet constant.numeric.value.sheet
       captures:
         1: punctuation.separator.decimal.sheet

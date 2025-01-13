@@ -1,0 +1,70 @@
+' SYNTAX TEST "Packages/Excel formula/Excel Formula (XX).sublime-syntax"
+
+=1
+'^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+
+=1,
+'^^ meta.number.float.decimal.sheet constant.numeric.value.sheet
+' ^ punctuation.separator.decimal.sheet
+
+=1.
+'^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+' ^ - punctuation
+
+=1,0
+'^^^ meta.number.float.decimal.sheet constant.numeric.value.sheet
+' ^ punctuation.separator.decimal.sheet
+
+=SUM(1, 2)
+'^^^ meta.function-call.sheet support.function.sheet
+'   ^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'    ^^ meta.number.float.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.decimal.sheet
+'       ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'        ^ punctuation.section.arguments.end.sheet
+
+=SUM(1; 2)
+'^^^ meta.function-call.sheet support.function.sheet
+'   ^^^^^^ meta.function-call.arguments.sheet
+'   ^ punctuation.section.arguments.begin.sheet
+'    ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.sheet
+'       ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'        ^ punctuation.section.arguments.end.sheet
+
+={1, 2, 3, 4}
+'^^^^^^^^^^^^ meta.array.sheet
+'^ punctuation.section.braces.begin.sheet
+' ^^ meta.number.float.decimal.sheet constant.numeric.value.sheet
+'  ^ punctuation.separator.decimal.sheet
+'    ^^ meta.number.float.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.decimal.sheet
+'       ^^ meta.number.float.decimal.sheet constant.numeric.value.sheet
+'        ^ punctuation.separator.decimal.sheet
+'          ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'           ^ punctuation.section.braces.end.sheet
+
+={1; 2; 3; 4}
+'^^^^^^^^^^^^ meta.array.sheet
+'^ punctuation.section.braces.begin.sheet
+' ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'  ^ punctuation.separator.sequence.column.sheet
+'    ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.column.sheet
+'       ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'        ^ punctuation.separator.sequence.column.sheet
+'          ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'           ^ punctuation.section.braces.end.sheet
+
+={1; 2\ 3; 4}
+'^^^^^^^^^^^^ meta.array.sheet
+'^ punctuation.section.braces.begin.sheet
+' ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'  ^ punctuation.separator.sequence.column.sheet
+'    ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'     ^ punctuation.separator.sequence.row.sheet
+'       ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'        ^ punctuation.separator.sequence.column.sheet
+'          ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
+'           ^ punctuation.section.braces.end.sheet
