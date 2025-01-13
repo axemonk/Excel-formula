@@ -118,4 +118,21 @@ variables:
       {{name}}
     | {{js_id_start}}{{js_id_continue}}*
     )
+  # # Note: Google supports an early analog to Excel tables as of 2024, but testing would be tedious and error prone as they don't have
+  # #       any references for calling them in their Apps Script documentation. Interactions with table metadata like table names and
+  # #       creation of tables is not captured by the macro recording procedure.
+  # #
+  # #       These tables are referenced like =Table[Column1], exactly like Excel tables, and support the `#` table operator and `,` table argument
+  # #       separator, like in =Table1[[#HEADERS],[Column1]], but do not (yet) support use of the `@` table operator for relative row referencing.
+  # #
+  # #       Something I discovered recently: Google Sheets has objects called "smart chips" which are a fancy way to embed things from the
+  # #       Google Drive ecosystem, like calendar events and documents. These Smart Chips have attributes which can be referenced with `.`
+  # #       e.g., =A2.url returns the url for a calendar event Smart Chip located in cell A2.
+  # #
+  # #       At time of writing (1/5/2025) Smart Chip attributes in cells containing multiple Smart Chips cannot be referenced directly.
+  # #
+  # #       Current syntax at time of writing captures the 'date' as variable.other.readwrite.excel, but does not apply anything to the `.`
+  # #       Other than `source.excel`.
+  # # TODO: buckle down and test a bunch of tables manually. Use desktop macros to speed up the process.
+  # table: (?# WIP)
   sheet: (?:{{sheet_name_delimited_google}}|{{sheet_name_normal_google}})
