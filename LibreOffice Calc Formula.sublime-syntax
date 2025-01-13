@@ -8,7 +8,7 @@ file_extensions:
   - libre.txt
 
 variables:
-  # TODO: Update with Libre builtins
+  # TODO: Update with LibreOffice builtins
   # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
   function_builtins_excel: |-
     \b(?xi:
@@ -30,7 +30,19 @@ variables:
       WEBSERVICE |
       XMATCH
     )\b
-  name_user: (?:{{name_libre}})
-  function_user: (?:{{function_libre}})
-  # TODO: Update with Libre alternate-format sheet references in addition.
-  sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
+  # Note: Negative lookahead prevents this pattern from chaining matches like in '@name' (i.e., only a single '@' is a valid name).
+  # TODO: Is there a better way to do this?
+  name: |-
+    (?x:
+      [_.?@`\\]
+      (?![\w?$]+[\w.$]*) |
+      [\w?$]+
+      [\w.$]*
+    )
+  # LibreOffice does not have LAMBDA() and cannot define functions in LET().
+  # These rules stem from testing in LO's VBA analog: LibreOffice Basic
+  function: (?i:[a-z]\w*)
+  # LibreOffice does not support tables
+  table: (?!.)
+  # # TODO: Update with LibreOffice alternate-format sheet references in addition.
+  # sheet: (?#WIP)
