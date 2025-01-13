@@ -29,6 +29,9 @@ variables:
       WEBSERVICE |
       XMATCH
     )\b
+  name_user: (?:{{name_excel}})
+  function_user: (?:{{function_excel}})
+  sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
 
 contexts:
   function-builtins-extra:
@@ -39,70 +42,121 @@ contexts:
         2: meta.function-call.arguments.excel punctuation.section.arguments.begin.excel
       push: function-call-body
 
+  sheet-reference:
+    - match: (?={{sheet}}!)
+    # - match: (?={{sheet}}[!|])
+      push: sheet-reference-body
+
+  sheet-reference-body:
+    - meta_scope: meta.reference.sheet
+    - match: \!
+      scope: punctuation.separator.sequence.sheet
+      pop: 1
+    # - match: \|
+    #   scope: punctuation.separator.sequence.sheet
+    #   push: sheet-reference-body
+    - match: \'
+      scope: punctuation.definition.annotation.begin.sheet
+      push:
+        - meta_content_scope: entity.name.struct.sheet
+        - match: \'\'
+          scope: constant.character.escape.sheet
+        # - match: \'(?=\|)
+        #   scope: punctuation.definition.annotation.end.sheet
+          # push: sheet-reference-body
+        - match: \'(?=!)
+          scope: punctuation.definition.annotation.end.sheet
+          pop: 1
+    - match: '{{sheet_name_normal_excel}}'
+      scope: entity.name.struct.sheet
+    - include: immediately-pop
+
   cell-or-range-reference:
     - meta_append: true
 
     # Push to dynamic context to isolate forced anonymity to just dynamic refs
     - match: |-
         (?x:(?=  # next find a...
-          (?:@?{{cell}})  # cell followed by...
+          (?:@?(?:{{cell}}|{{rc}}))  # cell followed by...
           (?:
-            [#]?:{{cell}}[#]  # maybe a # and second cell with #, OR
-          | [#]:{{cell}}[#]?  # definitely a # and second cell maybe with #
+            [#]?:(?:{{cell}}|{{rc}})[#]  # maybe a # and second cell with #, OR
+          | [#]:(?:{{cell}}|{{rc}})[#]?  # definitely a # and second cell maybe with #
           )
         ))
       push: dynamic-reference
 
+    # Cell range without dynamics (R1C1)
+    # See semi-shared references section in excel ref tests
+    # for full list of matches.
+    # (@?)R([1]?)C([1]?):R([1]?)C([1]?)
+    - match: ({{rc}})(:)({{rc}})(?!#)
+      scope: meta.reference.range.cell.sheet
+      captures:
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
+      push: after-reference
+
     # Cell range without dynamics
     # @A1:B2
-    - match: (@)({{cell}})(:)({{cell}})
+    - match: (@)(?:({{cell}})(:)({{cell}})|({{rc}})(:)({{rc}}))
       scope: meta.reference.range.cell.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      push: maybe-union-operator
+        5: storage.type.excel
+        6: punctuation.separator.sequence.excel
+        7: storage.type.excel
+      push: after-reference
 
     # Naked cell reference
+    # A1#
     # @A1
     # @A1#
-    - match: (@?)({{cell}})(#?)(?![:#])
+    - match: (@?)({{cell}}|{{rc}})(#?)(?![:#])
       scope: meta.reference.cell.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: keyword.operator.reference.excel
-      push: maybe-union-operator
+      push: after-reference
 
     # Column to column
     # @A:B
-    - match: (@?)({{column}})(:)({{column}})(?![0-9])
+    - match: (@?)(?:({{column}})(:)({{column}})|({{c_}})(:)({{c_}}))(?![0-9])
       scope: meta.reference.range.column.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      push: maybe-union-operator
+        5: storage.type.excel
+        6: punctuation.separator.sequence.excel
+        7: storage.type.excel
+      push: after-reference
 
     # Row to row
     # @1:2
-    - match: (@)({{row}})(:)({{row}})
+    - match: (@)(?:({{row}})(:)({{row}})|({{r_}})(:)({{r_}}))
       scope: meta.reference.range.row.excel
       captures:
         1: keyword.operator.reference.excel
         2: storage.type.excel
         3: punctuation.separator.sequence.excel
         4: storage.type.excel
-      push: maybe-union-operator
+        5: storage.type.excel
+        6: punctuation.separator.sequence.excel
+        7: storage.type.excel
+      push: after-reference
 
   dynamic-reference:
     - meta_prepend: true
     # Zero-dimensional cell range w/ dynamics
     # @A1#:A1#
     # @A1:A1#
-    - match: (@?)({{cell}})(#?)(:)(\2)(#)
+    - match: (@?)({{cell}}|{{rc}})(#?)(:)(\2)(#)
       scope: meta.reference.cell.excel
       captures:
         1: keyword.operator.reference.excel
@@ -111,12 +165,12 @@ contexts:
         4: punctuation.separator.sequence.excel
         5: storage.type.excel
         6: keyword.operator.reference.excel
-      push: maybe-union-operator
+      push: after-reference
 
     # Cell range with dynamics
     # @A1#:B2
     # @A1#:B2#
-    - match: (@?)({{cell}})(#)(:)({{cell}})(#?)
+    - match: (@?)(?:({{cell}})(#)(:)({{cell}})|({{rc}})(#)(:)({{rc}}))(#?)
       scope: meta.reference.range.cell.excel
       captures:
         1: keyword.operator.reference.excel
@@ -124,16 +178,20 @@ contexts:
         3: keyword.operator.reference.excel
         4: punctuation.separator.sequence.excel
         5: storage.type.excel
-        6: keyword.operator.reference.excel
-      push: maybe-union-operator
+        6: storage.type.excel
+        7: keyword.operator.reference.excel
+        8: punctuation.separator.sequence.excel
+        9: storage.type.excel
+        10: keyword.operator.reference.excel
+      push: after-reference
 
     # Bail if nothing matches
     - include: immediately-pop
 
-  maybe-union-operator:
+  after-reference:
     - meta_prepend: true
 
-    # Prepend Excel's union operator
+    # Match Excel's "space" intersection operator
     - match: '[ ]{{before_reference}}'
       scope: keyword.operator.set.excel
     - match: '[ ]{{before_name}}'
