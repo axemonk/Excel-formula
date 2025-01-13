@@ -214,4 +214,9 @@ variables:
       [\w\\&&[^0-9]]+
       [\w?.\\]*
     )
+  table: |-
+    (?x:
+      [\w\\&&[^0-9]]+
+      [\w.?\\]*
+    )
   sheet: (?:{{sheet_name_delimited_excel}}|{{sheet_name_normal_excel}})
