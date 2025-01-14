@@ -385,7 +385,7 @@ variables:
   # Max col index:
   # # Excel & Libre: XFD (16,384)
   # # Google Sheets: ZZZ (18,278)
-  column: (?:\$?[A-Za-z]{1,3})
+  column: (?i:\$?[a-z]{1,3})
   # Row numbers do not include international numbers
   # Max row index:
   # # Excel & Libre:  1,048,576
