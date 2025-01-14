@@ -15,7 +15,7 @@ contexts:
     - include: comments
 
   comments:
-    # These are not real. Be warned
+    # NOTE: Just for unit testing. These are not real. Be warned!
     - match: ^--
       scope: punctuation.definition.comment.begin.google
       push:
@@ -44,7 +44,7 @@ contexts:
 
   select-body:
     - include: pop-next-clause
-    - match: \*(?=\s*(?:$|,|{{clause_word_start}}))
+    - match: \*(?=\s*(?:$|,|{{clause_words}}))
       scope: constant.other.wildcard.asterisk.google
     - include: comma-separators
     - include: aggregation-nestables
@@ -408,7 +408,7 @@ contexts:
       scope: punctuation.separator.sequence.google
 
   pop-next-clause:
-    - match: (?={{clause_word_start}})
+    - match: (?={{clause_words}})
       pop: 1
 
   else-pop:
@@ -447,13 +447,13 @@ variables:
     | true
     | where
     )
-  clause_word_start: |-
+  clause_words: |-
     (?xi:
       select
     | where
-    | group
+    | group(?:\s+by)?
     | pivot
-    | order
+    | order(?:\s+by)?
     | limit
     | offset
     | label
