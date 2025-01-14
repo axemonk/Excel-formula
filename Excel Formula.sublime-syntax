@@ -8,23 +8,8 @@ file_extensions:
   - xls.txt
 
 contexts:
-
   expressions:
-    - include: function-calls
-    - include: operators
-    - include: references
-    - include: constants
-    - include: arrays
-    - include: groups
-
-    # Check for stray brackets
-    - match: '[)}\]]'
-      scope: invalid.illegal.stray-bracket-end.sheet
-    # Match user-defined names
-    - match: '{{name}}'
-      scope: variable.other.readwrite.sheet
-      push: after-reference
-    # Mark tabs as illegal for Excel
+    - meta_append: true
     - match: \t
       scope: invalid.illegal.sheet.excel
 
