@@ -62,11 +62,24 @@ where role ends with 'y'
 --                   ^ punctuation.definition.string.begin.google
 --                     ^ punctuation.definition.string.end.google
 
--- TODO: embed regex
 where country matches '.*ia'
+--^^^ keyword.other.dml.google
+--    ^^^^^^^ meta.column-name.google
+--            ^^^^^^^ keyword.operator.logical.google
+--                    ^^^^^^ meta.string.google string.quoted.single.google
+--                    ^ punctuation.definition.string.begin.google - source source - string string - meta.string meta.string
+--                     ^^^^ source.regexp.embedded
+--                         ^ punctuation.definition.string.end.google - source source - string string - meta.string meta.string
 
--- TODO: match wildcard strings
-where name like fre%
+-- NOTE: Google documentation does not have fre% in quotes
+where name like 'fre%'
+--^^^ keyword.other.dml.google
+--    ^^^^ meta.column-name.google
+--         ^^^^ keyword.operator.logical.google
+--              ^^^^^^ meta.string.google string.quoted.single.google
+--              ^ punctuation.definition.string.begin.google
+--                  ^ constant.other.wildcard.number-sign.google
+--                   ^ punctuation.definition.string.end.google
 
 where salary >= 600
 --^^^ keyword.other.dml.google
@@ -278,10 +291,10 @@ select empSalary - empTax
 --               ^ keyword.operator.arithmetic.google
 --                 ^^^^^^ meta.column-name.google
 
--- TODO: Make this be math instead of a wildcard
 select 2 * (max(empSalary) / max(empTax))
 --^^^^ keyword.other.dml.google
 --     ^ meta.number.integer.decimal.google constant.numeric.value.google
+--       ^ keyword.operator.arithmetic.google
 --         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.group.google
 --         ^ punctuation.section.group.begin.google
 --          ^^^ meta.function-call.google support.function.aggregate.google
