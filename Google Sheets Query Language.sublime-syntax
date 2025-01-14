@@ -74,9 +74,59 @@ contexts:
     - include: literals
     - match: \b(?i)null\b
       scope: constant.language.null.google
-    - match: \b(?i:contains|starts\s+with|ends\s+with|matches|like)\b
+    - match: \b(?i:contains|starts\s+with|ends\s+with)\b
       scope: keyword.operator.logical.google
+    - match: \b(?i)like\b
+      scope: keyword.operator.logical.google
+      push: expect-like-string
+    - match: \b(?i)matches\b
+      scope: keyword.operator.logical.google
+      push: expect-regex-string
     - include: identifiers
+
+  expect-like-string:
+    - match: '"'
+      scope: punctuation.definition.string.begin.google
+      push:
+      - meta_include_prototype: false
+      - meta_scope: meta.string.google string.quoted.double.google
+      - match: '"'
+        scope: punctuation.definition.string.end.google
+        pop: 1
+      - include: like-wildcards
+    - match: \'
+      scope: punctuation.definition.string.begin.google
+      push:
+      - meta_include_prototype: false
+      - meta_scope: meta.string.google string.quoted.single.google
+      - match: \'
+        scope: punctuation.definition.string.end.google
+        pop: 1
+      - include: like-wildcards
+    - include: else-pop
+
+  like-wildcards:
+    - match: '%'
+      scope: constant.other.wildcard.number-sign.google
+    - match: _
+      scope: constant.other.wildcard.underscore.google
+
+  expect-regex-string:
+    - match: '"'
+      scope: meta.string.google string.quoted.single.google punctuation.definition.string.begin.google
+      embed: scope:source.regexp.basic
+      embed_scope: meta.string.google string.quoted.double.google source.regexp.embedded
+      escape: '"'
+      escape_captures:
+        0: punctuation.definition.string.end.google
+    - match: "'"
+      scope: meta.string.google string.quoted.single.google punctuation.definition.string.begin.google
+      embed: scope:source.regexp.basic
+      embed_scope: meta.string.google string.quoted.single.google source.regexp.embedded
+      escape: "'"
+      escape_captures:
+        0: meta.string.google string.quoted.single.google punctuation.definition.string.end.google
+    - include: else-pop
 
   group-by:
     - match: \b(?i)group\s+by\b
@@ -359,6 +409,10 @@ contexts:
 
   pop-next-clause:
     - match: (?={{clause_word_start}})
+      pop: 1
+
+  else-pop:
+    - match: (?=\S)
       pop: 1
 
 ###############################################################################
