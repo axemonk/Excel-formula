@@ -7,6 +7,25 @@ extends: Spreadsheet Formula (Basic).sublime-syntax
 file_extensions:
   - libre.txt
 
+contexts:
+  cell-or-range-reference:
+    - meta_append: true
+    - match: ({{rc}})(:)({{rc}})
+      scope: meta.reference.range.cell.sheet
+      captures:
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
+      push: after-reference
+
+    - match: ({{rc}})
+      scope: meta.reference.range.cell.sheet
+      captures:
+        1: storage.type.sheet
+        2: punctuation.separator.sequence.sheet
+        3: storage.type.sheet
+      push: after-reference
+
 variables:
   # TODO: Update with LibreOffice builtins
   # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
@@ -44,5 +63,29 @@ variables:
   function: (?i:[a-z]\w*)
   # LibreOffice does not support tables
   table: (?!.)
+
   # # TODO: Update with LibreOffice alternate-format sheet references in addition.
   # sheet: (?#WIP)
+
+  # RC row/column offset format
+  r_: |-
+    (?xi:
+      R
+      (?:
+        \[[-\+]?[1-9][0-9]{0,6}\] |
+                [1-9][0-9]{0,6}
+      )
+      (?:
+          (?={{c_}})
+        | (?=C?(?!{{name}}))
+      )
+    )
+  c_: (?i:C(?:\[[-\+]?[1-9][0-9]{0,4}\]|[1-9][0-9]{0,4})(?!{{name}}))
+  rc: |-
+    (?xi:
+      {{r_}}{{c_}}|
+      {{r_}}C|
+      {{r_}}|
+      R{{c_}}|
+      {{c_}}
+    )
