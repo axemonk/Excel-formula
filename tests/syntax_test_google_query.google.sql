@@ -67,11 +67,9 @@ where country matches '.*ia'
 --    ^^^^^^^ meta.column-name.google
 --            ^^^^^^^ keyword.operator.logical.google
 --                    ^^^^^^ meta.string.google string.quoted.single.google
---                    ^ punctuation.definition.string.begin.google
---                     ^^^^ source.regexp.embedded meta.mode.basic.regexp
---                     ^ keyword.other.any.regexp
---                      ^ keyword.operator.quantifier.regexp
---                         ^ punctuation.definition.string.end.google
+--                    ^ punctuation.definition.string.begin.google - source source - string string - meta.string meta.string
+--                     ^^^^ source.regexp.embedded
+--                         ^ punctuation.definition.string.end.google - source source - string string - meta.string meta.string
 
 -- NOTE: Google documentation does not have fre% in quotes
 where name like 'fre%'
