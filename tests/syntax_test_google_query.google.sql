@@ -62,11 +62,26 @@ where role ends with 'y'
 --                   ^ punctuation.definition.string.begin.google
 --                     ^ punctuation.definition.string.end.google
 
--- TODO: embed regex
 where country matches '.*ia'
+--^^^ keyword.other.dml.google
+--    ^^^^^^^ meta.column-name.google
+--            ^^^^^^^ keyword.operator.logical.google
+--                    ^^^^^^ meta.string.google string.quoted.single.google
+--                    ^ punctuation.definition.string.begin.google
+--                     ^^^^ source.regexp.embedded meta.mode.basic.regexp
+--                     ^ keyword.other.any.regexp
+--                      ^ keyword.operator.quantifier.regexp
+--                         ^ punctuation.definition.string.end.google
 
--- TODO: match wildcard strings
-where name like fre%
+-- NOTE: Google documentation does not have fre% in quotes
+where name like 'fre%'
+--^^^ keyword.other.dml.google
+--    ^^^^ meta.column-name.google
+--         ^^^^ keyword.operator.logical.google
+--              ^^^^^^ meta.string.google string.quoted.single.google
+--              ^ punctuation.definition.string.begin.google
+--                  ^ constant.other.wildcard.number-sign.google
+--                   ^ punctuation.definition.string.end.google
 
 where salary >= 600
 --^^^ keyword.other.dml.google
