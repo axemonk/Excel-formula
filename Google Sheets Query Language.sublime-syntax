@@ -44,7 +44,7 @@ contexts:
 
   select-body:
     - include: pop-next-clause
-    - match: \*
+    - match: \*(?=\s*(?:$|,|{{clause_word_start}}))
       scope: constant.other.wildcard.asterisk.google
     - include: comma-separators
     - include: aggregation-nestables
@@ -358,7 +358,7 @@ contexts:
       scope: punctuation.separator.sequence.google
 
   pop-next-clause:
-    - match: (?i)(?=select|where|group|pivot|order|limit|offset|label|format|options)
+    - match: (?={{clause_word_start}})
       pop: 1
 
 ###############################################################################
@@ -392,6 +392,19 @@ variables:
     | timestamp
     | true
     | where
+    )
+  clause_word_start: |-
+    (?xi:
+      select
+    | where
+    | group
+    | pivot
+    | order
+    | limit
+    | offset
+    | label
+    | format
+    | options
     )
   scalar_functions: |-
     (?xi:

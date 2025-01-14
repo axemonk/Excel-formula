@@ -278,10 +278,10 @@ select empSalary - empTax
 --               ^ keyword.operator.arithmetic.google
 --                 ^^^^^^ meta.column-name.google
 
--- TODO: Make this be math instead of a wildcard
 select 2 * (max(empSalary) / max(empTax))
 --^^^^ keyword.other.dml.google
 --     ^ meta.number.integer.decimal.google constant.numeric.value.google
+--       ^ keyword.operator.arithmetic.google
 --         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.group.google
 --         ^ punctuation.section.group.begin.google
 --          ^^^ meta.function-call.google support.function.aggregate.google
