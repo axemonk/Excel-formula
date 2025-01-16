@@ -407,6 +407,10 @@ variables:
   # Google Sheets:
   # - https://support.google.com/docs/table/25273
   # As of 12/27/2024
+  #
+  # LibreOffice Calc:
+  # - https://wiki.documentfoundation.org/Documentation/Calc_Functions/List_of_Functions
+  # As of 1/14/2025
 
   function_builtins: |-
     \b(?xi:
