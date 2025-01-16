@@ -8,6 +8,14 @@ file_extensions:
   - libre.txt
 
 contexts:
+  function-builtins-extra:
+  - meta_append: true
+  - match: \b({{function_builtins_libre}})(\()
+    captures:
+      1: meta.function-call.libre support.function.libre
+      2: meta.function-call.arguments.libre punctuation.section.arguments.begin.libre
+    push: function-call-body
+
   cell-or-range-reference:
     - meta_append: true
     - match: ({{rc}})(:)({{rc}})
@@ -27,27 +35,26 @@ contexts:
       push: after-reference
 
 variables:
-  # TODO: Update with LibreOffice builtins
-  # https://support.microsoft.com/en-us/office/excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
-  function_builtins_excel: |-
+  function_builtins_libre: |-
     \b(?xi:
-      AGGREGATE | AMORDEGRC | AREAS | ARRAYTOTEXT |
-      BAHTTEXT | BESSELI | BESSELJ | BESSELK | BESSELY | BINOM\.DIST\.RANGE |
-      CALL | CUBEKPIMEMBER | CUBEMEMBER | CUBEMEMBERPROPERTY | CUBERANKEDMEMBER | CUBESET | CUBESETCOUNT | CUBEVALUE |
-      DBCS | DROP |
-      EUROCONVERT | EXPAND |
-      FILTERXML | FORECAST\.ETS | FORECAST\.ETS\.CONFINT | FORECAST\.ETS\.SEASONALITY | FORECAST\.ETS\.STAT |
-      INFO | ISOMITTED |
+      AGGREGATE | AMORDEGRC | AREAS |
+      B | BAHTTEXT | BESSELI | BESSELJ | BESSELK | BESSELY |
+      CEILING.XCL | CHISQDIST | CHISQINV | COLOR | CONVERT_OOO | CUMIPMT_ADD | CUMPRINC_ADD | CURRENT |
+      DAYSINMONTH | DAYSINYEAR | DDE |
+      EASTERSUNDAY | EFFECT_ADD | ERRORTYPE | EUROCONVERT |
+      FILTERXML | FLOOR.XCL | FORECAST.ETS.ADD | FORECAST.ETS.MULT | FORECAST.ETS.PI.ADD | FORECAST.ETS.PI.MULT | FORECAST.ETS.SEASONALITY | FORECAST.ETS.STAT.ADD | FORECAST.ETS.STAT.MULT | FORMULA | FOURIER |
+      GCD_EXCEL2003 |
+      INFO | ISEVEN_ADD | ISLEAPYEAR | ISODD_ADD |
       JIS |
-      NUMBERVALUE |
-      ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD |
-      PHONETIC |
-      REGISTER\.ID | RTD |
-      SHEET | SHEETS | SORTBY | STOCKHISTORY |
-      TAKE | TEXTAFTER | TEXTBEFORE | TEXTSPLIT | TOCOL | TODAY | TOROW |
-      VALUETOTEXT |
-      WEBSERVICE |
-      XMATCH
+      LCM_EXCEL2003 |
+      MULTIPLE.OPERATIONS | MONTHS |
+      NETWORKDAYS_EXCEL2003 | NOMINAL_ADD | NUMBERVALUE |
+      ODDFPRICE | ODDFYIELD | ODDLPRICE | ODDLYIELD | OPT_BARRIER | OPT_PROB_HIT | OPT_PROB_INMONEY | OPT_TOUCH |
+      RAND.NV | RANDBETWEEN.NV | RAWSUBTRACT | REGEX | ROT13 | ROUNDSIG |
+      SHEET | SHEETS | SKEWP | STYLE |
+      TODAY |
+      WEBSERVICE | WEEKNUM_EXCEL2003 | WEEKS | WEEKSINYEAR |
+      YEARS
     )\b
   # Note: Negative lookahead prevents this pattern from chaining matches like in '@name' (i.e., only a single '@' is a valid name).
   # TODO: Is there a better way to do this?
