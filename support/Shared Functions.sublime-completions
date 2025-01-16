@@ -1,3 +1,5 @@
+//Find all functions '\"[A-Z._0-9]*\"(?=, \"contents\")'
+//Find all contents '\"[A-Z._0-9$\(\)]*\"(?=, \"kind\")'
 {
     "scope": "source.sheet - string - comment",
     "completions": [
