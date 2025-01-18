@@ -1,3 +1,4 @@
+// 52 funcs unique to at least Excel (1/18/25)
 {
     "scope": "source.sheet.excel - string - comment",
     "completions": [
