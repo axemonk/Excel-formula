@@ -1,4 +1,6 @@
 // TODO: MULTIPLE.OPERATIONS is a special function. Special treatment may be desired. More research required
+//
+// 71 funcs unique to at least Libre (1/18/25)
 {
     "scope": "source.sheet.libre - string - comment",
     "completions": [

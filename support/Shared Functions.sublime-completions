@@ -1,5 +1,8 @@
-//Find all functions '\"[A-Z._0-9]*\"(?=, \"contents\")'
-//Find all contents '\"[A-Z._0-9$\(\)]*\"(?=, \"kind\")'
+// Find all functions \"[A-Z._0-9]*\"(?=, \"contents\")
+// Find all contents \"[A-Z._0-9$\(\)]*\"(?=, \"kind\")
+// Find all function lines except comments [^/\n]*\"trigger\"[^/\n]*(?=\n)
+//
+// 460 funcs shared by Excel, Google, and Libre (1/18/25)
 {
     "scope": "source.sheet - string - comment",
     "completions": [
