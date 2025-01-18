@@ -19,7 +19,8 @@
 		{ "trigger": "CONVERT_OOO", "contents": "CONVERT_OOO($1)", "kind": "function" },
 		{ "trigger": "CUMIPMT_ADD", "contents": "CUMIPMT_ADD($1)", "kind": "function" },
 		{ "trigger": "CUMPRINC_ADD", "contents": "CUMPRINC_ADD($1)", "kind": "function" },
-		{ "trigger": "CURRENT", "contents": "CURRENT($1)", "kind": "function" },
+		//No args
+		{ "trigger": "CURRENT", "contents": "CURRENT()", "kind": "function" },
 		{ "trigger": "DAYSINMONTH", "contents": "DAYSINMONTH($1)", "kind": "function" },
 		{ "trigger": "DAYSINYEAR", "contents": "DAYSINYEAR($1)", "kind": "function" },
 		{ "trigger": "DDE", "contents": "DDE($1)", "kind": "function" },
@@ -67,7 +68,8 @@
 		{ "trigger": "SHEETS", "contents": "SHEETS($1)", "kind": "function" },
 		{ "trigger": "SKEWP", "contents": "SKEWP($1)", "kind": "function" },
 		{ "trigger": "STYLE", "contents": "STYLE($1)", "kind": "function" },
-		{ "trigger": "TODAY", "contents": "TODAY($1)", "kind": "function" },
+		//No args
+		{ "trigger": "TODAY", "contents": "TODAY()", "kind": "function" },
 		{ "trigger": "WEBSERVICE", "contents": "WEBSERVICE($1)", "kind": "function" },
 		{ "trigger": "WEEKNUM_EXCEL2003", "contents": "WEEKNUM_EXCEL2003($1)", "kind": "function" },
 		{ "trigger": "WEEKS", "contents": "WEEKS($1)", "kind": "function" },

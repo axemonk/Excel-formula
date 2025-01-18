@@ -48,7 +48,8 @@
         { "trigger": "TO_PURE_NUMBER", "contents": "TO_PURE_NUMBER($1)", "kind": "function" },
         { "trigger": "TO_TEXT", "contents": "TO_TEXT($1)", "kind": "function" },
         { "trigger": "TOCOL", "contents": "TOCOL($1)", "kind": "function" },
-        { "trigger": "TODAY", "contents": "TODAY($1)", "kind": "function" },
+        //No args
+        { "trigger": "TODAY", "contents": "TODAY()", "kind": "function" },
         { "trigger": "TOROW", "contents": "TOROW($1)", "kind": "function" },
         { "trigger": "UMINUS", "contents": "UMINUS($1)", "kind": "function" },
         { "trigger": "UNARY_PERCENT", "contents": "UNARY_PERCENT($1)", "kind": "function" },

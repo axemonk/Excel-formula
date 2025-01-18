@@ -149,7 +149,8 @@
         { "trigger": "F.TEST", "contents": "F.TEST($1)", "kind": "function" },
         { "trigger": "FACT", "contents": "FACT($1)", "kind": "function" },
         { "trigger": "FACTDOUBLE", "contents": "FACTDOUBLE($1)", "kind": "function" },
-        { "trigger": "FALSE", "contents": "FALSE($1)", "kind": "function" },
+        //No args
+        { "trigger": "FALSE", "contents": "FALSE()", "kind": "function" },
         { "trigger": "FDIST", "contents": "FDIST($1)", "kind": "function" },
         { "trigger": "FILTER", "contents": "FILTER($1)", "kind": "function" },
         { "trigger": "FIND", "contents": "FIND($1)", "kind": "function" },
@@ -290,7 +291,8 @@
         { "trigger": "MULTINOMIAL", "contents": "MULTINOMIAL($1)", "kind": "function" },
         { "trigger": "MUNIT", "contents": "MUNIT($1)", "kind": "function" },
         { "trigger": "N", "contents": "N($1)", "kind": "function" },
-        { "trigger": "NA", "contents": "NA($1)", "kind": "function" },
+        //No args
+        { "trigger": "NA", "contents": "NA()", "kind": "function" },
         { "trigger": "NEGBINOM.DIST", "contents": "NEGBINOM.DIST($1)", "kind": "function" },
         { "trigger": "NEGBINOMDIST", "contents": "NEGBINOMDIST($1)", "kind": "function" },
         { "trigger": "NETWORKDAYS", "contents": "NETWORKDAYS($1)", "kind": "function" },
@@ -305,7 +307,8 @@
         { "trigger": "NORMSDIST", "contents": "NORMSDIST($1)", "kind": "function" },
         { "trigger": "NORMSINV", "contents": "NORMSINV($1)", "kind": "function" },
         { "trigger": "NOT", "contents": "NOT($1)", "kind": "function" },
-        { "trigger": "NOW", "contents": "NOW($1)", "kind": "function" },
+        //No args
+        { "trigger": "NOW", "contents": "NOW()", "kind": "function" },
         { "trigger": "NPER", "contents": "NPER($1)", "kind": "function" },
         { "trigger": "NPV", "contents": "NPV($1)", "kind": "function" },
         { "trigger": "OCT2BIN", "contents": "OCT2BIN($1)", "kind": "function" },
@@ -325,7 +328,8 @@
         { "trigger": "PERMUT", "contents": "PERMUT($1)", "kind": "function" },
         { "trigger": "PERMUTATIONA", "contents": "PERMUTATIONA($1)", "kind": "function" },
         { "trigger": "PHI", "contents": "PHI($1)", "kind": "function" },
-        { "trigger": "PI", "contents": "PI($1)", "kind": "function" },
+        //No args
+        { "trigger": "PI", "contents": "PI()", "kind": "function" },
         { "trigger": "PMT", "contents": "PMT($1)", "kind": "function" },
         { "trigger": "POISSON", "contents": "POISSON($1)", "kind": "function" },
         { "trigger": "POISSON.DIST", "contents": "POISSON.DIST($1)", "kind": "function" },
@@ -343,7 +347,8 @@
         { "trigger": "QUARTILE.INC", "contents": "QUARTILE.INC($1)", "kind": "function" },
         { "trigger": "QUOTIENT", "contents": "QUOTIENT($1)", "kind": "function" },
         { "trigger": "RADIANS", "contents": "RADIANS($1)", "kind": "function" },
-        { "trigger": "RAND", "contents": "RAND($1)", "kind": "function" },
+        //No args
+        { "trigger": "RAND", "contents": "RAND()", "kind": "function" },
         { "trigger": "RANDARRAY", "contents": "RANDARRAY($1)", "kind": "function" },
         { "trigger": "RANDBETWEEN", "contents": "RANDBETWEEN($1)", "kind": "function" },
         { "trigger": "RANK", "contents": "RANK($1)", "kind": "function" },
@@ -426,7 +431,8 @@
         { "trigger": "TREND", "contents": "TREND($1)", "kind": "function" },
         { "trigger": "TRIM", "contents": "TRIM($1)", "kind": "function" },
         { "trigger": "TRIMMEAN", "contents": "TRIMMEAN($1)", "kind": "function" },
-        { "trigger": "TRUE", "contents": "TRUE($1)", "kind": "function" },
+        //No args
+        { "trigger": "TRUE", "contents": "TRUE()", "kind": "function" },
         { "trigger": "TRUNC", "contents": "TRUNC($1)", "kind": "function" },
         { "trigger": "TTEST", "contents": "TTEST($1)", "kind": "function" },
         { "trigger": "TYPE", "contents": "TYPE($1)", "kind": "function" },
