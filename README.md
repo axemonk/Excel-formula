@@ -6,10 +6,9 @@ and LibreOffice Calc formulae.
 
 ## Features
 
-- Syntax highlighting for spreadsheet formulae
+- Syntax highlighting for spreadsheet formulae used in Excel, Google Sheets, and LibreOffice Calc
 - Built-in function completions
 - Support for [locale-specific separators](#localization)
-- Additional support for both Google Sheets and LibreOffice Calc
 - SQL highlighting when using the `QUERY()` function in Google Sheets
 
 ## Installation
