@@ -113,7 +113,7 @@ You can find me on the official Sublime Text Discord server.
 ## Credits
 
 Made by \_alco and [michaelblyons][]. Thanks to acid_form for the first key bug
-reports we've received and for Google Sheets functions.
+reports we've received and for scraping the Google Sheets builtin functions.
 
 A **huge** thank you to [michaelblyons][] for his collaboration.
 
