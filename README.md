@@ -37,14 +37,14 @@ separators, and array separators. If your locale differs from the characters
 chosen by this package, you can make small extension syntax files to enable
 your local preferences.
 
-Add a file containing the one of the below code blocks in your `Packages/User` folder,
+Add a file containing one of the below code blocks in your `Packages/User` folder,
 then modify the regular expression patterns in the `variables:` context to match your locale's format.
 
 The below examples denote a French locale with `(FR)` and `fr` where applicable.
 
 If using Excel:
 
-File name `Excel Formula (FR).sublime-syntax`:
+Filename `Excel Formula (FR).sublime-syntax`:
 ```yaml
 %YAML 1.2
 ---
@@ -64,7 +64,7 @@ variables:
 
 If using Google Sheets:
 
-file name `Google Sheets Formula (FR).sublime-syntax`:
+Filename `Google Sheets Formula (FR).sublime-syntax`:
 ```yaml
 %YAML 1.2
 ---
@@ -84,7 +84,7 @@ variables:
 
 If using LibreOffice Calc:
 
-file name `LibreOffice Calc Formula (FR).sublime-syntax`:
+Filename `LibreOffice Calc Formula (FR).sublime-syntax`:
 ```yaml
 %YAML 1.2
 ---
