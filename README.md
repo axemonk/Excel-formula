@@ -18,13 +18,13 @@ and LibreOffice formulae.
 
 ## Usage
 
-1. In Sublime, open or navigate to a `.txt` file containing the Excel
+1. In Sublime, open or navigate to a `.txt` file containing the spreadsheet
 formulae you wish to be highlighted (or create a new file with <kbd>Ctrl</kbd>+<kbd>N</kbd>).
 2. Activation options:
-   - Select the "Excel formula" syntax option from the syntax selection menu at
-   the bottom right of Sublime Text.
-   - Alternatively, open the Command Palette and type "Excel formula". Select
-   the top option ("Set Syntax: Excel formula").
+   - Depending on what spreadsheet application you plan on using, select the corresponding
+   "(...) formula" syntax option from the syntax selection menu at the bottom right of Sublime Text.
+   - Alternatively, open the Command Palette and type "formula". Select the option
+   corresponding to your application of choice ("Set Syntax: (...) formula").
 3. Enjoy!
 
 New files will be saved with a two-level extension to signal Sublime Text to
