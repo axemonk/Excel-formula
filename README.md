@@ -38,6 +38,8 @@ your local preferences.
 
 Add a file containing one of the below code blocks in your `Packages/User` folder,
 then modify the regular expression patterns in the `variables:` context to match your locale's format.
+  - Since certain characters serve special roles in regex patterns, you can specify them as literal characters with `\`.
+    - E.g., `.`, `*`, and `\` must be made literal like `\.`, `\*`, and `\\` in order for them to be used in the below variables.
 
 The below examples denote a French locale with `(FR)` and `fr` where applicable.
 
