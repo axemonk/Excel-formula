@@ -2,7 +2,7 @@
 
 Spreadsheet formula syntax highlighting for Sublime Text. This syntax was originally
 intended to only provide support for Excel formulae, but now supports both Google Sheets
-and LibreOffice formulae.
+and LibreOffice Calc formulae.
 
 ## Features
 
