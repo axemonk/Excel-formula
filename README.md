@@ -41,7 +41,7 @@ If you are using Excel, add a file containing the below code block in your
 `Packages/User` folder, then modify the regular expression patterns
 in the `variables:` context to match your locale's format.
 
-The below example denotes a French locale with `(FR)` and `fr.` where applicable.
+The below example denotes a French locale with `(FR)` and `fr` where applicable.
 
 File name `Excel Formula (FR).sublime-syntax`:
 ```yaml
