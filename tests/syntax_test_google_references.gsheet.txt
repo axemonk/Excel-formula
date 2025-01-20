@@ -22,6 +22,21 @@
 
 '''[ GOOGLE SHEETS REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''
 
+'Avoid breaking or inadvertently changing Google Sheets Smart Chip references if possible/practical.
+=A2.date
+'^^ meta.reference.cell.sheet storage.type.sheet
+'  ^^^^^ - meta
+'  ^ - variable - storage
+'   ^^^^ variable.other.readwrite.sheet
+=LET(hello,H3.summary,LOWER(hello))
+'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
+'          ^^ meta.reference.cell.sheet storage.type.sheet
+'            ^^^^^^^^ - meta.reference.sheet
+'            ^ - variable - storage
+'             ^^^^^^^ variable.other.readwrite.sheet
+'         ^ punctuation.separator.sequence.sheet
+'                    ^ punctuation.separator.sequence.sheet
+
 =A1:B
 '^^^^ meta.reference.range.column.google
 '^^ storage.type.google

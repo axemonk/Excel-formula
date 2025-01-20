@@ -50,20 +50,6 @@ TEXTJOIN(";",FALSE,valmax)
 '            ^ punctuation.separator.sequence.sheet
 '           ^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
 
-'Avoid breaking or inadvertently changing Google Sheets Smart Chip references if possible/practical.
-=A2.date
-'^^ meta.reference.cell.sheet storage.type.sheet
-'  ^^^^^ - meta
-'  ^ - variable - storage
-'   ^^^^ variable.other.readwrite.sheet
-=LET(hello,H3.summary,LOWER(hello))
-'   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.sheet
-'          ^^ meta.reference.cell.sheet storage.type.sheet
-'            ^^^^^^^^ - meta.reference.sheet
-'            ^ - variable - storage
-'             ^^^^^^^ variable.other.readwrite.sheet
-'         ^ punctuation.separator.sequence.sheet
-'                    ^ punctuation.separator.sequence.sheet
 =hello.world()
 ' <- keyword.operator.assignment.sheet
 '^^^^^^^^^^^^^ meta.function-call
