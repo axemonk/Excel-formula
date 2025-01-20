@@ -3,6 +3,7 @@
 # https://developers.google.com/chart/interactive/docs/querylanguage
 name: Google Sheets Formula
 scope: source.sql.google
+hidden: true
 version: 2
 file_extensions:
   - google.sql
