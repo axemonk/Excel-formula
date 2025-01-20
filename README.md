@@ -1,19 +1,16 @@
 # [Excel formula for Sublime Text][gh]
 
-Spreadsheet formula syntax highlighting for Sublime Text. The primary focus is
-Excel, but there is good support for Google Sheets, too.
+Spreadsheet formula syntax highlighting for Sublime Text. This syntax was originally
+intended to only provide support for Excel formulae, but now supports both Google Sheets
+and LibreOffice formulae.
 
 ## Features
 
-- Syntax highlighting
+- Syntax highlighting for spreadsheet formulae
 - Built-in function completions
-
-Potential future enhancements include explicit support for LibreOffice Calc
-and Mac Numbers as separate extensions of this definition and potentially configurable
-on demand through the command palette.
-Using this syntax with formulae written for those programs should be more or less
-functional, although differences in things like naming rules and legal cell reference
-formats may break formatting in places.
+- Support for [locale-specific separators](#localization)
+- Additional support for both Google Sheets and LibreOffice Calc
+- SQL highlighting when using the `QUERY()` function in Google Sheets
 
 ## Installation
 
