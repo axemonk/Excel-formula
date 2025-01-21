@@ -33,8 +33,8 @@ use the right syntax in the future.
 
 Some locales use different characters for decimal numbers, function argument
 separators, and array separators. If your locale differs from the characters
-chosen by this package (US), you can make small extension syntax files to enable
-your local preferences.
+chosen by this package (US, decimal: `.`, argument: `,`, row: `,`, column: `;`),
+you can make small extension syntax files to enable your local preferences.
 
 Add a file containing one of the below code blocks in your `Packages/User` folder,
 then modify the regular expression patterns in the `variables:` context to match your locale's format.
