@@ -1,5 +1,7 @@
 ' SYNTAX TEST "Packages/Excel formula/LibreOffice Calc Formula.sublime-syntax"
 
+'''[ SEMI-SHARED REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''
+
 =C[2]
 
 =R[4]
@@ -26,3 +28,71 @@
 =RC[1]:R[1]C
 
 =RC[1]:RC[2]
+
+'''[ SHARED REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''
+
+='John''sSheetDon''tTouch'!A1
+
+='s''s'!N36
+'^^^^^^^ meta.reference.sheet
+'^ punctuation.definition.annotation.begin.sheet - entity
+' ^^^^ entity.name.struct.sheet
+'  ^^ constant.character.escape.sheet
+'     ^ punctuation.definition.annotation.end.sheet - entity
+'      ^ punctuation.separator.sequence.sheet
+'       ^^^ meta.reference.cell.sheet storage.type.sheet
+
+='s''''s'!N36
+'^^^^^^^^^ meta.reference.sheet
+'^ punctuation.definition.annotation.begin.sheet - entity
+' ^^^^^^ entity.name.struct.sheet
+'  ^^^^ constant.character.escape.sheet
+'       ^ punctuation.definition.annotation.end.sheet - entity
+'        ^ punctuation.separator.sequence.sheet
+'         ^^^ meta.reference.cell.sheet storage.type.sheet
+
+=한국어!L11
+' <- keyword.operator.assignment
+'^^^^^^^ meta.reference - meta meta
+'       ^ - meta.reference
+'^^^ entity.name.struct
+'   ^ punctuation.separator.sequence
+'    ^^^ storage.type
+
+=_hello_2world!N36
+' <- keyword.operator.assignment
+'^^^^^^^^^^^^^^^^^ meta.reference - meta meta
+'                 ^ - meta.reference
+'^^^^^^^^^^^^^ entity.name.struct
+'             ^ punctuation.separator.sequence - entity
+
+='This''sASheetWithAnEscapedSingleQuote'!A1
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.sheet - meta meta
+'^ punctuation.definition.annotation.begin.sheet - entity
+' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ entity.name.struct.sheet
+'     ^^ constant.character.escape.sheet
+'                                      ^ punctuation.definition.annotation.end.sheet - entity
+'                                       ^ punctuation.separator.sequence.sheet
+'                                        ^^ meta.reference.cell.sheet storage.type.sheet
+' <- keyword.operator.assignment.sheet
+
+=''''!A1
+'^^^^^ meta.reference.sheet
+'^ punctuation.definition.annotation.begin.sheet
+' ^^ entity.name.struct.sheet constant.character.escape.sheet - punctuation
+'   ^ punctuation.definition.annotation.end.sheet
+'    ^ punctuation.separator.sequence.sheet
+'     ^^ meta.reference.cell.sheet storage.type.sheet
+' <- keyword.operator.assignment.sheet
+
+='^'!A1
+'^^^^ meta.reference.sheet
+'^ punctuation.definition.annotation.begin.sheet
+' ^ entity.name.struct.sheet
+'  ^ punctuation.definition.annotation.end.sheet
+'   ^ punctuation.separator.sequence.sheet
+'    ^^ meta.reference.cell.sheet storage.type.sheet
+
+'''[ LIBRE REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''
+
+=$'John''sSheetDon''tTouch'.A1

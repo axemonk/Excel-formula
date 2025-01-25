@@ -16,6 +16,30 @@ contexts:
       2: meta.function-call.arguments.libre punctuation.section.arguments.begin.libre
     push: function-call-body
 
+  sheet-reference:
+    - match: (?=\$?{{sheet}}[!\.])
+      push: sheet-reference-body
+
+  sheet-reference-body:
+    - meta_scope: meta.reference.sheet
+    - match: '[!\.]'
+      scope: punctuation.separator.sequence.sheet
+      pop: 1
+    - match: \$
+      scope: punctuation.separator.sequence.libre
+    - match: \'
+      scope: punctuation.definition.annotation.begin.sheet
+      push:
+        - meta_content_scope: entity.name.struct.sheet
+        - match: \'\'
+          scope: constant.character.escape.sheet
+        - match: \'(?=[!\.])
+          scope: punctuation.definition.annotation.end.sheet
+          pop: 1
+    - match: '{{sheet}}'
+      scope: entity.name.struct.sheet
+    - include: immediately-pop
+
   cell-or-range-reference:
     - meta_append: true
     - match: ({{rc}})(:)({{rc}})
@@ -71,8 +95,23 @@ variables:
   # LibreOffice does not support tables
   table: (?!.)
 
-  # # TODO: Update with LibreOffice alternate-format sheet references in addition.
-  # sheet: (?#WIP)
+  # TODO: Is there a cleaner more compact (and probably more efficient) way to
+  #(dupe) do this? `'` are only legal in excel sheet names when padded on
+  #       either end with a legal character matched by [^:*/?\[\]\\],
+  #       and said `'` must come in pairs.
+  # TODO: Update with LibreOffice alternate-format sheet references in addition.
+  sheet_delimited: |-
+                    (?x:
+                      (?:'[^:*/?\[\]\\]+('')*[^:*/?\[\]\\]+')|
+                      (?:'[^:*/?\[\]\\]+')|
+                      (?:\$'[^:*/?\[\]\\]+('')*[^:*/?\[\]\\]+')
+                    )
+  sheet_normal: |-
+                    (?x:
+                      (?:[\w&&[^0-9]]\w*)|
+                      (?:\$[^\.:*/?\[\]\\]+)
+                    )
+  sheet: (?:{{sheet_delimited}}|{{sheet_normal}})
 
   # RC row/column offset format
   r_: |-
