@@ -5,7 +5,7 @@ scope: source.sheet.libre
 version: 2
 extends: Spreadsheet Formula (Basic).sublime-syntax
 file_extensions:
-  - libre.txt
+  - localc.txt
 
 contexts:
   function-builtins-extra:

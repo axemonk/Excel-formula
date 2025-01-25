@@ -94,7 +94,7 @@ scope: source.sheet.libre.fr
 version: 2
 extends: LibreOffice Calc Formula.sublime-syntax
 file_extensions:
-  - fr.libre.txt
+  - fr.localc.txt
 
 variables:
   array_column_separator: ';'
@@ -102,6 +102,7 @@ variables:
   number_radix: ','
   argument_separator: ';'
 ```
+
 ## Contributing
 
 ### Issues
