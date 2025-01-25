@@ -72,7 +72,7 @@ contexts:
   function-calls:
 
     # Update: Give logical comparator functions an extra scope.
-    # Note:   Should the scope be specific to each of these?
+    # NOTE:   Should the scope be specific to each of these?
     #         conditional.ifs, conditional.switch etc.
     #         or just conditional.switch and conditional.if for everything else?
     - match: \b((?i:IF|IFS|IFERROR|IFNA|SWITCH))(\()
@@ -82,7 +82,7 @@ contexts:
       push: function-call-body
 
     # Update: Give logical comparator functions an extra scope.
-    # Note:   What about ISERROR ISNUMBER ISTEXT? (there are like a dozen IS... functions)
+    # NOTE:   What about ISERROR ISNUMBER ISTEXT? (there are like a dozen IS... functions)
     #         My gut tells me to leave them as functions. They are very different in behavior.
     #         AND/OR/NOT/XOR convert one or more TRUE/FALSE values to a single TRUE/FALSE value
     #         IS... functions convert one or more values into one or more TRUE/FALSE values

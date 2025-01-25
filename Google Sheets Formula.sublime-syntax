@@ -139,7 +139,7 @@ variables:
       {{name}}
     | {{js_id_start}}{{js_id_continue}}*
     )
-  # # Note: Google supports an early analog to Excel tables as of 2024, but testing would be tedious and error prone as they don't have
+  # # NOTE: Google supports an early analog to Excel tables as of 2024, but testing would be tedious and error prone as they don't have
   # #       any references for calling them in their Apps Script documentation. Interactions with table metadata like table names and
   # #       creation of tables is not captured by the macro recording procedure.
   # #

@@ -56,7 +56,7 @@ variables:
       WEBSERVICE | WEEKNUM_EXCEL2003 | WEEKS | WEEKSINYEAR |
       YEARS
     )\b
-  # Note: Negative lookahead prevents this pattern from chaining matches like in '@name' (i.e., only a single '@' is a valid name).
+  # NOTE: Negative lookahead prevents this pattern from chaining matches like in '@name' (i.e., only a single '@' is a valid name).
   # TODO: Is there a better way to do this?
   name: |-
     (?x:
