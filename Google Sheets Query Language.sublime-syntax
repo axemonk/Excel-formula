@@ -207,7 +207,7 @@ contexts:
       scope: keyword.operator.arithmetic.google
 
   operators-comparison:
-    - match: (?:!=|<=|<>|<|>|>=|=)
+    - match: (?:!=|<=|<>|<|>=|>|=)
       scope: keyword.operator.comparison.google
 
 ###[ FUNCTIONS ]###############################################################
