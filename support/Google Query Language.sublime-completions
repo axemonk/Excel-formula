@@ -1,0 +1,58 @@
+{
+    "scope": "source.sql.google - string - comment",
+    "completions": [
+        // Clauses
+        { "trigger": "select", "contents": "select", "kind": "keyword" },
+        { "trigger": "where", "contents": "where", "kind": "keyword" },
+        { "trigger": "groupby", "contents": "group by", "kind": "keyword" },
+        { "trigger": "pivot", "contents": "pivot", "kind": "keyword" },
+        { "trigger": "orderby", "contents": "order by", "kind": "keyword" },
+        { "trigger": "limit", "contents": "limit", "kind": "keyword" },
+        { "trigger": "offset", "contents": "offset", "kind": "keyword" },
+        { "trigger": "label", "contents": "label", "kind": "keyword" },
+        { "trigger": "format", "contents": "format", "kind": "keyword" },
+        { "trigger": "options", "contents": "options", "kind": "keyword" },
+        // Scalar functions
+        { "trigger": "year", "contents": "year($1)", "kind": "function" },
+        { "trigger": "month", "contents": "month($1)", "kind": "function" },
+        { "trigger": "day", "contents": "day($1)", "kind": "function" },
+        { "trigger": "hour", "contents": "hour($1)", "kind": "function" },
+        { "trigger": "second", "contents": "second($1)", "kind": "function" },
+        { "trigger": "millisecond", "contents": "millisecond($1)", "kind": "function" },
+        { "trigger": "quarter", "contents": "quarter($1)", "kind": "function" },
+        { "trigger": "dayOfWeek", "contents": "dayOfWeek($1)", "kind": "function" },
+        { "trigger": "now", "contents": "now()", "kind": "function" },
+        { "trigger": "dateDiff", "contents": "dateDiff($1)", "kind": "function" },
+        { "trigger": "toDate", "contents": "toDate()", "kind": "function" },
+        { "trigger": "upper", "contents": "upper($1)", "kind": "function" },
+        { "trigger": "lower", "contents": "lower($1)", "kind": "function" },
+        // Aggregation functions
+        { "trigger": "avg", "contents": "avg($1)", "kind": "function" },
+        { "trigger": "count", "contents": "count($1)", "kind": "function" },
+        { "trigger": "max", "contents": "max($1)", "kind": "function" },
+        { "trigger": "min", "contents": "min($1)", "kind": "function" },
+        { "trigger": "sum", "contents": "sum($1)", "kind": "function" },
+        // Types
+        { "trigger": "date", "contents": "date '$1'", "kind": "type" },
+        { "trigger": "timeofday", "contents": "timeofday '$1'", "kind": "type" },
+        { "trigger": "timestamp", "contents": "timestamp '$1'", "kind": "type" },
+        { "trigger": "datetime", "contents": "datetime '$1'", "kind": "type" },
+        // Constants
+        { "trigger": "true", "contents": "true", "kind": ["variable", "c", "Constant"] },
+        { "trigger": "false", "contents": "false", "kind": ["variable", "c", "Constant"] },
+        { "trigger": "null", "contents": "null", "kind": ["variable", "c", "Constant"] },
+        // Other keywords
+        { "trigger": "and", "contents": "and", "kind": "keyword" },
+        { "trigger": "or", "contents": "or", "kind": "keyword" },
+        { "trigger": "not", "contents": "not", "kind": "keyword" },
+        { "trigger": "asc", "contents": "asc", "kind": "keyword" },
+        { "trigger": "desc", "contents": "desc", "kind": "keyword" },
+        { "trigger": "no_value", "contents": "no_value", "kind": ["keyword", "o", "Option"] },
+        { "trigger": "no_format", "contents": "no_format", "kind": ["keyword", "o", "Option"] },
+        { "trigger": "contains", "contents": "contains", "kind": "keyword" },
+        { "trigger": "startswith", "contents": "starts with", "kind": "keyword" },
+        { "trigger": "endswith", "contents": "ends with", "kind": "keyword" },
+        { "trigger": "matches", "contents": "matches", "kind": "keyword" },
+        { "trigger": "like", "contents": "like", "kind": "keyword" },
+    ]
+}

@@ -88,22 +88,14 @@ contexts:
   expect-like-string:
     - match: '"'
       scope: punctuation.definition.string.begin.google
-      push:
-      - meta_include_prototype: false
-      - meta_scope: meta.string.google string.quoted.double.google
-      - match: '"'
-        scope: punctuation.definition.string.end.google
-        pop: 1
-      - include: like-wildcards
+      push: string-body-double
+      with_prototype:
+        - include: like-wildcards
     - match: \'
       scope: punctuation.definition.string.begin.google
-      push:
-      - meta_include_prototype: false
-      - meta_scope: meta.string.google string.quoted.single.google
-      - match: \'
-        scope: punctuation.definition.string.end.google
-        pop: 1
-      - include: like-wildcards
+      push: string-body-single
+      with_prototype:
+        - include: like-wildcards
     - include: else-pop
 
   like-wildcards:
@@ -207,7 +199,7 @@ contexts:
       scope: keyword.operator.arithmetic.google
 
   operators-comparison:
-    - match: (?:!=|<=|<>|<|>|>=|=)
+    - match: (?:!=|<=|<>|<|>=|>|=)
       scope: keyword.operator.comparison.google
 
 ###[ FUNCTIONS ]###############################################################
@@ -300,20 +292,24 @@ contexts:
   strings:
     - match: '"'
       scope: punctuation.definition.string.begin.google
-      push:
-      - meta_include_prototype: false
-      - meta_scope: meta.string.google string.quoted.double.google
-      - match: '"'
-        scope: punctuation.definition.string.end.google
-        pop: 1
+      push: string-body-double
     - match: \'
       scope: punctuation.definition.string.begin.google
-      push:
-      - meta_include_prototype: false
-      - meta_scope: meta.string.google string.quoted.single.google
-      - match: \'
-        scope: punctuation.definition.string.end.google
-        pop: 1
+      push: string-body-single
+
+  string-body-double:
+    - meta_include_prototype: false
+    - meta_scope: meta.string.google string.quoted.double.google
+    - match: '"'
+      scope: punctuation.definition.string.end.google
+      pop: 1
+
+  string-body-single:
+    - meta_include_prototype: false
+    - meta_scope: meta.string.google string.quoted.single.google
+    - match: \'
+      scope: punctuation.definition.string.end.google
+      pop: 1
 
   numbers:
     - match: -?\d+(\.)\d*|-?(\.)\d+
@@ -389,6 +385,7 @@ contexts:
   identifiers:
     - match: \b{{reserved_words}}\b
       scope: invalid.illegal.google
+    # https://stackoverflow.com/questions/18343969/241211#comment97718570_18346191
     - match: Col[1-9][0-9]*
       scope: meta.column-name.google variable.language.google
     - match: '`'
@@ -423,31 +420,6 @@ variables:
   time_of_day: (?:\d\d:\d\d:\d\d(?:\.\d\d\d)?)
   datetime: (?:{{date}} {{time_of_day}})
 
-  reserved_words: |-
-    (?xi:
-      and
-    | asc
-    | by
-    | date
-    | datetime
-    | desc
-    | false
-    | format
-    | group
-    | label
-    | limit
-    | not
-    | offset
-    | options
-    | or
-    | order
-    | pivot
-    | select
-    | timeofday
-    | timestamp
-    | true
-    | where
-    )
   clause_words: |-
     (?xi:
       select
@@ -460,6 +432,23 @@ variables:
     | label
     | format
     | options
+    )
+  reserved_words: |-
+    (?xi:
+      {{clause_words}}
+    | and
+    | asc
+    | by
+    | date
+    | datetime
+    | desc
+    | false
+    | format
+    | not
+    | or
+    | timeofday
+    | timestamp
+    | true
     )
   scalar_functions: |-
     (?xi:
