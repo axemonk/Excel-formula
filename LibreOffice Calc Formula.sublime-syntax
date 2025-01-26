@@ -17,45 +17,59 @@ contexts:
     push: function-call-body
 
   sheet-reference:
-    - match: (?=\$?{{sheet}}[!\.])
+    - match: \$(?={{sheet}}\.)
+      scope: punctuation.definition.annotation.begin.libre
+      push: sheet-reference-body-dollar
+    - match: (?={{sheet}}!)
       push: sheet-reference-body
 
-  sheet-reference-body:
-    - meta_scope: meta.reference.sheet
-    - match: '[!\.]'
-      scope: punctuation.separator.sequence.sheet
-      pop: 1
-    - match: \$
+  sheet-reference-body-dollar:
+    - meta_scope: meta.reference.sheet.libre
+    - match: \.
       scope: punctuation.separator.sequence.libre
-    - match: \'
-      scope: punctuation.definition.annotation.begin.sheet
-      push:
-        - meta_content_scope: entity.name.struct.sheet
-        - match: \'\'
-          scope: constant.character.escape.sheet
-        - match: \'(?=[!\.])
-          scope: punctuation.definition.annotation.end.sheet
-          pop: 1
+      pop: 1
+    - include: sheet-reference-quoted
     - match: '{{sheet}}'
-      scope: entity.name.struct.sheet
+      scope: entity.name.struct.sheet.libre
     - include: immediately-pop
+
+  sheet-reference-body:
+    - meta_scope: meta.reference.sheet.libre
+    - match: '!'
+      scope: punctuation.separator.sequence.libre
+      pop: 1
+    - include: sheet-reference-quoted
+    - match: '{{sheet}}'
+      scope: entity.name.struct.sheet.libre
+    - include: immediately-pop
+
+  sheet-reference-quoted:
+    - match: \'
+      scope: punctuation.definition.annotation.begin.libre
+      push:
+        - meta_content_scope: entity.name.struct.sheet.libre
+        - match: \'\'
+          scope: constant.character.escape.libre
+        - match: \'(?=[!\.])
+          scope: punctuation.definition.annotation.end.libre
+          pop: 1
 
   cell-or-range-reference:
     - meta_append: true
     - match: ({{rc}})(:)({{rc}})
-      scope: meta.reference.range.cell.sheet
+      scope: meta.reference.range.cell.libre
       captures:
-        1: storage.type.sheet
-        2: punctuation.separator.sequence.sheet
-        3: storage.type.sheet
+        1: storage.type.libre
+        2: punctuation.separator.sequence.libre
+        3: storage.type.libre
       push: after-reference
 
     - match: ({{rc}})
-      scope: meta.reference.range.cell.sheet
+      scope: meta.reference.range.cell.libre
       captures:
-        1: storage.type.sheet
-        2: punctuation.separator.sequence.sheet
-        3: storage.type.sheet
+        1: storage.type.libre
+        2: punctuation.separator.sequence.libre
+        3: storage.type.libre
       push: after-reference
 
 variables:

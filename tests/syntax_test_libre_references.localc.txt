@@ -34,32 +34,35 @@
 ='John''sSheetDon''tTouch'!A1
 
 ='s''s'!N36
-'^^^^^^^ meta.reference.sheet
-'^ punctuation.definition.annotation.begin.sheet - entity
-' ^^^^ entity.name.struct.sheet
-'  ^^ constant.character.escape.sheet
-'     ^ punctuation.definition.annotation.end.sheet - entity
-'      ^ punctuation.separator.sequence.sheet
+'^^^^^^^^^^ meta.reference - meta.reference meta.reference
+'^^^^^^^ meta.reference.sheet.libre
+'^ punctuation.definition.annotation.begin.libre - entity
+' ^^^^ entity.name.struct.sheet.libre
+'  ^^ constant.character.escape.libre
+'     ^ punctuation.definition.annotation.end.libre - entity
+'      ^ punctuation.separator.sequence.libre
 '       ^^^ meta.reference.cell.sheet storage.type.sheet
 
 ='s''''s'!N36
-'^^^^^^^^^ meta.reference.sheet
-'^ punctuation.definition.annotation.begin.sheet - entity
+'^^^^^^^^^^^^ meta.reference - meta.reference meta.reference
+'^^^^^^^^^ meta.reference.sheet.libre
+'^ punctuation.definition.annotation.begin.libre - entity
 ' ^^^^^^ entity.name.struct.sheet
-'  ^^^^ constant.character.escape.sheet
-'       ^ punctuation.definition.annotation.end.sheet - entity
-'        ^ punctuation.separator.sequence.sheet
+'  ^^^^ constant.character.escape.libre
+'       ^ punctuation.definition.annotation.end.libre - entity
+'        ^ punctuation.separator.sequence.libre
 '         ^^^ meta.reference.cell.sheet storage.type.sheet
 
 =한국어!L11
 ' <- keyword.operator.assignment
-'^^^^^^^ meta.reference - meta meta
-'       ^ - meta.reference
-'^^^ entity.name.struct
-'   ^ punctuation.separator.sequence
-'    ^^^ storage.type
+'^^^^^^^ meta.reference - meta.reference meta.reference
+'^^^^ meta.reference.sheet.libre
+'^^^ entity.name.struct.sheet.libre
+'   ^ punctuation.separator.sequence.libre
+'    ^^^ meta.reference.cell.sheet storage.type.sheet
 
 =_hello_2world!N36
+'^^^^^^^^^^^^^^^^^ meta.reference - meta.reference meta.reference
 ' <- keyword.operator.assignment
 '^^^^^^^^^^^^^^^^^ meta.reference - meta meta
 '                 ^ - meta.reference
@@ -67,32 +70,52 @@
 '             ^ punctuation.separator.sequence - entity
 
 ='This''sASheetWithAnEscapedSingleQuote'!A1
-'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.sheet - meta meta
-'^ punctuation.definition.annotation.begin.sheet - entity
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference - meta.reference meta.reference
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.sheet.libre - meta meta
+'^ punctuation.definition.annotation.begin.libre - entity
 ' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ entity.name.struct.sheet
-'     ^^ constant.character.escape.sheet
-'                                      ^ punctuation.definition.annotation.end.sheet - entity
-'                                       ^ punctuation.separator.sequence.sheet
+'     ^^ constant.character.escape.libre
+'                                      ^ punctuation.definition.annotation.end.libre - entity
+'                                       ^ punctuation.separator.sequence.libre
 '                                        ^^ meta.reference.cell.sheet storage.type.sheet
 ' <- keyword.operator.assignment.sheet
 
 =''''!A1
-'^^^^^ meta.reference.sheet
-'^ punctuation.definition.annotation.begin.sheet
-' ^^ entity.name.struct.sheet constant.character.escape.sheet - punctuation
-'   ^ punctuation.definition.annotation.end.sheet
-'    ^ punctuation.separator.sequence.sheet
+'^^^^^^^ meta.reference - meta.reference meta.reference
+'^^^^^ meta.reference.sheet.libre
+'^ punctuation.definition.annotation.begin.libre
+' ^^ entity.name.struct.sheet.libre constant.character.escape.libre - punctuation
+'   ^ punctuation.definition.annotation.end.libre
+'    ^ punctuation.separator.sequence.libre
 '     ^^ meta.reference.cell.sheet storage.type.sheet
 ' <- keyword.operator.assignment.sheet
 
 ='^'!A1
+'^^^^^^ meta.reference - meta.reference meta.reference
 '^^^^ meta.reference.sheet
-'^ punctuation.definition.annotation.begin.sheet
-' ^ entity.name.struct.sheet
-'  ^ punctuation.definition.annotation.end.sheet
-'   ^ punctuation.separator.sequence.sheet
+'^ punctuation.definition.annotation.begin.libre
+' ^ entity.name.struct.sheet.libre
+'  ^ punctuation.definition.annotation.end.libre
+'   ^ punctuation.separator.sequence.libre
 '    ^^ meta.reference.cell.sheet storage.type.sheet
 
 '''[ LIBRE REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''
 
+=$_hello_2world.A1
+'^^^^^^^^^^^^^^^^^ meta.reference - meta.reference meta.reference
+'^^^^^^^^^^^^^^^ meta.reference.sheet.libre
+'^ punctuation.definition.annotation.begin.libre
+' ^^^^^^^^^^^^^ entity.name.struct.sheet.libre
+'              ^ punctuation.separator.sequence.libre
+'               ^^ meta.reference.cell.sheet storage.type.sheet
+
 =$'John''sSheetDon''tTouch'.A1
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference - meta.reference meta.reference
+'^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.reference.sheet.libre
+'^^ punctuation.definition.annotation.begin.libre
+'  ^^^^^^^^^^^^^^^^^^^^^^^ entity.name.struct.sheet.libre
+'      ^^ constant.character.escape.libre
+'                 ^^ constant.character.escape.libre
+'                         ^ punctuation.definition.annotation.end.libre
+'                          ^ punctuation.separator.sequence.libre
+'                           ^^ meta.reference.cell.sheet storage.type.sheet
