@@ -338,3 +338,7 @@ format salary '#,##0.00', isSenior 'not yet:of course!'
 --                                 ^^^^^^^^^^^^^^^^^^^^ meta.string.google string.quoted.single.google
 --                                 ^ punctuation.definition.string.begin.google
 --                                                    ^ punctuation.definition.string.end.google
+
+-- https://stackoverflow.com/a/55506375/241211
+select * where Col1 matches '.*(yes|no).*'
+--             ^^^^ variable.language.google

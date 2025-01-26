@@ -389,6 +389,7 @@ contexts:
   identifiers:
     - match: \b{{reserved_words}}\b
       scope: invalid.illegal.google
+    # https://stackoverflow.com/questions/18343969/241211#comment97718570_18346191
     - match: Col[1-9][0-9]*
       scope: meta.column-name.google variable.language.google
     - match: '`'
