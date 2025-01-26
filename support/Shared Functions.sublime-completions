@@ -152,8 +152,8 @@
         { "trigger": "F.TEST", "contents": "F.TEST($1)", "kind": "function" },
         { "trigger": "FACT", "contents": "FACT($1)", "kind": "function" },
         { "trigger": "FACTDOUBLE", "contents": "FACTDOUBLE($1)", "kind": "function" },
-        //No args
-        { "trigger": "FALSE", "contents": "FALSE()", "kind": "function" },
+        //Moot with addition of `Share Constants` completion
+        //{ "trigger": "FALSE", "contents": "FALSE()", "kind": "function" },
         { "trigger": "FDIST", "contents": "FDIST($1)", "kind": "function" },
         { "trigger": "FILTER", "contents": "FILTER($1)", "kind": "function" },
         { "trigger": "FIND", "contents": "FIND($1)", "kind": "function" },
@@ -434,8 +434,8 @@
         { "trigger": "TREND", "contents": "TREND($1)", "kind": "function" },
         { "trigger": "TRIM", "contents": "TRIM($1)", "kind": "function" },
         { "trigger": "TRIMMEAN", "contents": "TRIMMEAN($1)", "kind": "function" },
-        //No args
-        { "trigger": "TRUE", "contents": "TRUE()", "kind": "function" },
+        //Moot with addition of `Share Constants` completion
+        //{ "trigger": "TRUE", "contents": "TRUE()", "kind": "function" },
         { "trigger": "TRUNC", "contents": "TRUNC($1)", "kind": "function" },
         { "trigger": "TTEST", "contents": "TTEST($1)", "kind": "function" },
         { "trigger": "TYPE", "contents": "TYPE($1)", "kind": "function" },
