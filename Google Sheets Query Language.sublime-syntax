@@ -88,22 +88,14 @@ contexts:
   expect-like-string:
     - match: '"'
       scope: punctuation.definition.string.begin.google
-      push:
-      - meta_include_prototype: false
-      - meta_scope: meta.string.google string.quoted.double.google
-      - match: '"'
-        scope: punctuation.definition.string.end.google
-        pop: 1
-      - include: like-wildcards
+      push: string-body-double
+      with_prototype:
+        - include: like-wildcards
     - match: \'
       scope: punctuation.definition.string.begin.google
-      push:
-      - meta_include_prototype: false
-      - meta_scope: meta.string.google string.quoted.single.google
-      - match: \'
-        scope: punctuation.definition.string.end.google
-        pop: 1
-      - include: like-wildcards
+      push: string-body-single
+      with_prototype:
+        - include: like-wildcards
     - include: else-pop
 
   like-wildcards:
@@ -300,20 +292,24 @@ contexts:
   strings:
     - match: '"'
       scope: punctuation.definition.string.begin.google
-      push:
-      - meta_include_prototype: false
-      - meta_scope: meta.string.google string.quoted.double.google
-      - match: '"'
-        scope: punctuation.definition.string.end.google
-        pop: 1
+      push: string-body-double
     - match: \'
       scope: punctuation.definition.string.begin.google
-      push:
-      - meta_include_prototype: false
-      - meta_scope: meta.string.google string.quoted.single.google
-      - match: \'
-        scope: punctuation.definition.string.end.google
-        pop: 1
+      push: string-body-single
+
+  string-body-double:
+    - meta_include_prototype: false
+    - meta_scope: meta.string.google string.quoted.double.google
+    - match: '"'
+      scope: punctuation.definition.string.end.google
+      pop: 1
+
+  string-body-single:
+    - meta_include_prototype: false
+    - meta_scope: meta.string.google string.quoted.single.google
+    - match: \'
+      scope: punctuation.definition.string.end.google
+      pop: 1
 
   numbers:
     - match: -?\d+(\.)\d*|-?(\.)\d+
