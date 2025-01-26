@@ -1,0 +1,7 @@
+{
+    "scope": "source.sheet - string - comment",
+    "completions": [
+        { "trigger": "TRUE", "contents": "TRUE", "kind": ["variable", "c", "Constant" ], },
+        { "trigger": "FALSE", "contents": "FALSE", "kind": ["variable", "c", "Constant" ], },
+    ]
+}
