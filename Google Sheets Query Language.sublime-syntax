@@ -423,31 +423,6 @@ variables:
   time_of_day: (?:\d\d:\d\d:\d\d(?:\.\d\d\d)?)
   datetime: (?:{{date}} {{time_of_day}})
 
-  reserved_words: |-
-    (?xi:
-      and
-    | asc
-    | by
-    | date
-    | datetime
-    | desc
-    | false
-    | format
-    | group
-    | label
-    | limit
-    | not
-    | offset
-    | options
-    | or
-    | order
-    | pivot
-    | select
-    | timeofday
-    | timestamp
-    | true
-    | where
-    )
   clause_words: |-
     (?xi:
       select
@@ -460,6 +435,23 @@ variables:
     | label
     | format
     | options
+    )
+  reserved_words: |-
+    (?xi:
+      {{clause_words}}
+    | and
+    | asc
+    | by
+    | date
+    | datetime
+    | desc
+    | false
+    | format
+    | not
+    | or
+    | timeofday
+    | timestamp
+    | true
     )
   scalar_functions: |-
     (?xi:
