@@ -35,7 +35,7 @@ jobs:
       matrix:
         include:
           - build: 'latest'
-          - build: 4075  # Earliest supported version noted in Package Control
+          - build: 4077  # Supported in Package Control and contains test binary
     steps:
       - uses: actions/checkout@v4
       - uses: SublimeText/syntax-test-action@v2
