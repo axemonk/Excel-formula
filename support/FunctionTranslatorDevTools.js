@@ -1,6 +1,8 @@
 // To be used with the MS Edge debugger you can open in the Function Translator add-in for Excel.
 // Starting point is to first click "References" at the top left, then click settings at the bottom right.
 
+// Sleep func to allow pages to load since I'd need to learn about async/sync
+// and event listening in JS from the ground up otherwise
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
