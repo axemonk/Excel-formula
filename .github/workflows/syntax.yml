@@ -35,7 +35,8 @@ jobs:
       matrix:
         include:
           - build: 'latest'
-          # - build: 3211  # libgl1-mesa-glx is not available on ubuntu-latest SublimeText/syntax-action#17
+          - build: 'stable'
+          - build: 4077  # Supported in Package Control and contains test binary
     steps:
       - uses: actions/checkout@v4
       - uses: SublimeText/syntax-test-action@v2

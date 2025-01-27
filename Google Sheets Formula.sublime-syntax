@@ -3,7 +3,7 @@
 name: Google Sheets Formula
 scope: source.sheet.google
 version: 2
-extends: Spreadsheet Formula (Basic).sublime-syntax
+extends: Packages/Excel formula/Spreadsheet Formula (Basic).sublime-syntax
 file_extensions:
   - gsheet.txt
 
