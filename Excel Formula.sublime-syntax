@@ -3,7 +3,7 @@
 name: Excel Formula
 scope: source.sheet.excel
 version: 2
-extends: Spreadsheet Formula (Basic).sublime-syntax
+extends: Packages/Excel formula/Spreadsheet Formula (Basic).sublime-syntax
 file_extensions:
   - xls.txt
 
