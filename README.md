@@ -1,4 +1,4 @@
-# [Excel formula for Sublime Text][gh]
+# [Spreadsheet Formula for Sublime Text][gh]
 
 Spreadsheet formula syntax highlighting for Sublime Text. This syntax was originally
 intended to only provide support for Excel formulae, but now also supports both Google Sheets
