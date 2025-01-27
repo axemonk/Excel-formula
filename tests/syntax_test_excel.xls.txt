@@ -681,7 +681,7 @@ TEXTJOIN(";",FALSE,valmax)
 '     ^^ meta.reference.cell.sheet storage.type.sheet
 ' <- keyword.operator.assignment.sheet
 
-='^'!A1
+='&'!A1
 '^^^^ meta.reference.sheet
 '^ punctuation.definition.annotation.begin.sheet
 ' ^ entity.name.struct.sheet

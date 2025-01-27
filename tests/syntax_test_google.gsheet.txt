@@ -702,7 +702,7 @@ TEXTJOIN(";",FALSE,valmax)
 '    ^ punctuation.separator.sequence.sheet
 '     ^^ meta.reference.cell.sheet storage.type.sheet
 
-='^'!A1
+='&'!A1
 '^^^^ meta.reference.sheet
 '^ punctuation.definition.annotation.begin.sheet
 ' ^ entity.name.struct.sheet
