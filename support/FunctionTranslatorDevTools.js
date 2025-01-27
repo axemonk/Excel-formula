@@ -31,7 +31,7 @@ for (let i = 1; i <= 2 /*numberOfOptions*/; i++) {
     // Get the reference table
     let thisRefTable = document.getElementById("referenceTable");
 
-    // Query all elements inside the <tbody> and filter those with a 'title' attribute, then do some 
+    // Query all elements inside the <tbody> and filter those with a `title` or `lang` attribute, then do some
     // cursed highjacking of the map function cause idc to enumerate a proper for-each.
     titlesArr = Array.from(thisRefTable.querySelectorAll("[title], [lang]")).map(
         (el) => {
