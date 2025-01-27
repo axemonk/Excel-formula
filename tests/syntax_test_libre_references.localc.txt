@@ -1,4 +1,4 @@
-' SYNTAX TEST "Packages/Excel formula/LibreOffice Calc Formula.sublime-syntax"
+' SYNTAX TEST "Packages/Spreadsheet Formula/LibreOffice Calc Formula.sublime-syntax"
 
 '''[ SEMI-SHARED REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''
 
