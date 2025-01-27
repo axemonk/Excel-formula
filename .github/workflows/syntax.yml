@@ -35,6 +35,7 @@ jobs:
       matrix:
         include:
           - build: 'latest'
+          - build: 'stable'
           - build: 4077  # Supported in Package Control and contains test binary
     steps:
       - uses: actions/checkout@v4
