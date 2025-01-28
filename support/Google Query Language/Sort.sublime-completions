@@ -1,0 +1,8 @@
+// https://developers.google.com/chart/interactive/docs/querylanguage
+{
+    "scope": "source.sql.google meta.block.clause.order-by - string - comment",
+    "completions": [
+        { "trigger": "asc", "contents": "asc", "kind": "keyword", "annotation": "sort", "details": "Ascending order", },
+        { "trigger": "desc", "contents": "desc", "kind": "keyword", "annotation": "sort", "details": "Descending order", },
+    ]
+}

@@ -1,0 +1,12 @@
+// https://developers.google.com/chart/interactive/docs/querylanguage#aggregation-functions
+{
+    "scope": "source.sql.google & (meta.block.clause.select, meta.block.clause.order-by, meta.block.clause.label, meta.block.clause.format) - string - comment",
+    "completions": [
+        // Aggregation functions
+        { "trigger": "avg", "contents": "avg($1)", "kind": "function", "annotation": "aggregation", },
+        { "trigger": "count", "contents": "count($1)", "kind": "function", "annotation": "aggregation", },
+        { "trigger": "max", "contents": "max($1)", "kind": "function", "annotation": "aggregation", },
+        { "trigger": "min", "contents": "min($1)", "kind": "function", "annotation": "aggregation", },
+        { "trigger": "sum", "contents": "sum($1)", "kind": "function", "annotation": "aggregation", },
+    ]
+}

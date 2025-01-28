@@ -214,6 +214,8 @@ contexts:
       scope: keyword.operator.arithmetic.google
 
   operators-comparison:
+    - match: ==
+      scope: invalid.illegal.google
     - match: (?:!=|<=|<>|<|>=|>|=)
       scope: keyword.operator.comparison.google
 
