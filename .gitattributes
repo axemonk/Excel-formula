@@ -5,6 +5,5 @@
 
 /.git* export-ignore
 /tests/ export-ignore
-/names/ export-ignore
+/resources/ export-ignore
 /README.md export-ignore
-*(XX).sublime-syntax export-ignore

@@ -1,6 +1,8 @@
 // To be used with the MS Edge debugger you can open in the Function Translator add-in for Excel.
 // Starting point is to first click "References" at the top left, then click settings at the bottom right.
 
+// Sleep func to allow pages to load since I'd need to learn about async/sync
+// and event listening in JS from the ground up otherwise
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -31,7 +33,7 @@ for (let i = 1; i <= 2 /*numberOfOptions*/; i++) {
     // Get the reference table
     let thisRefTable = document.getElementById("referenceTable");
 
-    // Query all elements inside the <tbody> and filter those with a 'title' attribute, then do some 
+    // Query all elements inside the <tbody> and filter those with a `title` or `lang` attribute, then do some
     // cursed highjacking of the map function cause idc to enumerate a proper for-each.
     titlesArr = Array.from(thisRefTable.querySelectorAll("[title], [lang]")).map(
         (el) => {

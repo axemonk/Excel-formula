@@ -90,7 +90,7 @@
 '     ^^ meta.reference.cell.sheet storage.type.sheet
 ' <- keyword.operator.assignment.sheet
 
-='^'!A1
+='&'!A1
 '^^^^^^ meta.reference - meta.reference meta.reference
 '^^^^ meta.reference.sheet
 '^ punctuation.definition.annotation.begin.libre
