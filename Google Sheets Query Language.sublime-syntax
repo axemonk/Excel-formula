@@ -44,6 +44,7 @@ contexts:
       push: select-body
 
   select-body:
+    - meta_scope: meta.block.clause.select.google
     - include: pop-next-clause
     - match: \*(?=\s*(?:$|,|{{clause_words}}))
       scope: constant.other.wildcard.asterisk.google
@@ -56,6 +57,7 @@ contexts:
       push: where-body
 
   where-body:
+    - meta_scope: meta.block.clause.where.google
     - include: pop-next-clause
     - include: where-expressions
     - match: \(
@@ -127,6 +129,7 @@ contexts:
       push: group-by-body
 
   group-by-body:
+    - meta_scope: meta.block.clause.group-by.google
     - include: pop-next-clause
     - include: comma-separators
     - include: identifiers
@@ -134,7 +137,13 @@ contexts:
   pivot:
     - match: \b(?i)pivot\b
       scope: keyword.other.dml.google
-      push: group-by-body
+      push: pivot-body
+
+  pivot-body:
+    - meta_scope: meta.block.clause.pivot.google
+    - include: pop-next-clause
+    - include: comma-separators
+    - include: identifiers
 
   order-by:
     - match: \b(?i)order\s+by\b
@@ -142,6 +151,7 @@ contexts:
       push: order-by-body
 
   order-by-body:
+    - meta_scope: meta.block.clause.order-by.google
     - include: pop-next-clause
     - include: comma-separators
     - include: operators-arithmetic
@@ -154,6 +164,7 @@ contexts:
     - match: \b(?i)limit\b
       scope: keyword.other.dml.google
       push:
+        - meta_scope: meta.block.clause.limit.google
         - include: pop-next-clause
         - include: numbers
         - include: operators-arithmetic
@@ -162,6 +173,7 @@ contexts:
     - match: \b(?i)offset\b
       scope: keyword.other.dml.google
       push:
+        - meta_scope: meta.block.clause.offset.google
         - include: pop-next-clause
         - include: numbers
         - include: operators-arithmetic
@@ -170,6 +182,7 @@ contexts:
     - match: \b(?i)label\b
       scope: keyword.other.dml.google
       push:
+        - meta_scope: meta.block.clause.label.google
         - include: pop-next-clause
         - include: comma-separators
         - include: strings
@@ -179,6 +192,7 @@ contexts:
     - match: \b(?i)format\b
       scope: keyword.other.dml.google
       push:
+        - meta_scope: meta.block.clause.format.google
         - include: pop-next-clause
         - include: comma-separators
         - include: strings
@@ -188,6 +202,7 @@ contexts:
     - match: \b(?i)options\b
       scope: keyword.other.dml.google
       push:
+        - meta_scope: meta.block.clause.options.google
         - include: pop-next-clause
         - match: \bno_(?:format|values)\b
           scope: storage.modifier.google

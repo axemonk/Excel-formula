@@ -138,6 +138,8 @@ select name where salary > 700
 --                         ^^^ meta.number.integer.decimal.google constant.numeric.value.google
 
 select dept, max(salary) group by dept
+--^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.select.google - meta.block.clause meta.block.clause
+--                       ^^^^^^^^^^^^^ meta.block.clause.group-by.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^^ meta.column-name.google
 --         ^ punctuation.separator.sequence.google
@@ -150,6 +152,8 @@ select dept, max(salary) group by dept
 --                                ^^^^ meta.column-name.google
 
 select lunchTime, avg(salary), count(age) group by isSenior,lunchTime
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.select.google - meta.block.clause meta.block.clause
+--                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.group-by.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^^^^^^^ meta.column-name.google
 --              ^ punctuation.separator.sequence.google
@@ -170,6 +174,8 @@ select lunchTime, avg(salary), count(age) group by isSenior,lunchTime
 --                                                          ^^^^^^^^^ meta.column-name.google
 
 select sum(salary) pivot dept
+--^^^^^^^^^^^^^^^^^ meta.block.clause.select.google - meta.block.clause meta.block.clause
+--                 ^^^^^^^^^^ meta.block.clause.pivot.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^ meta.function-call.google support.function.aggregate.google
 --        ^^^^^^^^ meta.function-call.arguments.google
@@ -180,6 +186,7 @@ select sum(salary) pivot dept
 --                       ^^^^ meta.column-name.google
 
 select dept, sum(salary)
+--^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.select.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^^ meta.column-name.google
 --         ^ punctuation.separator.sequence.google
@@ -189,14 +196,17 @@ select dept, sum(salary)
 --               ^^^^^^ meta.column-name.google
 --                     ^ punctuation.section.arguments.end.google
   group by dept
+--^^^^^^^^^^^^^ meta.block.clause.group-by.google - meta.block.clause meta.block.clause
 --^^^^^^^^ keyword.other.dml.google
 --         ^^^^ meta.column-name.google
   pivot lunchTime
+--^^^^^^^^^^^^^^^ meta.block.clause.pivot.google - meta.block.clause meta.block.clause
 --^^^^^ keyword.other.dml.google
 --      ^^^^^^^^^ meta.column-name.google
 
 
 select sum(salary), max(lunchTime)
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.select.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^ meta.function-call.google support.function.aggregate.google
 --        ^^^^^^^^ meta.function-call.arguments.google
@@ -210,10 +220,12 @@ select sum(salary), max(lunchTime)
 --                      ^^^^^^^^^ meta.column-name.google
 --                               ^ punctuation.section.arguments.end.google
   pivot dept
+--^^^^^^^^^^ meta.block.clause.pivot.google - meta.block.clause meta.block.clause
 --^^^^^ keyword.other.dml.google
 --      ^^^^ meta.column-name.google
 
 order by dept, salary desc
+--^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.order-by.google - meta.block.clause meta.block.clause
 --^^^^^^ keyword.other.dml.google
 --       ^^^^ meta.column-name.google
 --           ^ punctuation.separator.sequence.google
@@ -221,6 +233,9 @@ order by dept, salary desc
 --                    ^^^^ keyword.other.google
 
 select dept, max(salary) group by dept order by max(salary)
+--^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.select.google - meta.block.clause meta.block.clause
+--                       ^^^^^^^^^^^^^^ meta.block.clause.group-by.google - meta.block.clause meta.block.clause
+--                                     ^^^^^^^^^^^^^^ meta.block.clause.order-by.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^^ meta.column-name.google
 --         ^ punctuation.separator.sequence.google
@@ -239,19 +254,24 @@ select dept, max(salary) group by dept order by max(salary)
 --                                                        ^ punctuation.section.arguments.end.google
 
 limit 100
+--^^^^^^^ meta.block.clause.limit.google - meta.block.clause meta.block.clause
 --^^^ keyword.other.dml.google
 --    ^^^ meta.number.integer.decimal.google constant.numeric.value.google
 
 offset 10
+--^^^^^^^ meta.block.clause.offset.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^ meta.number.integer.decimal.google constant.numeric.value.google
 limit 30 offset 210
+--^^^^^^^ meta.block.clause.limit.google - meta.block.clause meta.block.clause
+--       ^^^^^^^^^^ meta.block.clause.offset.google - meta.block.clause meta.block.clause
 --^^^ keyword.other.dml.google
 --    ^^ meta.number.integer.decimal.google constant.numeric.value.google
 --       ^^^^^^ keyword.other.dml.google
 --              ^^^ meta.number.integer.decimal.google constant.numeric.value.google
 
 label dept 'Department', name "Employee Name", location 'Employee Location'
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.label.google - meta.block.clause meta.block.clause
 --^^^ keyword.other.dml.google
 --    ^^^^ meta.column-name.google
 --         ^^^^^^^^^^^^ meta.string.google string.quoted.single.google
@@ -269,6 +289,7 @@ label dept 'Department', name "Employee Name", location 'Employee Location'
 --                                                                        ^ punctuation.definition.string.end.google
 
 format salary '#,##0.00', hireDate 'dd-MMM-yyyy', isSenior 'Yes!:Not yet'
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.format.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^^^^ meta.column-name.google
 --            ^^^^^^^^^^ meta.string.google string.quoted.single.google
@@ -286,12 +307,14 @@ format salary '#,##0.00', hireDate 'dd-MMM-yyyy', isSenior 'Yes!:Not yet'
 --                                                                      ^ punctuation.definition.string.end.google
 
 select empSalary - empTax
+--^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.select.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^^^^^^^ meta.column-name.google
 --               ^ keyword.operator.arithmetic.google
 --                 ^^^^^^ meta.column-name.google
 
 select 2 * (max(empSalary) / max(empTax))
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.select.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^ meta.number.integer.decimal.google constant.numeric.value.google
 --       ^ keyword.operator.arithmetic.google
@@ -312,6 +335,7 @@ select 2 * (max(empSalary) / max(empTax))
 
 -- date "2008-03-18" is a date literal
 where startDate < date "2008-03-18"
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.where.google - meta.block.clause meta.block.clause
 --^^^ keyword.other.dml.google
 --    ^^^^^^^^^ meta.column-name.google
 --              ^ keyword.operator.comparison.google
@@ -323,11 +347,13 @@ where startDate < date "2008-03-18"
 
 -- 30 is a numeric literal
 limit 30
+--^^^^^^ meta.block.clause.limit.google - meta.block.clause meta.block.clause
 --^^^ keyword.other.dml.google
 --    ^^ meta.number.integer.decimal.google constant.numeric.value.google
 
 -- '#,##0.00' and 'not yet:of course!' are both string literals
 format salary '#,##0.00', isSenior 'not yet:of course!'
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block.clause.format.google - meta.block.clause meta.block.clause
 --^^^^ keyword.other.dml.google
 --     ^^^^^^ meta.column-name.google
 --            ^^^^^^^^^^ meta.string.google string.quoted.single.google
