@@ -1,0 +1,8 @@
+// https://developers.google.com/chart/interactive/docs/querylanguage
+{
+    "scope": "source.sql.google meta.block.clause.options",
+    "completions": [
+        { "trigger": "no_values", "contents": "no_values", "kind": ["keyword", "o", "Option"], "details": "Underlying values; no formatted values", },
+        { "trigger": "no_format", "contents": "no_format", "kind": ["keyword", "o", "Option"], "details": "Formatted values; no underlying values", },
+    ]
+}

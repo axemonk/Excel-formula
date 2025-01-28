@@ -1,0 +1,16 @@
+// https://developers.google.com/chart/interactive/docs/querylanguage
+{
+    "scope": "source.sql.google meta.block.clause.where - string - comment",
+    "completions": [
+        // Other keywords
+        { "trigger": "and", "contents": "and", "kind": "keyword", "annotation": "operator", },
+        { "trigger": "or", "contents": "or", "kind": "keyword", "annotation": "operator", },
+        { "trigger": "not", "contents": "not", "kind": "keyword", "annotation": "operator", },
+        { "trigger": "is", "contents": "is", "kind": "keyword", "annotation": "operator", },
+        { "trigger": "contains", "contents": "contains", "kind": "keyword", "annotation": "operator", "details": "Substring match", },
+        { "trigger": "startswith", "contents": "starts with", "kind": "keyword", "annotation": "operator", "details": "Prefix match", },
+        { "trigger": "endswith", "contents": "ends with", "kind": "keyword", "annotation": "operator", "details": "Suffix match", },
+        { "trigger": "matches", "contents": "matches", "kind": "keyword", "annotation": "operator", "details": "Regex match", },
+        { "trigger": "like", "contents": "like", "kind": "keyword", "annotation": "operator", "details": "Wildcard text search", },
+    ]
+}

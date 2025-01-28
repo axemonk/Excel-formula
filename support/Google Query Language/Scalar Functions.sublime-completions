@@ -1,0 +1,20 @@
+// https://developers.google.com/chart/interactive/docs/querylanguage#scalar-functions
+{
+    "scope": "source.sql.google - string - comment - meta.block.clause.options - meta.block.clause.limit - meta.block.clause.offset",
+    "completions": [
+        // Scalar functions
+        { "trigger": "year", "contents": "year($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "month", "contents": "month($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "day", "contents": "day($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "hour", "contents": "hour($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "second", "contents": "second($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "millisecond", "contents": "millisecond($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "quarter", "contents": "quarter($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "dayOfWeek", "contents": "dayOfWeek($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "now", "contents": "now()", "kind": "function", "annotation": "scalar", },
+        { "trigger": "dateDiff", "contents": "dateDiff(${1:end}, ${2:start})", "kind": "function", "annotation": "scalar", },
+        { "trigger": "toDate", "contents": "toDate()", "kind": "function", "annotation": "scalar", },
+        { "trigger": "upper", "contents": "upper($1)", "kind": "function", "annotation": "scalar", },
+        { "trigger": "lower", "contents": "lower($1)", "kind": "function", "annotation": "scalar", },
+    ]
+}
