@@ -1,3 +1,7 @@
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function waitForPageLoad() {
     await new Promise(resolve => {
         const interval = setInterval(() => {
@@ -42,51 +46,48 @@ async function waitForDropdownChange(dropdown, expectedValue, timeout = 5000) {
 let cliDropdown = await waitForElement("#clientCultureDropDown");
 
 // Get the number of options in the dropdown
-const numberOfOptions = cliDropdown.options.length;
+const numberOfOptions = await cliDropdown.options.length;
 
 // Create a text file to store the output
 let outputText = "";
 
-// Uncomment and remove integer after `i <=` to exit debug mode.
-for (let i = 1; i <= 2 /* numberOfOptions */; i++) {
+// Toggle debug mode through comments
+for (let i = /*17*/ 1; i <= /*18*/ numberOfOptions; i++) {
     await waitForPageLoad();
 
     let cliDropdown = await waitForElement("#clientCultureDropDown");
-    let thisOption = cliDropdown.querySelector(`option:nth-child(${i})`);
+    let thisOption = await cliDropdown.querySelector(`option:nth-child(${i})`);
 
-    outputText += `LANG~${thisOption.innerHTML.trim()} (${thisOption.value})\n`;
+    outputText += await `LANG~${thisOption.innerHTML.trim()} (${thisOption.value})\n`;
     thisOption.selected = true;
-    cliDropdown.dispatchEvent(new Event("change"));
-
+    await cliDropdown.dispatchEvent(new Event("change"));
     // Wait for the dropdown value to be confirmed as changed
     await waitForDropdownChange(cliDropdown, thisOption.value);
-
     await waitForPageLoad();
 
     let backButton = await waitForElement('[uib-tooltip="Go back"]');
-    backButton.click();
+    await backButton.click();
 
     await waitForPageLoad();
 
     let funcDropdown = await waitForElement("#functionCategoryDropdown");
     funcDropdown.value = "All";
-    funcDropdown.dispatchEvent(new Event("change"));
+    await funcDropdown.dispatchEvent(new Event("change"));
 
-    // Wait for the dropdown value to change (optional, depending on the behavior)
+    // Wait for the dropdown value to change
     await waitForDropdownChange(funcDropdown, "All");
 
     let thisRefTable = await waitForElement("#referenceTable");
 
-    const elements = thisRefTable.querySelectorAll("[title], [lang]");
+    const elements = await thisRefTable.querySelectorAll("[title], [lang]");
 
-    elements.forEach(el => {
-        const title = el.getAttribute("title");
+    await elements.forEach(el => {
+        const desc = el.getAttribute("title");
         const lang = el.getAttribute("lang");
-        const href = el.getAttribute("href");
+        const func = el.innerHTML;
 
-        if (!lang && title !== "Toggle sorting") {
-            const queryValue = href?.replace("#!/ws/dictionary?query=", "");
-            outputText += `${queryValue}~${title}\n`;
+        if (!lang && desc !== "Toggle sorting") {
+            outputText += `${func}~${desc}\n`;
         } else {
             if (lang !== null) {
                 outputText += `${lang}~`;
@@ -95,7 +96,7 @@ for (let i = 1; i <= 2 /* numberOfOptions */; i++) {
     });
 
     let preferencesButton = await waitForElement('[ui-sref="preferences"]');
-    preferencesButton.click();
+    await preferencesButton.click();
 
     await waitForPageLoad();
 }
