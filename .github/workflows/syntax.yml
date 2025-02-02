@@ -42,5 +42,5 @@ jobs:
       - uses: SublimeText/syntax-test-action@v2
         with:
           build: ${{ matrix.build }}
-          package_name: 'Excel formula'
+          package_name: 'Spreadsheet Formula'
           dummy_syntaxes: source.regexp.basic

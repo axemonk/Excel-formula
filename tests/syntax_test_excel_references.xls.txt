@@ -1,4 +1,4 @@
-' SYNTAX TEST "Packages/Excel formula/Excel Formula.sublime-syntax"
+' SYNTAX TEST "Packages/Spreadsheet Formula/Excel Formula.sublime-syntax"
 
 '''[ SEMI-SHARED REFERENCES ]''''''''''''''''''''''''''''''''''''''''''''''''''
 
