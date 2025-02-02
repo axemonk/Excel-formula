@@ -3,7 +3,7 @@
 name: LibreOffice Calc Formula
 scope: source.sheet.libre
 version: 2
-extends: Packages/Excel formula/Spreadsheet Formula (Basic).sublime-syntax
+extends: Packages/Spreadsheet Formula/Spreadsheet Formula (Basic).sublime-syntax
 file_extensions:
   - localc.txt
 

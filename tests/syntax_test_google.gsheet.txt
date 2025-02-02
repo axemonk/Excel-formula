@@ -1,4 +1,4 @@
-' SYNTAX TEST "Packages/Excel formula/Google Sheets Formula.sublime-syntax"
+' SYNTAX TEST "Packages/Spreadsheet Formula/Google Sheets Formula.sublime-syntax"
 
 =QUERY(A:H, "select Col2, A, * where salary > 700")
 '^^^^^ meta.function-call.google support.function.google

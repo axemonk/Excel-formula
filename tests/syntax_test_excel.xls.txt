@@ -1,4 +1,4 @@
-' SYNTAX TEST "Packages/Excel formula/Excel Formula.sublime-syntax"
+' SYNTAX TEST "Packages/Spreadsheet Formula/Excel Formula.sublime-syntax"
 
 =LET(
 return,INDIRECT(ARRAYTOTEXT("Data["&INDEX(TEXTSPLIT(UniquePts2[[#Headers],[ORDER_INST.Earliest]],"."),,1)&"]")),

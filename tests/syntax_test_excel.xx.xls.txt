@@ -1,4 +1,4 @@
-' SYNTAX TEST "Packages/Excel formula/tests/Excel Formula (XX).sublime-syntax"
+' SYNTAX TEST "Packages/Spreadsheet Formula/tests/Excel Formula (XX).sublime-syntax"
 
 =1
 '^ meta.number.integer.decimal.sheet constant.numeric.value.sheet
