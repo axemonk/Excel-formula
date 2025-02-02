@@ -1,6 +1,7 @@
 // 52 funcs unique to at least Excel (1/18/25)
 {
-    "scope": "source.sheet.excel - string - comment",
+    // Disable v1 to test v2.
+    "scope": "- source",
     "completions": [
         { "trigger": "AGGREGATE", "contents": "AGGREGATE($1)", "kind": "function" },
         { "trigger": "AMORDEGRC", "contents": "AMORDEGRC($1)", "kind": "function" },
