@@ -13,7 +13,7 @@
 //       them separate for now.
 {
     // Disable v2 to test v3
-    "scope": "- source",
+    "scope": "source - source",
     "completions": [
         { "trigger": "ABS", "contents": "ABS($1)", "annotation": "Math and trigonometry", "details": "Returns the absolute value of a number.", "kind": "function" },
         { "trigger": "ACCRINT", "contents": "ACCRINT($1)", "annotation": "Financial", "details": "Returns the accrued interest for a security that pays periodic interest.", "kind": "function" },
