@@ -1,4 +1,4 @@
-' SYNTAX TEST "Packages/Excel formula/LibreOffice Calc Formula.sublime-syntax"
+' SYNTAX TEST "Packages/Spreadsheet Formula/LibreOffice Calc Formula.sublime-syntax"
 
 ' Trying out new style of scope categorization here.
 ' Makes annotating much faster with use of duplicate line since

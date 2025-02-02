@@ -1,4 +1,4 @@
--- SYNTAX TEST "Packages/Excel formula/Google Sheets Query Language.sublime-syntax"
+-- SYNTAX TEST "Packages/Spreadsheet Formula/Google Sheets Query Language.sublime-syntax"
 
 select *
 --^^^^ keyword.other.dml.google
